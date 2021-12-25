@@ -1,0 +1,67 @@
+<div style = "background-color: #222222; height:175px;">
+  <%- include('../partials/header'); -%>
+  <br />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<body>
+  <main>
+    <style>
+      .title{
+        text-align: center;
+        font-size: xx-large;
+        color: white;
+      }
+    </style>
+    <div class = "title"
+        <p class="h1">Cocktail Reviews</p>
+    </div>
+    <br />
+    <br />
+    <body>
+      <main>
+        <style>
+            .input-group{
+              text-align: center;
+            }
+            .search{
+              text-align: center;
+            }
+            .btn btn-light{
+              text-align: center;
+            }
+        </style>
+        <form class="" action="/reviews" method="post">
+          <div class="row" style="width:800px; margin:0 auto;">
+            <div class="col-3">
+
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" name="title" placeholder="Enter a Cocktail">
+            </div>
+            <div class="col text-center">
+              <input class="btn btn-light" type="submit" name="Submit" value = "Submit"/>
+            </div>
+          </div>
+        </form>
+    <div class="container">
+  		<br>
+  		<table class="table table-bordered">
+  			<tr>
+  				<th class="align-bottom" rowspan="2">Cocktail</th>
+  				<th class="align-bottom" rowspan="2">Review</th>
+  				<th class="align-bottom" rowspan="2">Review Date</th>
+  			</tr>
+        <tr></tr>
+        <% for(var i=0; i < cocktails.length; i++) { %>
+          <tr>
+  					<% var dateObj = new Date(cocktails[i].review_date); %>
+  					<td><%= cocktails[i].cocktail_name %></td>
+  					<td><%= cocktails[i].review %></td>
+  					<td><%= dateObj.toLocaleDateString() %></td>
+            </tr>
+  			<% } %>
+  		</table>
+  		<br>
+  	</div>
+  </main>
+  </body>
+  </div>
