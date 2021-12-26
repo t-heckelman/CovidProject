@@ -11,19 +11,45 @@ let pgp = require('pg-promise')();
 
 app.set('view engine', 'ejs');
 // app.set('views', './demo');
-app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
+app.use(express.static(__dirname + '/'));
 
-let dbConfig = {
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: 'new_password'
-};
-const isProduction = process.env.NODE_ENV === 'production';
-dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
-let db = pgp(dbConfig);
+//This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
+//
+// let dbConfig = {
+//     host: '127.0.0.1',
+//     port: 5432,
+//     database: 'postgres',
+//     user: 'postgres',
+//     password: 'new_password'
+// };
+//
+//
+// const isProduction = process.env.NODE_ENV === 'production';
+// dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
+// let db = pgp(dbConfig);
 app.get('/', function(req, res) {
+  axios({
+    url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
+    method: 'GET',
+    dataType: 'json'
+  })
+  .then(items =>{
+    console.log("test");
+    console.log("hi", items.data);
+    res.render('pages/main',
+  {
+    my_title: 'main',
+    items: items.data,
+    error: false
+    });
+  })
+  .catch(error => {
+    console.log("test");
+    if(error.response){
+      console.log(error.response.data);
+      console.log(error.response.status);
+    }
+  })
   res.render('pages/main',
   {
     my_title: 'main',
@@ -54,20 +80,20 @@ app.post('/main', function(req, res)
 {
     global.drink_name = req.body.title;
     console.log(drink_name);
-    if(drink_name) {
+    //if(drink_name) {
       console.log("drink_name");
       axios({
-        url: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=' + drink_name,
+        url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
         method: 'GET',
         dataType: 'json'
       })
       .then(items =>{
         console.log("test");
-        console.log("hi", items.data.drinks[0]);
+        console.log("hi", items.data);
         res.render('pages/main',
     	{
     		my_title: 'main',
-        items: items.data.drinks[0],
+        items: items.data,
         error: false
         });
       })
@@ -78,16 +104,16 @@ app.post('/main', function(req, res)
           console.log(error.response.status);
         }
       })
-    }
-    else {
-      console.log("error");
-      res.render('pages/main',{
-        my_title: "main",
-        items: '',
-        message: "Enter a name",
-        error: true
-      })
-    }
+    //}
+    // else {
+    //   console.log("error");
+    //   res.render('pages/main',{
+    //     my_title: "main",
+    //     items: '',
+    //     message: "Enter a name",
+    //     error: true
+    //   })
+    // }
 });
 app.get('/reviews', function(req, res)
 {
