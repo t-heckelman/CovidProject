@@ -29,7 +29,7 @@ app.use(express.static(__dirname + '/'));
 // let db = pgp(dbConfig);
 app.get('/', function(req, res) {
   axios({
-    url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
+    url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX', 
     method: 'GET',
     dataType: 'json'
   })
@@ -50,13 +50,6 @@ app.get('/', function(req, res) {
       console.log(error.response.status);
     }
   })
-  res.render('pages/main',
-  {
-    my_title: 'main',
-    items: '',
-    error: false,
-    message: ''
-  });
 });
 
 
