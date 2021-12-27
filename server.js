@@ -50,13 +50,6 @@ app.get('/', function(req, res) {
       console.log(error.response.status);
     }
   })
-  res.render('pages/main',
-  {
-    my_title: 'main',
-    items: '',
-    error: false,
-    message: ''
-  });
 });
 
 
