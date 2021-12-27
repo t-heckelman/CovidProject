@@ -51,6 +51,30 @@ app.get('/', function(req, res) {
     }
   })
 });
+app.get('/login', function(req, res) {
+  axios({
+    url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
+    method: 'GET',
+    dataType: 'json'
+  })
+  .then(items =>{
+    console.log("test");
+    console.log("hi", items.data);
+    res.render('pages/login',
+  {
+    my_title: 'main',
+    items: items.data,
+    error: false
+    });
+  })
+  .catch(error => {
+    console.log("test");
+    if(error.response){
+      console.log(error.response.data);
+      console.log(error.response.status);
+    }
+  })
+});
 
 
 // const dev_dbConfig = {
@@ -178,7 +202,7 @@ app.post('/reviews', function(req, res){
     });
   }
 });
-app.post('/main/reviewHandle', function (req, res) {
+app.post('/main/reviewHandle', function (req, res) { 
 	var review = req.body.review;
   var name = drink_name;
   id = Math.floor(Math.random() * 99999999);
@@ -188,7 +212,7 @@ app.post('/main/reviewHandle', function (req, res) {
   // "select * from cocktails where upper(cocktail_name) = '" + name + "'"
   // var query1 = "INSERT INTO cocktails(cocktail_name, review, review_date) values(mojito, good, now())";
   // var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '"+ review + "', now());";
-  var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '" + id + "', '" + review + "', now());";
+  var query1 = "INSERT INTO musics(song, id, review, users, review_date) values('" + drink_name + "', '" + id + "', '" + review + "', now());";
   console.log(query1);
   // var query1 = 'select * from cocktails'
 	db.task('get-everything', task => {
@@ -212,7 +236,6 @@ app.post('/main/reviewHandle', function (req, res) {
         error: true
 			})
 		});
-
 });
 
 
