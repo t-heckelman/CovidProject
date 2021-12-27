@@ -51,6 +51,8 @@ app.get('/', function(req, res) {
     }
   })
 });
+
+
 app.get('/login', function(req, res) {
   axios({
     url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
@@ -61,6 +63,31 @@ app.get('/login', function(req, res) {
     console.log("test");
     console.log("hi", items.data);
     res.render('pages/login',
+  {
+    my_title: 'main',
+    items: items.data,
+    error: false
+    });
+  })
+  .catch(error => {
+    console.log("test");
+    if(error.response){
+      console.log(error.response.data);
+      console.log(error.response.status);
+    }
+  })
+});
+
+app.get('/register', function(req, res) {
+  axios({
+    url: 'https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX',
+    method: 'GET',
+    dataType: 'json'
+  })
+  .then(items =>{
+    console.log("test");
+    console.log("hi", items.data);
+    res.render('pages/register',
   {
     my_title: 'main',
     items: items.data,
@@ -202,7 +229,7 @@ app.post('/reviews', function(req, res){
     });
   }
 });
-app.post('/main/reviewHandle', function (req, res) { 
+app.post('/main/reviewHandle', function (req, res) {
 	var review = req.body.review;
   var name = drink_name;
   id = Math.floor(Math.random() * 99999999);

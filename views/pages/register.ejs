@@ -4,50 +4,60 @@
 <!------ Include the above in your HEAD tag ---------->
 <div class="sidenav">
          <div class="login-main-text">
-            <h2>Cool Name<br> Login Page</h2>
-            <p>Login or register from here.</p>
+            <h2>Cool Name<br> Registration Page</h2>
+            <p>Include a capital letter, number, and at least 8 characters in password.</p>
          </div>
-      </div>
+</div>
       <div class="main">
         <div class="jumbotron text-center" style = "background-color: #808080">
-         <div class="col-md-6 col-sm-12">
-            <div class="login-form">
+            <div class="login-form justify">
                <form>
+                 <div class="form-group">
+                    <label class = "larger">Full Name</label>
+                    <input type="name" class="form-control" placeholder="Full Name">
+                 </div>
+                 <div class="form-group">
+                    <label class = "larger">Email</label>
+                    <input type="email" class="form-control" placeholder="Email">
+                 </div>
                   <div class="form-group">
-                     <label>User Name</label>
-                     <input type="text" class="form-control" placeholder="User Name">
+                     <label class = "larger">Username</label>
+                     <input type="username" class="form-control" placeholder="Username">
                   </div>
                   <div class="form-group">
-                     <label>Password</label>
+                     <label class = "larger">Password</label>
                      <input type="password" class="form-control" placeholder="Password">
                   </div>
-                  <button type="submit" class="btn btn-black">Login</button>
+                  <div class="form-group">
+                     <label class = "larger">Confirm Password</label>
+                     <input type="password" class="form-control" placeholder="Confirm Password">
+                  </div>
                   <button type="submit" class="btn btn-secondary">Register</button>
                </form>
             </div>
          </div>
-         </div>
       </div>
+<%- include('../partials/footer'); -%>
 
 
 
 <style>
+.larger{
+  font-size: 20px;
+}
   body {
-    font-family: "Lato", sans-serif;
+    font-family: "trebuchet", Trebuchet MS;
     background-image: url(<%- items.hdurl -%>);
 }
-
 .jumbotron{
-  font-family: "trebuchet", Trebuchet MS;
   border-radius: 50px;
-  width: 69%;
-  margin-top:20%;
-  height: 300px;
+  width: 70%;
+  margin-top:5%;
+  height: 600px;
 }
 .main-head{
     height: 150px;
     background: #FFF;
-
 }
 
 .sidenav {
@@ -91,7 +101,8 @@
 
     .login-form{
         margin-top: 0%;
-        float: left;
+        float: center;
+
     }
 
     .register-form{
