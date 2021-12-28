@@ -1,5 +1,6 @@
 console.log("connected to client-side server");
 function registerHandle() {
+  console.log("boobs");
     var myInput = document.getElementById("psw");
     var confirmMyInput = document.getElementById("cpsw");
 	  var letter = document.getElementById("letter");
