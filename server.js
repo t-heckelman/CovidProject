@@ -3,7 +3,6 @@ let app = express();
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 const server_port = 5050;
 const axios = require("axios");
 const qs = require("axios");
@@ -12,6 +11,7 @@ let pgp = require("pg-promise")();
 app.set("view engine", "ejs");
 // app.set('views', './demo');
 app.use(express.static(__dirname + "/"));
+const tools = require("./resources/js/script");
 
 //This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
 //
@@ -78,7 +78,6 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/register", function (req, res) {
-  var tools = require('/resources/js/script.js');
   axios({
     url:
       "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
