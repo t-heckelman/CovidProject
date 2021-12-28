@@ -1,5 +1,6 @@
 console.log("connected to client-side server");
 function passwVal() {
+
     var myInput = document.getElementById("psw");
     var confirmMyInput = document.getElementById("cpsw");
 	  var letter = document.getElementById("letter");
@@ -7,6 +8,7 @@ function passwVal() {
 	  var number = document.getElementById("number");
 	  var length = document.getElementById("length");
     var match = document.getElementById("match");
+    var email = document.getElementById("email");
 
 
 	myInput.onkeyup = function() {
@@ -49,6 +51,7 @@ function passwVal() {
             length.classList.remove("valid");
             length.classList.add("invalid");
         }
+        enableButton(letter, capital, number, length, match, email);
     }
     confirmMyInput.onkeyup = function() {
                 var passEqualsConfPass = (myInput.value == confirmMyInput.value); // TODO: Change this to the condition that needs to be checked so that the text entered in password equals the text in confirm password
@@ -60,8 +63,7 @@ function passwVal() {
                     match.classList.remove("valid");
                     match.classList.add("invalid");
                 }
-
-                enableButton(letter, capital, number, length, match);
+                enableButton(letter, capital, number, length, match, email);
     }
 }
 
@@ -87,25 +89,15 @@ function emailVal() {
   }
 }
 
-function buttonOn() {
-  var myInput = document.getElementById("psw");
-  var confirmMyInput = document.getElementById("cpsw");
-  var letter = document.getElementById("letter");
-  var capital = document.getElementById("capital");
-  var number = document.getElementById("number");
-  var length = document.getElementById("length");
-  var match = document.getElementById("match");
-  var email = document.getElementById("validEmail");
-
-
-}
 
 
 function enableButton(letter, capital, number, length, match) {
     var button = document.getElementById('my_submit_button');
-    var condition = (letter.classList.contains("valid") && capital.classList.contains("valid") && number.classList.contains("valid") && length.classList.contains("valid") && match.classList.contains("valid")); // TODO: Replace false with the correct condition
+    console.log(button);
+    var condition = (letter.classList.contains("valid") && capital.classList.contains("valid") && number.classList.contains("valid") && length.classList.contains("valid") && match.classList.contains("valid") && colorEmail.classList.contains("valid")); // TODO: Replace false with the correct condition
     if(condition) {
             button.disabled = false;
+            console.log("yeah");
         }
     else {
             button.disabled = true;
