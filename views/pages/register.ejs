@@ -1,139 +1,174 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="resources/js/script.js"></script>
 <div class="sidenav">
-         <div class="login-main-text">
-            <h2>Cool Name<br> Registration Page</h2>
-            <div class="modal-footer">
-            					<div id="message" style="display:block">
-            						<h3>Password must contain the following:</h3>
-            						<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-            						<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-            						<p id="number" class="invalid">A <b>number</b></p>
-            						<p id="length" class="invalid">Minimum <b>8 characters</b></p>
-                                    <p id="match" class="invalid">Password and Confirm Password Match</p>
-                                    <p id="validEmail" class="invalid">Email is Valid</p>
-            					</div>
-             </div>
-         </div>
-</div>
-      <div class="main">
-        <div class="jumbotron text-center" style = "background-color: #808080">
-            <div class="login-form justify">
-               <form>
-                 <div class="form-group">
-                    <label class = "larger">Full Name</label>
-                    <input type="name" class="form-control" placeholder="Full Name">
-                 </div>
-                 <div class="form-group">
-                    <label class = "larger">Email</label>
-                    <input id = "email" type="email" class="form-control" placeholder="Email" onkeyup="emailVal()">
-                 </div>
-                  <div class="form-group">
-                     <label class = "larger">Username</label>
-                     <input id = type="username" class="form-control" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                     <label class = "larger">Password</label>
-                     <input id = "psw" type="password" class="form-control" placeholder="Password" onkeyup="passwVal()">
-                  </div>
-                  <div class="form-group">
-                     <label class = "larger">Confirm Password</label>
-                     <input id = "cpsw" type="password" class="form-control" placeholder="Confirm Password">
-                  </div>
-                  <button type="submit" class="btn btn-secondary" disabled>Register</button>
-               </form>
-            </div>
-         </div>
+  <div class="login-main-text">
+    <h2>
+      Cool Name<br />
+      Registration Page
+    </h2>
+    <div class="modal-footer">
+      <div id="message" style="display: block">
+        <h3>Password must contain the following:</h3>
+        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+        <p id="number" class="invalid">A <b>number</b></p>
+        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+        <p id="match" class="invalid">Password and Confirm Password Match</p>
+        <p id="validEmail" class="invalid">Email is Valid</p>
       </div>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div class="jumbotron text-center" style="background-color: #808080">
+    <div class="login-form justify">
+      <form>
+        <div class="form-group">
+          <label class="larger">Full Name</label>
+          <input type="name" class="form-control" placeholder="Full Name" />
+        </div>
+        <div class="form-group">
+          <label class="larger">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            onkeyup="emailVal()"
+          />
+        </div>
+        <div class="form-group">
+          <label class="larger">Username</label>
+          <input
+            id="type"
+            ="username"
+            class="form-control"
+            placeholder="Username"
+          />
+        </div>
+        <div class="form-group">
+          <label class="larger">Password</label>
+          <input
+            id="psw"
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            onkeyup="passwVal()"
+          />
+        </div>
+        <div class="form-group">
+          <label class="larger">Confirm Password</label>
+          <input
+            id="cpsw"
+            type="password"
+            class="form-control"
+            placeholder="Confirm Password"
+          />
+        </div>
+        <button
+          id="my_submit_button"
+          type="submit"
+          class="btn btn-secondary"
+          disabled
+        >
+          Register
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
 <%- include('../partials/footer'); -%>
 <style>
-.larger{
-  font-size: 20px;
-}
+  .larger {
+    font-size: 20px;
+  }
   body {
     font-family: "trebuchet", Trebuchet MS;
     background-image: url(<%- items.hdurl -%>);
-}
-.jumbotron{
-  border-radius: 50px;
-  width: 70%;
-  margin-top:5%;
-  height: 600px;
-}
-.main-head{
+  }
+  .jumbotron {
+    border-radius: 50px;
+    width: 70%;
+    margin-top: 5%;
+    height: 600px;
+  }
+  .main-head {
     height: 150px;
-    background: #FFF;
-}
+    background: #fff;
+  }
 
-.sidenav {
+  .sidenav {
     height: 100%;
     background-color: #000;
     overflow-x: hidden;
     padding-top: 20px;
-}
+  }
 
-
-.main {
+  .main {
     padding: 0px 10px;
-}
+  }
 
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-}
+  @media screen and (max-height: 450px) {
+    .sidenav {
+      padding-top: 15px;
+    }
+  }
 
-@media screen and (max-width: 450px) {
-    .login-form{
-        margin-top: 10%;
+  @media screen and (max-width: 450px) {
+    .login-form {
+      margin-top: 10%;
     }
 
-    .register-form{
-        margin-top: 10%;
+    .register-form {
+      margin-top: 10%;
     }
-}
+  }
 
-@media screen and (min-width: 768px){
-    .main{
-        margin-left: 40%;
-    }
-
-    .sidenav{
-        width: 40%;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
+  @media screen and (min-width: 768px) {
+    .main {
+      margin-left: 40%;
     }
 
-    .login-form{
-        margin-top: 0%;
-        float: center;
-
+    .sidenav {
+      width: 40%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
     }
 
-    .register-form{
-        margin-top: 20%;
+    .login-form {
+      margin-top: 0%;
+      float: center;
     }
-}
 
+    .register-form {
+      margin-top: 20%;
+    }
+  }
 
-.login-main-text{
+  .login-main-text {
     margin-top: 20%;
     padding: 60px;
     color: #fff;
-}
+  }
 
-.login-main-text h2{
+  .login-main-text h2 {
     font-weight: 300;
-}
+  }
 
-.btn-black{
+  .btn-black {
     background-color: #000 !important;
     color: #fff;
-}
+  }
 
-.valid{
+  .valid {
     color: green;
-}
+  }
 </style>
