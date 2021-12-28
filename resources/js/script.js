@@ -68,7 +68,7 @@ function registerHandle() {
 function emailval() {
   var email = document.getElementById("email");
 
-  email.onkeyup() = function {
+  email.onkeyup() = function() {
       var re = /\S+@\S+\.\S+/;
       return re.test(email);
   }
