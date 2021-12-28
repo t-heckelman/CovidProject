@@ -13,20 +13,20 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/"));
 const tools = require("./resources/js/script");
 
-//This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
-//
-// let dbConfig = {
-//     host: '127.0.0.1',
-//     port: 5432,
-//     database: 'postgres',
-//     user: 'postgres',
-//     password: 'new_password'
-// };
-//
-//
-// const isProduction = process.env.NODE_ENV === 'production';
-// dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
-// let db = pgp(dbConfig);
+// This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
+
+let dbConfig = {
+    host: '127.0.0.1',
+    port: 5432,
+    database: 'postgres',
+    user: 'teddyheckelman',
+    password: 'new_password'
+};
+
+
+const isProduction = process.env.NODE_ENV === 'production';
+dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
+let db = pgp(dbConfig);
 app.get("/", function (req, res) {
   axios({
     url:
@@ -38,7 +38,7 @@ app.get("/", function (req, res) {
       console.log("test");
       console.log("hi", items.data);
       res.render("pages/main", {
-        my_title: "main",
+        my_title: "Music Space",
         items: items.data,
         error: false,
       });
@@ -55,7 +55,7 @@ app.get("/", function (req, res) {
 app.get("/login", function (req, res) {
   axios({
     url:
-      "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
+    "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
     method: "GET",
     dataType: "json",
   })
@@ -63,7 +63,8 @@ app.get("/login", function (req, res) {
       //console.log("test");
       //console.log("hi", items.data);
       res.render("pages/login", {
-        my_title: "main",
+        my_title: "Music Space: Login",
+        items: items.data,
         error: false,
       });
     })
@@ -87,7 +88,7 @@ app.get("/register", function (req, res) {
       console.log("test");
       console.log("hi", items.data);
       res.render("pages/register", {
-        my_title: "main",
+        my_title: "Music Space: Register",
         items: items.data,
         tools: tools,
         error: false,
@@ -101,7 +102,28 @@ app.get("/register", function (req, res) {
       }
     });
 });
-
+app.get("/reviews", function (req, res) {
+  // api needs to be added to this
+  var query1 = "select * from reviews ORDER BY review_date DESC;";
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Music Space: Reviews",
+        tools: tools,
+        songs: data[0],
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        tools: tools,
+      });
+    });
+});
 // const dev_dbConfig = {
 // 	host: 'localhost',
 // 	port: 5432,
@@ -118,33 +140,6 @@ app.get("/register", function (req, res) {
 
 //url: http://localhost:5050/
 
-app.post("/main", function (req, res) {
-  global.drink_name = req.body.title;
-  console.log(drink_name);
-  //if(drink_name) {
-  console.log("drink_name");
-  axios({
-    url:
-      "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
-    method: "GET",
-    dataType: "json",
-  })
-    .then((items) => {
-      console.log("test");
-      console.log("hi", items.data);
-      res.render("pages/main", {
-        my_title: "main",
-        items: items.data,
-        error: false,
-      });
-    })
-    .catch((error) => {
-      console.log("test");
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
-    });
   //}
   // else {
   //   console.log("error");
@@ -155,23 +150,22 @@ app.post("/main", function (req, res) {
   //     error: true
   //   })
   // }
-});
 app.get("/reviews", function (req, res) {
-  var query1 = "select * from cocktails;";
+  var query1 = "select * from reviews;";
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
     .then((data) => {
       res.render("pages/reviews", {
         my_title: "Cocktail",
-        cocktails: data[0],
+        songs: data[0],
       });
     })
     .catch((err) => {
       console.log("error", err);
       res.render("pages/reviews", {
         my_title: "Cocktail",
-        cocktails: [1, 2, 3, 4],
+        songs: [1, 2, 3, 4],
       });
     });
 });
@@ -182,11 +176,12 @@ app.post("/reviews", function (req, res) {
   console.log(name);
   if (name) {
     var query1 =
-      "select * from cocktails where upper(cocktail_name) = '" + name + "'";
+      "select * from reviews where upper(username) = '" + name + "'";
     db.task("get-everything", (task) => {
       return task.batch([task.any(query1)]);
     })
       .then((data) => {
+        console.log(data[0]);
         res.render("pages/reviews", {
           my_title: "Cocktail",
           cocktails: data[0],
