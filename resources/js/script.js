@@ -65,11 +65,10 @@ function registerHandle() {
     }
 }
 
-<<<<<<< HEAD
 function clicked(){
   console.log("that bitch was clicked");
 }
-=======
+
 function emailval() {
   var email = document.getElementById("email");
 
@@ -80,7 +79,6 @@ function emailval() {
 }
 
 
->>>>>>> 73216dee9434552c90d128c484a0b47d2d5d37fc
 function enableButton(letter, capital, number, length, match) {
     var button = document.getElementById('my_submit_button');
     var condition = (letter.classList.contains("valid") && capital.classList.contains("valid") && number.classList.contains("valid") && length.classList.contains("valid") && match.classList.contains("valid")); // TODO: Replace false with the correct condition
