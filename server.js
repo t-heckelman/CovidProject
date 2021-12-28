@@ -78,6 +78,7 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/register", function (req, res) {
+  var tools = require('/resources/js/script.js');
   axios({
     url:
       "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
