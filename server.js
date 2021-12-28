@@ -64,7 +64,6 @@ app.get("/login", function (req, res) {
       console.log("hi", items.data);
       res.render("pages/login", {
         my_title: "main",
-        items: items.data,
         error: false,
       });
     })
@@ -90,6 +89,7 @@ app.get("/register", function (req, res) {
       res.render("pages/register", {
         my_title: "main",
         items: items.data,
+        tools: tools,
         error: false,
       });
     })

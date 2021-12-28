@@ -1,7 +1,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<body onload = "tools.registerHandle()">
+<body onload = "<%- tools.registerHandle -%>">
 <div class="sidenav">
          <div class="login-main-text">
             <h2>Cool Name<br> Registration Page</h2>
@@ -35,7 +35,7 @@
                   </div>
                   <div class="form-group">
                      <label class = "larger">Password</label>
-                     <input id = "psw"type="password" class="form-control" placeholder="Password">
+                     <input id = "psw" type="password" class="form-control" placeholder="Password">
                   </div>
                   <div class="form-group">
                      <label class = "larger">Confirm Password</label>
