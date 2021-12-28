@@ -1,11 +1,6 @@
-function toggle_visibility(id){
-    var e = document.getElementById(id);
-		console.log("check1");
+console.log('Client-side code running');
 
-if(e.style.display == 'block')
-    e.style.display = 'none';
-		console.log("check2");
-else
-    e.style.display = 'block';
-		console.log("check3");
-}
+const button = document.getElementById('registerButton');
+button.addEventListener('click', function(e) {
+  console.log('button was clicked');
+});
