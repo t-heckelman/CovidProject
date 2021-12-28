@@ -1,6 +1,5 @@
 console.log("connected to client-side server");
-function registerHandle() {
-  console.log("boobs");
+function passwVal() {
     var myInput = document.getElementById("psw");
     var confirmMyInput = document.getElementById("cpsw");
 	  var letter = document.getElementById("letter");
@@ -17,7 +16,7 @@ function registerHandle() {
         var numbers = /[0-9]/g;
         var minLength = 8;
 
-        console.log(letter.classList);
+        //console.log(letter.classList);
 
         if(myInput.value.match(lowerCaseLetters)) {
             letter.classList.remove("invalid");
@@ -70,13 +69,35 @@ function clicked(){
   console.log("that bitch was clicked");
 }
 
-function emailval() {
+function emailVal() {
   var email = document.getElementById("email");
+  colorEmail = document.getElementById("validEmail")
 
-  email.onkeyup() = function() {
-      var re = /\S+@\S+\.\S+/;
-      return re.test(email);
+  // email.onkeyup() = function() {
+  //     var re = /\S+@\S+\.\S+/;
+  //     return re.test(email);
+  // }
+  console.log(email)
+  var re = /\S+@\S+\.\S+/;
+  var valid = re.test(email.value);
+  console.log(valid);
+  if (valid){
+      colorEmail.classList.remove("invalid");
+      colorEmail.classList.add("valid")
   }
+}
+
+function buttonOn() {
+  var myInput = document.getElementById("psw");
+  var confirmMyInput = document.getElementById("cpsw");
+  var letter = document.getElementById("letter");
+  var capital = document.getElementById("capital");
+  var number = document.getElementById("number");
+  var length = document.getElementById("length");
+  var match = document.getElementById("match");
+  var email = document.getElementById("validEmail");
+
+
 }
 
 
