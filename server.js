@@ -60,8 +60,8 @@ app.get("/login", function (req, res) {
     dataType: "json",
   })
     .then((items) => {
-      console.log("test");
-      console.log("hi", items.data);
+      //console.log("test");
+      //console.log("hi", items.data);
       res.render("pages/login", {
         my_title: "main",
         items: items.data,

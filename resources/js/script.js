@@ -65,6 +65,15 @@ function registerHandle() {
     }
 }
 
+function emailval() {
+  var email = document.getElementById("email");
+
+  email.onkeyup() = function {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
+  }
+}
+
 
 function enableButton(letter, capital, number, length, match) {
     var button = document.getElementById('my_submit_button');
