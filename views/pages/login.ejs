@@ -1,123 +1,133 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script>
-  function registerButton(){
-    console.log("hello")
+  function registerButton() {
+    console.log("REGISTERBUTTON");
   }
 </script>
 <!------ Include the above in your HEAD tag ---------->
 <div class="sidenav">
-         <div class="login-main-text">
-            <h2>Cool Name<br> Login Page</h2>
-            <p>Login or register from here.</p>
-         </div>
+  <div class="login-main-text">
+    <h2>
+      Cool Name<br />
+      Login Page
+    </h2>
+    <p>Login or register from here.</p>
+  </div>
 </div>
-      <div class="main">
-        <div class="jumbotron text-center" style = "background-color: #808080">
-            <div class="login-form justify">
-               <form>
-                  <div class="form-group">
-                     <label class = "larger">User Name</label>
-                     <input type="text" class="form-control" placeholder="User Name">
-                  </div>
-                  <div class="form-group">
-                     <label class = "larger">Password</label>
-                     <input type="password" class="form-control" placeholder="Password">
-                  </div>
-                  <button id = "login" type="submit" class="btn btn-black">Login</button>
-                  <button onclick = "registerButton()" type="submit" class="btn btn-secondary">Register</button>
-               </form>
-            </div>
-         </div>
-      </div>
+<div class="main">
+  <div class="jumbotron text-center" style="background-color: #808080">
+    <div class="login-form justify">
+      <form>
+        <div class="form-group">
+          <label class="larger">User Name</label>
+          <input type="text" class="form-control" placeholder="User Name" />
+        </div>
+        <div class="form-group">
+          <label class="larger">Password</label>
+          <input type="password" class="form-control" placeholder="Password" />
+        </div>
+        <button id="login" type="submit" class="btn btn-black">Login</button>
+        <button
+          onclick="registerButton()"
+          type="submit"
+          class="btn btn-secondary"
+        >
+          Register
+        </button>
+        <button id="login" type="submit" onclick() = "/register" class="btn btn-black">Loayogin</button>
+      </form>
+    </div>
+  </div>
+</div>
 <%- include('../partials/footer'); -%>
 
-
-
 <style>
-.larger{
-  font-size: 20px;
-}
+  .larger {
+    font-size: 20px;
+  }
   body {
     font-family: "trebuchet", Trebuchet MS;
     background-image: url(<%- items.hdurl -%>);
-}
-.jumbotron{
-  border-radius: 50px;
-  width: 70%;
-  margin-top:20%;
-  height: 300px;
-}
-.main-head{
+  }
+  .jumbotron {
+    border-radius: 50px;
+    width: 70%;
+    margin-top: 20%;
+    height: 300px;
+  }
+  .main-head {
     height: 150px;
-    background: #FFF;
+    background: #fff;
+  }
 
-}
-
-.sidenav {
+  .sidenav {
     height: 100%;
     background-color: #000;
     overflow-x: hidden;
     padding-top: 20px;
-}
+  }
 
-
-.main {
+  .main {
     padding: 0px 10px;
-}
+  }
 
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-}
+  @media screen and (max-height: 450px) {
+    .sidenav {
+      padding-top: 15px;
+    }
+  }
 
-@media screen and (max-width: 450px) {
-    .login-form{
-        margin-top: 10%;
+  @media screen and (max-width: 450px) {
+    .login-form {
+      margin-top: 10%;
     }
 
-    .register-form{
-        margin-top: 10%;
+    .register-form {
+      margin-top: 10%;
     }
-}
+  }
 
-@media screen and (min-width: 768px){
-    .main{
-        margin-left: 40%;
-    }
-
-    .sidenav{
-        width: 40%;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
+  @media screen and (min-width: 768px) {
+    .main {
+      margin-left: 40%;
     }
 
-    .login-form{
-        margin-top: 0%;
-        float: center;
-
+    .sidenav {
+      width: 40%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
     }
 
-    .register-form{
-        margin-top: 20%;
+    .login-form {
+      margin-top: -5%;
+      float: center;
     }
-}
 
+    .register-form {
+      margin-top: 20%;
+    }
+  }
 
-.login-main-text{
+  .login-main-text {
     margin-top: 20%;
     padding: 60px;
     color: #fff;
-}
+  }
 
-.login-main-text h2{
+  .login-main-text h2 {
     font-weight: 300;
-}
+  }
 
-.btn-black{
+  .btn-black {
     background-color: #000 !important;
     color: #fff;
-}
+  }
 </style>
