@@ -1,7 +1,8 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<body onload = "<%- tools.registerHandle -%>">
+<script src="resources/js/script.js"></script>
+<body oncall = "registerHandle()">
 <div class="sidenav">
          <div class="login-main-text">
             <h2>Cool Name<br> Registration Page</h2>
@@ -47,7 +48,6 @@
          </div>
       </div>
 <%- include('../partials/footer'); -%>
-</body>
 <style>
 .larger{
   font-size: 20px;
