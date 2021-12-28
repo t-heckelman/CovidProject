@@ -2,7 +2,6 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="resources/js/script.js"></script>
-<body oncall = "registerHandle()">
 <div class="sidenav">
          <div class="login-main-text">
             <h2>Cool Name<br> Registration Page</h2>
@@ -13,7 +12,8 @@
             						<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
             						<p id="number" class="invalid">A <b>number</b></p>
             						<p id="length" class="invalid">Minimum <b>8 characters</b></p>
-            						<p id="match" class="invalid">Password and Confirm Password Match</p>
+                                    <p id="match" class="invalid">Password and Confirm Password Match</p>
+                                    <p id="validEmail" class="invalid">Email is Valid</p>
             					</div>
              </div>
          </div>
@@ -28,7 +28,7 @@
                  </div>
                  <div class="form-group">
                     <label class = "larger">Email</label>
-                    <input id = "email" type="email" class="form-control" placeholder="Email">
+                    <input id = "email" type="email" class="form-control" placeholder="Email" onkeyup="emailVal()">
                  </div>
                   <div class="form-group">
                      <label class = "larger">Username</label>
@@ -36,7 +36,7 @@
                   </div>
                   <div class="form-group">
                      <label class = "larger">Password</label>
-                     <input id = "psw" type="password" class="form-control" placeholder="Password">
+                     <input id = "psw" type="password" class="form-control" placeholder="Password" onkeyup="passwVal()">
                   </div>
                   <div class="form-group">
                      <label class = "larger">Confirm Password</label>
