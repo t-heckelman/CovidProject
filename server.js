@@ -34,12 +34,10 @@ axios({
   dataType: "json",
 })
   .then((items) => {
-    console.log("test");
     dailyImg = items.data;
     console.log("hi", data);
   })
   .catch((error) => {
-    console.log("test");
     if (error.response) {
       console.log(error.response.data);
       console.log(error.response.status);
@@ -47,6 +45,7 @@ axios({
   });
 
 app.get("/", function (req, res) {
+  console.log("/main");
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
@@ -77,6 +76,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
+  console.log("login");
   res.render("pages/login", {
     my_title: "Music Space: Login",
     dailyImg: dailyImg,
@@ -93,6 +93,7 @@ app.get("/register", function (req, res) {
   });
 });
 app.get("/reviews", function (req, res) {
+  console.log("reviews");
   // api needs to be added to this
   var query1 = "select * from reviews ORDER BY review_date DESC;";
   db.task("get-everything", (task) => {
@@ -163,6 +164,7 @@ app.get("/reviews", function (req, res) {
 //
 
 app.get("/reviews", function (req, res) {
+  console.log("reviews was got");
   var query1 = "select * from reviews;";
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
@@ -230,34 +232,18 @@ app.get("/reviews", function (req, res) {
 // });
 
 
-//SEARCH USER REVIEWS
-// app.post("/reviews", function req, res){
-//   var review = req.body.review;
-//   var username = req.body.username;
-//   console.log(username);
+app.post("/reviews", function (req, res){
+  console.log("posted");
+  var review = req.body.review;
+  var username = req.body.username;
+  console.log(username);
+  console.log(review);
 
-//   var reviewQuery = "select * FROM reviews WHERE username = 'MALICOLM'"; //TODO get user input from search bar
+  var reviewQuery = "select * FROM reviews WHERE username = 'TEDDY'"; //TODO get user input from search bar
+  console.log(reviewQuery);
+});
 
-//     db.task("get-searched", (task) =>{
-//       return task.batch([task.any(reviewquery)]);
-//     })
-//       .then((info) => {
-//         res.render("pages/main", {
-//           my_title: "main",
-//           items: "",
-//           error: false,
-//         });
-//       })
-//       .catch((err) => {
-//         console.log("error", err);
-//         res.render("pages/main", {
-//           my_title: "main",
-//           items: "",
-//           message: "uh oh",
-//           error: true,
-//         });
-//       });
-// });
+
 app.post("/main/reviewHandle", function (req, res) {
   var review = req.body.review;
   var name = drink_name;
