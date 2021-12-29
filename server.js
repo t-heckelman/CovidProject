@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -46,7 +46,7 @@ axios({
   });
 
 app.get("/", function (req, res) {
-  console.log("/main");
+  console.log("Main page loaded");
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
@@ -78,7 +78,11 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
+<<<<<<< HEAD
   console.log("loginNo");
+=======
+  console.log("Login page loaded");
+>>>>>>> 6caf52d04b8ed531016c770f495976a73d369bb4
   res.render("pages/login", {
     my_title: "Music Space: Login",
     dailyImg: dailyImg,
@@ -175,6 +179,7 @@ app.post("/register", function (req, res) {
     });
 });
 app.get("/register", function (req, res) {
+  console.log("Register page loaded");
   res.render("pages/register", {
     my_title: "Music Space: Register",
     dailyImg: dailyImg,
@@ -183,6 +188,7 @@ app.get("/register", function (req, res) {
   });
 });
 app.get("/reviews", function (req, res) {
+  console.log("Reviews page loaded");
   console.log("reviews");
   // api needs to be added to this
   var query1 = "select * from reviews ORDER BY review_date DESC;";
@@ -274,8 +280,6 @@ app.get("/reviews", function (req, res) {
     });
 });
 
-
-
 // app.post("/reviews", function (req, res) {
 //   var name = req.body.title;
 //   console.log(name);
@@ -321,18 +325,31 @@ app.get("/reviews", function (req, res) {
 //   }
 // });
 
-
-app.post("/reviews", function (req, res){
-  console.log("posted");
-  var review = req.body.review;
+app.post("/reviews", function (req, res) {
+  console.log("Reviews searchfilter loaded");
   var username = req.body.username;
-  console.log(username);
-  console.log(review);
+  //username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
 
-  var reviewQuery = "select * FROM reviews WHERE username = 'TEDDY'"; //TODO get user input from search bar
-  console.log(reviewQuery);
+  var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
+  ("");
+
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(reviewQuery)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Cocktail",
+        songs: data[0],
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Cocktail",
+        songs: [1, 2, 3, 4],
+      });
+    });
 });
-
 
 app.post("/main/reviewHandle", function (req, res) {
   var review = req.body.review;
