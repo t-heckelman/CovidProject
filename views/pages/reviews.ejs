@@ -22,12 +22,12 @@
 <div class="head">
   <%- include('../partials/header'); -%>
   <br />
-  <div class="search-container">
-  <div class="row justify-content-center align-items-center">
-      <div class="col-md-8">
-          <div class="search"> <i class="fa fa-search"></i> <input type="text" class="form-control" placeholder="Search for a user to view their reviews!"> <button class="btn btn-primary">Search</button> </div>
-      </div>
-  </div>
+  <div class="search-container" method="post" action = "/reviews">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-8">
+            <div class="search"> <i class="fa fa-search"></i> <input type="text" class="form-control" placeholder="Search for a user to view their reviews!"> <button class="btn btn-primary">Search</button> </div>
+        </div>
+    </div>
 </div>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
 <div class="bigDiv">

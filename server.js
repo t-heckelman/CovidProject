@@ -14,17 +14,16 @@ app.use(express.static(__dirname + "/"));
 const tools = require("./resources/js/script");
 
 // This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
-var data;
+var dailyImg;
 let dbConfig = {
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'postgres',
-    user: 'malcolmholman',
-    password: 'password'
+  host: "127.0.0.1",
+  port: 5432,
+  database: "postgres",
+  user: "malcolmholman",
+  password: "password",
 };
 
-
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 
@@ -36,7 +35,7 @@ axios({
 })
   .then((items) => {
     console.log("test");
-    data = items.data;
+    dailyImg = items.data;
     console.log("hi", data);
   })
   .catch((error) => {
@@ -45,12 +44,12 @@ axios({
       console.log(error.response.data);
       console.log(error.response.status);
     }
-});
+  });
 
 app.get("/", function (req, res) {
   res.render("pages/main", {
     my_title: "Music Space",
-    items: data,
+    dailyImg: dailyImg,
     error: false,
   });
   // axios({
@@ -80,7 +79,7 @@ app.get("/", function (req, res) {
 app.get("/login", function (req, res) {
   res.render("pages/login", {
     my_title: "Music Space: Login",
-    items: data,
+    dailyImg: dailyImg,
     error: false,
   });
 });
@@ -88,7 +87,7 @@ app.get("/login", function (req, res) {
 app.get("/register", function (req, res) {
   res.render("pages/register", {
     my_title: "Music Space: Register",
-    items: data,
+    dailyImg: dailyImg,
     tools: tools,
     error: false,
   });
@@ -103,6 +102,7 @@ app.get("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Music Space: Reviews",
         tools: tools,
+        dailyImg: dailyImg,
         songs: data[0],
       });
     })
@@ -117,18 +117,12 @@ app.get("/reviews", function (req, res) {
 });
 // app.get("/register", function (req, res) {
 //   const api_key = "7c5b028ba8b743249e640caafb503d10";
-//   axios({
-//     method: "get",
-//         url: "https://api.spotify.com/v1/search",
-//         headers: { 'Authorization': 'Bearer ' + api_key},
-//         params: { 'q': "Fire", 'type': 'track' }
-//   })
 //     .then((items) => {
 //       console.log("test");
 //       console.log("I refuse to believe this", items.data);
 //       res.render("pages/register", {
 //         my_title: "Music Space: Register",
-//         items: items.data,
+//         dailyImg: dailyImg,
 //         tools: tools,
 //         error: false,
 //       });
@@ -157,16 +151,16 @@ app.get("/reviews", function (req, res) {
 
 //url: http://localhost:5050/
 
-  //}
-  // else {
-  //   console.log("error");
-  //   res.render('pages/main',{
-  //     my_title: "main",
-  //     items: '',
-  //     message: "Enter a name",
-  //     error: true
-  //   })
-  //
+//}
+// else {
+//   console.log("error");
+//   res.render('pages/main',{
+//     my_title: "main",
+//     items: '',
+//     message: "Enter a name",
+//     error: true
+//   })
+//
 
 app.get("/reviews", function (req, res) {
   var query1 = "select * from reviews;";
@@ -187,51 +181,83 @@ app.get("/reviews", function (req, res) {
       });
     });
 });
-app.post("/reviews", function (req, res) {
-  var name = req.body.title;
-  console.log(name);
-  name = name.toUpperCase();
-  console.log(name);
-  if (name) {
-    var query1 =
-      "select * from reviews where upper(username) = '" + name + "'";
-    db.task("get-everything", (task) => {
-      return task.batch([task.any(query1)]);
-    })
-      .then((data) => {
-        console.log(data[0]);
-        res.render("pages/reviews", {
-          my_title: "Cocktail",
-          cocktails: data[0],
-        });
-      })
-      .catch((err) => {
-        console.log("error", err);
-        res.render("pages/reviews", {
-          my_title: "Cocktail",
-          cocktails: [1, 2, 3, 4],
-        });
-      });
-  } else {
-    var query1 = "select * from cocktails;";
-    db.task("get-everything", (task) => {
-      return task.batch([task.any(query1)]);
-    })
-      .then((data) => {
-        res.render("pages/reviews", {
-          my_title: "Cocktail",
-          cocktails: data[0],
-        });
-      })
-      .catch((err) => {
-        console.log("error", err);
-        res.render("pages/reviews", {
-          my_title: "Cocktail",
-          cocktails: [1, 2, 3, 4],
-        });
-      });
-  }
-});
+
+
+
+// app.post("/reviews", function (req, res) {
+//   var name = req.body.title;
+//   console.log(name);
+//   name = name.toUpperCase();
+//   console.log(name);
+//   if (name) {
+//     var query1 = "select * from reviews where upper(username) = '" + name + "'";
+//     db.task("get-everything", (task) => {
+//       return task.batch([task.any(query1)]);
+//     })
+//       .then((data) => {
+//         console.log(data[0]);
+//         res.render("pages/reviews", {
+//           my_title: "Cocktail",
+//           cocktails: data[0],
+//         });
+//       })
+//       .catch((err) => {
+//         console.log("error", err);
+//         res.render("pages/reviews", {
+//           my_title: "Cocktail",
+//           cocktails: [1, 2, 3, 4],
+//         });
+//       });
+//   } else {
+//     var query1 = "select * from cocktails;";
+//     db.task("get-everything", (task) => {
+//       return task.batch([task.any(query1)]);
+//     })
+//       .then((data) => {
+//         res.render("pages/reviews", {
+//           my_title: "Cocktail",
+//           cocktails: data[0],
+//         });
+//       })
+//       .catch((err) => {
+//         console.log("error", err);
+//         res.render("pages/reviews", {
+//           my_title: "Cocktail",
+//           cocktails: [1, 2, 3, 4],
+//         });
+//       });
+//   }
+// });
+
+
+//SEARCH USER REVIEWS
+// app.post("/reviews", function req, res){
+//   var review = req.body.review;
+//   var username = req.body.username;
+//   console.log(username);
+
+//   var reviewQuery = "select * FROM reviews WHERE username = 'MALICOLM'"; //TODO get user input from search bar
+
+//     db.task("get-searched", (task) =>{
+//       return task.batch([task.any(reviewquery)]);
+//     })
+//       .then((info) => {
+//         res.render("pages/main", {
+//           my_title: "main",
+//           items: "",
+//           error: false,
+//         });
+//       })
+//       .catch((err) => {
+//         console.log("error", err);
+//         res.render("pages/main", {
+//           my_title: "main",
+//           items: "",
+//           message: "uh oh",
+//           error: true,
+//         });
+//       });
+// });
 app.post("/main/reviewHandle", function (req, res) {
   var review = req.body.review;
   var name = drink_name;
