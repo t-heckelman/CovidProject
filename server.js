@@ -85,7 +85,7 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/register", function (req, res) {
-  console.log("Register page loaded")
+  console.log("Register page loaded");
   res.render("pages/register", {
     my_title: "Music Space: Register",
     dailyImg: dailyImg,
@@ -94,7 +94,7 @@ app.get("/register", function (req, res) {
   });
 });
 app.get("/reviews", function (req, res) {
-  console.log("Reviews page loaded")
+  console.log("Reviews page loaded");
   console.log("reviews");
   // api needs to be added to this
   var query1 = "select * from reviews ORDER BY review_date DESC;";
@@ -186,8 +186,6 @@ app.get("/reviews", function (req, res) {
     });
 });
 
-
-
 // app.post("/reviews", function (req, res) {
 //   var name = req.body.title;
 //   console.log(name);
@@ -233,15 +231,14 @@ app.get("/reviews", function (req, res) {
 //   }
 // });
 
-
-app.post("/reviews", function (req, res){
-  console.log("Reviews post function");
+app.post("/reviews", function (req, res) {
+  console.log("Reviews searchfilter loaded");
   var username = req.body.username;
-  console.log(username);
   //username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
-  
-  var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";"";
- 
+
+  var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
+  ("");
+
   db.task("get-everything", (task) => {
     return task.batch([task.any(reviewQuery)]);
   })
@@ -258,11 +255,7 @@ app.post("/reviews", function (req, res){
         songs: [1, 2, 3, 4],
       });
     });
-    
-
-
 });
-
 
 app.post("/main/reviewHandle", function (req, res) {
   var review = req.body.review;
