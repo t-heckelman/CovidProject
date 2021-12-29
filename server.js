@@ -78,11 +78,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-<<<<<<< HEAD
-  console.log("loginNo");
-=======
   console.log("Login page loaded");
->>>>>>> 6caf52d04b8ed531016c770f495976a73d369bb4
   res.render("pages/login", {
     my_title: "Music Space: Login",
     dailyImg: dailyImg,
