@@ -27,6 +27,7 @@ const isProduction = process.env.NODE_ENV === "production";
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 
+var user = "Login";
 axios({
   url:
     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
@@ -49,6 +50,7 @@ app.get("/", function (req, res) {
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
+    user: user,
     error: false,
   });
   // axios({
@@ -76,14 +78,102 @@ app.get("/", function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-  console.log("login");
+  console.log("loginNo");
   res.render("pages/login", {
     my_title: "Music Space: Login",
     dailyImg: dailyImg,
+    user: user,
     error: false,
   });
 });
+app.post("/login", function (req, res) {
+  console.log("loginYes");
+  var username = req.body.username;
+  var psw = req.body.psw;
+  var query1 = "SELECT name FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+  .then((info) => {
+    if(info[0][0].name != null){
+      user = info[0][0].name;
+      console.log(user);
+      res.render("pages/main", {
+        my_title: "Music Space",
+        user: user,
+        dailyImg: dailyImg,
+        success: true,
+        error: false,
+      });
+    }
+    else{
+      res.render("pages/login", {
+        my_title: "Music Space",
+        user: user,
+        dailyImg: dailyImg,
+        success: true,
+        error: false,
+      });
+    }
+  })
+  .catch((err) => {
+    console.log("error", err);
+    res.render("pages/login", {
+      my_title: "error",
+      user: "login",
+      dailyImg: dailyImg,
+      message: "uh oh",
+      error: true,
+    });
+  });
 
+});
+app.post("/register", function (req, res) {
+  var email = req.body.email;
+  var name = req.body.name;
+  var username = req.body.username;
+  var psw = req.body.psw;
+  console.log(review);
+  console.log(name);
+  // "select * from cocktails where upper(cocktail_name) = '" + name + "'"
+  // var query1 = "INSERT INTO cocktails(cocktail_name, review, review_date) values(mojito, good, now())";
+  // var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '"+ review + "', now());";
+  var query1 =
+    "INSERT INTO users(name, Username, password, email) values('" +
+    name +
+    "', '" +
+    username +
+    "', '" +
+    password +
+     "', '" +
+    email +
+    ");";
+  console.log(query1);
+  // var query1 = 'select * from cocktails'
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((info) => {
+      console.log(info);
+      res.render("pages/main", {
+        my_title: "Music Space",
+        items: "",
+        dailyImg: dailyImg,
+        success: true,
+        error: false,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/register", {
+        my_title: "error",
+        items: "",
+        dailyImg: dailyImg,
+        message: "uh oh",
+        error: true,
+      });
+    });
+});
 app.get("/register", function (req, res) {
   res.render("pages/register", {
     my_title: "Music Space: Register",

@@ -14,7 +14,7 @@
 <div class="sidenav">
   <div class="login-main-text">
     <h2>
-      Cool Name<br/>
+      Music Space<br/>
       Login Page
     </h2>
     <p>Login or register from here.</p>
@@ -25,15 +25,19 @@
     <div class="login-form justify">
       <form>
         <div class="form-group">
-          <label class="larger">User Name</label>
-          <input type="text" class="form-control" placeholder="User Name" />
+          <label class="larger">Username</label>
+          <input  name = "username" id = "username" type="text" class="form-control" placeholder="Username" />
         </div>
         <div class="form-group">
           <label class="larger">Password</label>
-          <input type="password" class="form-control" placeholder="Password" />
+          <input name = "psw" id = "psw" type="password" class="form-control" placeholder="Password" />
         </div>
-        <button id="login" type="submit" class="btn btn-black">Login</button>
+        <button formmethod="post"
+        formaction="/login"
+        type="submit"
+        class="btn btn-secondary"">Login</button>
         <button
+          formmethod="get"
           formaction="/register"
           type="submit"
           class="btn btn-secondary"
