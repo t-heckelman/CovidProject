@@ -267,6 +267,7 @@ app.get("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Cocktail",
         songs: data[0],
+        user: user,
       });
     })
     .catch((err) => {
@@ -274,6 +275,7 @@ app.get("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Cocktail",
         songs: [1, 2, 3, 4],
+        user: user,
       });
     });
 });
@@ -338,6 +340,7 @@ app.post("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Cocktail",
         songs: data[0],
+        user: user,
       });
     })
     .catch((err) => {
@@ -345,6 +348,7 @@ app.post("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Cocktail",
         songs: [1, 2, 3, 4],
+        user: user,
       });
     });
 });
@@ -376,6 +380,7 @@ app.post("/main/reviewHandle", function (req, res) {
       res.render("pages/main", {
         my_title: "main",
         items: "",
+        user: user,
         error: false,
       });
     })
@@ -384,6 +389,7 @@ app.post("/main/reviewHandle", function (req, res) {
       res.render("pages/main", {
         my_title: "main",
         items: "",
+        user: user,
         message: "uh oh",
         error: true,
       });
