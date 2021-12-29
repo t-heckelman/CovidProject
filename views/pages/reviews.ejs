@@ -31,11 +31,12 @@
   <br />
   <br />
    
-  <div class="main" action = "/" method = "get">
+<div class="background">
+  <div class="main" action = "/reviews" method = "post">
     <div class="jumbotron text-center" style="background-color: #808080">
-      <div class="login-form justify" action = "/reviews" method = "get">
+      <div class="login-form justify" action = "/reviews" method = "post">
         <form>
-          <div class="form-group">
+          <div class="form-group" action = "/reviews" method = "post">
             <label class="larger">Search</label>
             <input type="name" class="form-control" placeholder="Search" />
           </div>
@@ -49,32 +50,31 @@
         </form>
       </div>
     </div>
-  </div>    
+  </div>   
   
   <div class="container">
-      <% for(var i=0; i < songs.length; i++) { %>
-          <div class="jumbotron text-center">
-            <div class="user-review">
-                <%= songs[i].username %>
-                <%= songs[i].song %>
-                <%= songs[i].review %>
-            </div>
+    <% for(var i=0; i < songs.length; i++) { %>
+        <div class="jumbotron text-center">
+          <div class="user-review">
+              <%= songs[i].username %>
+              <%= songs[i].song %>
+              <%= songs[i].review %>
           </div>
-      <% } %>
-    <br>
+        </div>
+    <% } %>
+    <br />
   </div>
+
 </div>
-
-
-
-
-
-
 
 <style>
 
   .main{
       padding: auto;
+  }
+
+  .background{
+    background-image: url(<%- dailyImg.hdurl -%>);
   }
 
   .head{
