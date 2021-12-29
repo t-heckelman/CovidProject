@@ -19,8 +19,8 @@ let dbConfig = {
     host: '127.0.0.1',
     port: 5432,
     database: 'postgres',
-    user: 'teddyheckelman',
-    password: 'new_password'
+    user: 'malcolmholman',
+    password: 'password'
 };
 
 
@@ -78,6 +78,11 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/register", function (req, res) {
+ 
+app.get("/reviews", function (req, res) {
+  // api needs to be added to this
+  var query1 = "select * from reviews ORDER BY review_date DESC;";
+
   axios({
     url:
       "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
@@ -85,12 +90,8 @@ app.get("/register", function (req, res) {
     dataType: "json",
   })
     .then((items) => {
-      console.log("test");
-      console.log("hi", items.data);
-      res.render("pages/register", {
-        my_title: "Music Space: Register",
+      res.render("pages/reviews", {
         items: items.data,
-        tools: tools,
         error: false,
       });
     })
@@ -101,10 +102,6 @@ app.get("/register", function (req, res) {
         console.log(error.response.status);
       }
     });
-});
-app.get("/reviews", function (req, res) {
-  // api needs to be added to this
-  var query1 = "select * from reviews ORDER BY review_date DESC;";
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })

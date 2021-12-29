@@ -19,79 +19,131 @@
 ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="resources/js/script.js"></script>
-<div style = "background-color: #222222; height:175px;">
+<div class="head">
   <%- include('../partials/header'); -%>
   <br />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-<body>
-  <main>
-    <style>
-      .title{
-        text-align: center;
-        font-size: xx-large;
-        color: white;
-      }
-    </style>
-    <div class = "title"
-        <p class="h1">Recent Reviews</p>
-    </div>
-    <br />
-    <br />
-    <body>
-      <main>
-        <style>
-            .input-group{
-              text-align: center;
-            }
-            .search{
-              text-align: center;
-            }
-            .btn btn-light{
-              text-align: center;
-            }
-            body {
-              font-family: "trebuchet", Trebuchet MS;
-            }
-            .jumbotron {
-              border-radius: 50px;
-              width: 70%;
-              margin-top: 20%;
-              height: 300px;
-              float: center;
-            }
-            .userSearch{
-
-            }
-
-        </style>
-      <div class = "card" align = "center" style="background-color: #808080">
-        <form class="userSearch" action="/reviews" method="post">
-          <div class="input-group">
-            <div class="form-outline">
-              <input id="search-focus" type="search" id="form1" class="form-control" />
-            </div>
-            <button
-              id="searchButton"
-              type="submit"
-              class="btn btn-secondary"
-            >
-              Search
-            </button>
-          </div>
-        </form>
+  <div class="search-container">
+  <div class="row justify-content-center align-items-center">
+      <div class="col-md-8">
+          <div class="search"> <i class="fa fa-search"></i> <input type="text" class="form-control" placeholder="Search for a user to view their reviews!"> <button class="btn btn-primary">Search</button> </div>
       </div>
-    <div class="container">
-        <% for(var i=0; i < songs.length; i++) { %>
-            <div class="jumbotron text-center" style="background-color: #808080">
-              <div class="user-review">
-                  <%= songs[i].username %>
-                  <%= songs[i].song %>
-                  <%= songs[i].review %>
-              </div>
-            </div>
-  			<% } %>
-  		<br>
-  	</div>
-  </main>
-  </body>
   </div>
+</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+<div class="bigDiv">
+  <div class = "title " 
+      <p class="h1">Recent Reviews</p>
+  </div>
+
+  <br />
+  <br />
+   
+      
+  
+  <div class="container">
+      <% for(var i=0; i < songs.length; i++) { %>
+          <div class="jumbotron text-center">
+            <div class="user-review">
+                <%= songs[i].username %>
+                <%= songs[i].song %>
+                <%= songs[i].review %>
+            </div>
+          </div>
+      <% } %>
+    <br>
+  </div>
+</div>
+
+
+
+
+
+
+
+<style>
+
+  .main{
+      padding: auto;
+  }
+
+  .search-container{
+    justify-content: center;
+  }
+
+  .head{
+    background-color: #222222; 
+    height:25%;
+  }
+  .center{
+    text-align: center
+  }
+
+  .title{
+    text-align: center;
+    font-size: xx-large;
+    color: white;
+    vertical-align: top;
+    top: 0;
+
+  }
+
+  .search{
+    text-align: center;
+  }
+  .btn btn-light{
+    text-align: center;
+  }
+  body {
+    font-family: "trebuchet", Trebuchet MS;
+  }
+  .jumbotron {
+    width: 50%;
+    font-family: "trebuchet", Trebuchet MS;
+    margin: auto;
+    background-color: #808080;
+    margin-top: 2%;
+  }
+
+  body {
+    background-color: #eee;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300
+}
+
+.height {
+    height: 100vh
+}
+
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+
+.search input {
+    height: 60px;
+    text-indent: 25px;
+    border: 2px solid #000000
+}
+
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid #808080;
+}
+
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+
+.search button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 50px;
+    width: 110px;
+    background: #808080;
+}
+  
+ 
+</style>
