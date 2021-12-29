@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -195,6 +195,7 @@ app.get("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Music Space: Reviews",
         tools: tools,
+        user: user,
         dailyImg: dailyImg,
         songs: data[0],
       });
@@ -204,6 +205,7 @@ app.get("/reviews", function (req, res) {
       res.render("pages/reviews", {
         my_title: "Error",
         songs: [1, 2, 3, 4],
+        user: user,
         tools: tools,
       });
     });
