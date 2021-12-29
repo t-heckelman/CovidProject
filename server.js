@@ -27,6 +27,8 @@ let dbConfig = {
 const isProduction = process.env.NODE_ENV === 'production';
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
+
+
 app.get("/", function (req, res) {
   axios({
     url:
@@ -77,31 +79,31 @@ app.get("/login", function (req, res) {
     });
 });
 
-app.get("/register", function (req, res) {
-  axios({
-    url:
-      "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
-    method: "GET",
-    dataType: "json",
-  })
-    .then((items) => {
-      console.log("test");
-      console.log("hi", items.data);
-      res.render("pages/register", {
-        my_title: "Music Space: Register",
-        items: items.data,
-        tools: tools,
-        error: false,
-      });
-    })
-    .catch((error) => {
-      console.log("test");
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
-    });
-});
+// app.get("/register", function (req, res) {
+//   axios({
+//     url:
+//       "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
+//     method: "GET",
+//     dataType: "json",
+//   })
+//     .then((items) => {
+//       console.log("test");
+//       console.log("hi", items.data);
+//       res.render("pages/register", {
+//         my_title: "Music Space: Register",
+//         items: items.data,
+//         tools: tools,
+//         error: false,
+//       });
+//     })
+//     .catch((error) => {
+//       console.log("test");
+//       if (error.response) {
+//         console.log(error.response.data);
+//         console.log(error.response.status);
+//       }
+//     });
+// });
 app.get("/reviews", function (req, res) {
   // api needs to be added to this
   var query1 = "select * from reviews ORDER BY review_date DESC;";
@@ -122,6 +124,32 @@ app.get("/reviews", function (req, res) {
         songs: [1, 2, 3, 4],
         tools: tools,
       });
+    });
+});
+app.get("/register", function (req, res) {
+  const api_key = "7c5b028ba8b743249e640caafb503d10";
+  axios({
+    method: "get",
+        url: "https://api.spotify.com/v1/search",
+        headers: { 'Authorization': 'Bearer ' + api_key},
+        params: { 'q': "Fire", 'type': 'track' }
+  })
+    .then((items) => {
+      console.log("test");
+      console.log("I refuse to believe this", items.data);
+      res.render("pages/register", {
+        my_title: "Music Space: Register",
+        items: items.data,
+        tools: tools,
+        error: false,
+      });
+    })
+    .catch((error) => {
+      console.log("test");
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
     });
 });
 // const dev_dbConfig = {
@@ -149,7 +177,8 @@ app.get("/reviews", function (req, res) {
   //     message: "Enter a name",
   //     error: true
   //   })
-  // }
+  //
+
 app.get("/reviews", function (req, res) {
   var query1 = "select * from reviews;";
   db.task("get-everything", (task) => {
