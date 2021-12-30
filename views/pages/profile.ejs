@@ -13,7 +13,7 @@
     font-size: xx-large;
     color: white;
   }
-  .bigDiv {
+  body {
     background-image: url(<%- dailyImg.hdurl -%>);
   }
   .jumbotron {
@@ -23,7 +23,7 @@
     margin: auto;
     border-radius: 50px;
   }
-  
+
   .search-button{
     background-color: #222222;
     border: none;
@@ -39,8 +39,8 @@
   .container{
     border-radius:50px;
   }
-  
-  
+
+
   </style>
   <div class="bigDiv">
     <%- include('../partials/header'); -%>
@@ -77,13 +77,13 @@
             </div>
           </div> -->
           <!-- <button class = "search-button"  type="submit">
-            Dont click 
-        
+            Dont click
+
           </button> -->
         </form>
       </div>
     </div>
-  
+
     <div class="container">
       <% for(var i=0; i < songs.length; i++) { %>
         <div class="jumbotron text-center" style="background-color: #808080; border-radius: 50px;">
@@ -91,11 +91,11 @@
               <p class = "song">  <%= songs[i].song %></p>
               <p class = "review">  <%= songs[i].review %></p>
         </div>
-  
+
       <% } %>
     </div>
-  
+
     <%- include('../partials/footer'); -%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="resources/js/script.js"></script>
-  </div>  
+  </div>

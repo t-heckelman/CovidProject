@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -116,7 +116,7 @@ app.post("/login", function (req, res) {
   var username = req.body.username;
   var psw = req.body.psw;
   var query1 = "SELECT name FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
-  globalUsername = username; 
+  globalUsername = username;
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })

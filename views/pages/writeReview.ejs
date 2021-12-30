@@ -4,13 +4,11 @@
     font-size: x-large;
     color: white;
   }
-  .bigDiv {
+  body{
     background-image: url(<%- dailyImg.hdurl -%>);
-    height: 100%;
   }
   .jumbotron {
     width: 50%;
-    height: 37%;
     text-align: center;
     font-family: "trebuchet", Trebuchet MS;
     margin: auto;
@@ -20,7 +18,8 @@
    text-align: center;
 }
 
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder { /* Firefox 18- width: 50%;
+height: 37%; */
    text-align: center;
 }
 
@@ -38,14 +37,13 @@
   font-family: "trebuchet", Trebuchet MS;
   border-radius: 50px;
   width: 15%;
-  height:20%;
+  height:4%;
   color: #808080;
   overflow: hidden;
   margin-top: 2%;
 }
 
 </style>
-<div class="bigDiv">
   <%- include('../partials/header'); -%>
   <link
     rel="stylesheet"
@@ -93,4 +91,3 @@
   <%- include('../partials/footer'); -%>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="resources/js/script.js"></script>
-</div>
