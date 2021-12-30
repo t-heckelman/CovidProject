@@ -37,6 +37,9 @@
   color: #808080;
   overflow: hidden;
 }
+.container{
+  border-radius:50px;
+}
 
 
 </style>
@@ -82,7 +85,7 @@
 
   <div class="container">
     <% for(var i=0; i < songs.length; i++) { %>
-      <div class="jumbotron text-center" style="background-color: #808080">
+      <div class="jumbotron text-center" style="background-color: #808080; border-radius: 50px;">
             <p class = "username">  <%= songs[i].username %></p>
             <p class = "song">  <%= songs[i].song %></p>
             <p class = "review">  <%= songs[i].review %></p>
