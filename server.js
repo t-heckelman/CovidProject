@@ -53,7 +53,9 @@ app.get("/", function (req, res) {
     user: user,
     error: false,
   });
-  // axios({
+  //
+  // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
+  //axios({
   //   url:
   //     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
   //   method: "GET",
@@ -75,6 +77,7 @@ app.get("/", function (req, res) {
   //       console.log(error.response.status);
   //     }
   //   });
+
 });
 
 app.get("/login", function (req, res) {
@@ -224,6 +227,7 @@ app.get("/writeReview", function (req, res) {
   });
 });
 app.post("/writeReview", function (req, res) {
+  /*Link/v1/filter/key*/
   var song = req.body.song;
   var review = req.body.review;
   console.log("write review page loaded");
