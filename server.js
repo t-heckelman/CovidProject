@@ -186,7 +186,7 @@ app.post("/register", function (req, res) {
   var name = req.body.name;
   var username = req.body.username;
   var psw = req.body.psw;
-  username = ueername.toUpperCase();
+  username = username.toUpperCase();
   console.log("name " + name);
   console.log("email " + email);
   console.log("username" + username);
@@ -211,6 +211,7 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query1)]);
   })
     .then((info) => {
+      user = info[0][0].name;
       console.log("info" + info);
       console.log
       res.render("pages/main", {
@@ -338,28 +339,6 @@ app.get("/reviews", function (req, res) {
 //   })
 //
 
-app.get("/reviews", function (req, res) {
-  console.log("reviews was got");
-  var query1 = "select * from reviews;";
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
-  })
-    .then((data) => {
-      res.render("pages/reviews", {
-        my_title: "Cocktail",
-        songs: data[0],
-        user: user,
-      });
-    })
-    .catch((err) => {
-      console.log("error", err);
-      res.render("pages/reviews", {
-        my_title: "Cocktail",
-        songs: [1, 2, 3, 4],
-        user: user,
-      });
-    });
-});
 
 // app.post("/reviews", function (req, res) {
 //   var name = req.body.title;
@@ -422,6 +401,7 @@ app.post("/reviews", function (req, res) {
         my_title: "Cocktail",
         songs: data[0],
         user: user,
+        dailyImg: dailyImg,
       });
     })
     .catch((err) => {

@@ -35,29 +35,31 @@
     </div>
   </form>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-<div class="bigDiv">
   <br/>
   <br/>
-
+</div>
   <div class="container">
-    <% for(var i=0; i < songs.length; i++) { %>
-        <div class="jumbotron text-center">
-          <div class="user-review">
-              <%= songs[i].username %>
-              <%= songs[i].song %>
-              <%= songs[i].review %>
+        <% for(var i=0; i < songs.length; i++) { %>
+          <div class="jumbotron text-center" style="background-color: #808080">
+                <p class = "username">  <%= songs[i].username %></p>
+                <p class = "song">  <%= songs[i].song %> : </p>
+                <p class = "review">  <%= songs[i].review %></p>
           </div>
-        </div>
-    <% } %>
-    <br />
-  </div>
+          <br/>
+        <% } %>
+      </div>
 
-</div>
-
-</div>
 
 <style>
-
+  .username{
+    text-align: left;
+  }
+  .song{
+    text-align: center;
+  }
+  .review{
+    text-align: right;
+  }
   .main{
       padding: auto;
   }
@@ -66,13 +68,20 @@
     padding: 2%
   }
 
-  .background{
-    
+  body{
+    background-image: url(<%- dailyImg.hdurl -%>);
+    height: 100%;
   }
-
+  .container{
+    font-family: "trebuchet", Trebuchet MS;
+    margin: auto;
+    width: 70%;
+    margin-top: 2%;
+    border-radius: 50px;
+  }
   .head{
     background-color: #222222;
-    height:35%;
+    height:30%;
   }
   .center{
     text-align: center
@@ -102,17 +111,12 @@
   }
   .jumbotron {
     width: 50%;
+    height: 25%;
+    text-align: center;
     font-family: "trebuchet", Trebuchet MS;
     margin: auto;
-    background-color: #808080;
-    margin-top: 2%;
+    border-radius: 50px;
   }
-
-  body {
-    background-color: #eee;
-    font-family: "Poppins", sans-serif;
-    font-weight: 300
-}
 
 
 .search input {
