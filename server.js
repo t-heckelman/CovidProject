@@ -78,32 +78,7 @@ app.get("/profile", function (req, res){
   });
 });
 
-  //
   // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
-  //axios({
-  //   url:
-  //     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
-  //   method: "GET",
-  //   dataType: "json",
-  // })
-  //   .then((items) => {
-  //     console.log("test");
-  //     console.log("hi", items.data);
-  //     res.render("pages/main", {
-  //       my_title: "Music Space",
-  //       items: items.data,
-  //       error: false,
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log("test");
-  //     if (error.response) {
-  //       console.log(error.response.data);
-  //       console.log(error.response.status);
-  //     }
-  //   });
-
-// });
 
 app.get("/login", function (req, res) {
   console.log("Login page loaded");
@@ -236,13 +211,14 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query1)]);
   })
     .then((info) => {
-      user = info[0][0].name;
+      console.log(info[0].name)
+      user = info[0].name;
+      console.log(user);
       console.log("info" + info);
-      console.log
       res.render("pages/main", {
         my_title: "Music Space",
         dailyImg: dailyImg,
-        user: username,
+        user: user,
         success: true,
         error: false,
       });
@@ -314,170 +290,6 @@ app.get("/reviews", function (req, res) {
         songs: [1, 2, 3, 4],
         user: user,
         tools: tools,
-      });
-    });
-});
-// app.get("/register", function (req, res) {
-//   const api_key = "7c5b028ba8b743249e640caafb503d10";
-//     .then((items) => {
-//       console.log("test");
-//       console.log("I refuse to believe this", items.data);
-//       res.render("pages/register", {
-//         my_title: "Music Space: Register",
-//         dailyImg: dailyImg,
-//         tools: tools,
-//         error: false,
-//       });
-//     })
-//     .catch((error) => {
-//       console.log("test");
-//       if (error.response) {
-//         console.log(error.response.data);
-//         console.log(error.response.status);
-//       }
-//     });
-// });
-// const dev_dbConfig = {
-// 	host: 'localhost',
-// 	port: 5432,
-// 	database: process.env.POSTGRES_DB,
-// 	user:  process.env.POSTGRES_USER,
-// 	password: process.env.POSTGRES_PASSWORD
-// };
-
-// /** If we're running in production mode (on heroku), the we use DATABASE_URL
-//  * to connect to Heroku Postgres.
-//  */
-// const isProduction = process.env.NODE_ENV === 'production';
-// const dbConfig = isProduction ? process.env.DATABASE_URL : dev_dbConfig;
-
-//url: http://localhost:5050/
-
-//}
-// else {
-//   console.log("error");
-//   res.render('pages/main',{
-//     my_title: "main",
-//     items: '',
-//     message: "Enter a name",
-//     error: true
-//   })
-//
-
-
-// app.post("/reviews", function (req, res) {
-//   var name = req.body.title;
-//   console.log(name);
-//   name = name.toUpperCase();
-//   console.log(name);
-//   if (name) {
-//     var query1 = "select * from reviews where upper(username) = '" + name + "'";
-//     db.task("get-everything", (task) => {
-//       return task.batch([task.any(query1)]);
-//     })
-//       .then((data) => {
-//         console.log(data[0]);
-//         res.render("pages/reviews", {
-//           my_title: "Cocktail",
-//           cocktails: data[0],
-//         });
-//       })
-//       .catch((err) => {
-//         console.log("error", err);
-//         res.render("pages/reviews", {
-//           my_title: "Cocktail",
-//           cocktails: [1, 2, 3, 4],
-//         });
-//       });
-//   } else {
-//     var query1 = "select * from cocktails;";
-//     db.task("get-everything", (task) => {
-//       return task.batch([task.any(query1)]);
-//     })
-//       .then((data) => {
-//         res.render("pages/reviews", {
-//           my_title: "Cocktail",
-//           cocktails: data[0],
-//         });
-//       })
-//       .catch((err) => {
-//         console.log("error", err);
-//         res.render("pages/reviews", {
-//           my_title: "Cocktail",
-//           cocktails: [1, 2, 3, 4],
-//         });
-//       });
-//   }
-//  });
-
-app.post("/reviews", function (req, res) {
-  console.log("Reviews searchfilter loaded");
-  var username = req.body.username;
-  username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
-
-  var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
-  ("");
-
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(reviewQuery)]);
-  })
-    .then((data) => {
-      res.render("pages/reviews", {
-        my_title: "Cocktail",
-        songs: data[0],
-        user: user,
-        dailyImg: dailyImg,
-      });
-    })
-    .catch((err) => {
-      console.log("error", err);
-      res.render("pages/reviews", {
-        my_title: "Cocktail",
-        songs: [1, 2, 3, 4],
-        user: user,
-      });
-    });
-});
-
-app.post("/main/reviewHandle", function (req, res) {
-  var review = req.body.review;
-  var name = drink_name;
-  id = Math.floor(Math.random() * 99999999);
-  name = name.toUpperCase();
-  console.log(review);
-  console.log(name);
-  // "select * from cocktails where upper(cocktail_name) = '" + name + "'"
-  // var query1 = "INSERT INTO cocktails(cocktail_name, review, review_date) values(mojito, good, now())";
-  // var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '"+ review + "', now());";
-  var query1 =
-    "INSERT INTO musics(song, id, review, users, review_date) values('" +
-    drink_name +
-    "', '" +
-    id +
-    "', '" +
-    review +
-    "', now());";
-  console.log(query1);
-  // var query1 = 'select * from cocktails'
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
-  })
-    .then((info) => {
-      res.render("pages/main", {
-        my_title: "main",
-        items: "",
-        user: user,
-        error: false,
-      });
-    })
-    .catch((err) => {
-      console.log("error", err);
-      res.render("pages/main", {
-        my_title: "main",
-        items: "",
-        user: user,
-        message: "uh oh",
-        error: true,
       });
     });
 });
