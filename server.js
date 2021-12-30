@@ -26,7 +26,6 @@ let dbConfig = {
 const isProduction = process.env.NODE_ENV === "production";
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
-
 var user = "Login";
 var globalUsername = "username"
 axios({
