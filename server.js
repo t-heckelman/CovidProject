@@ -214,12 +214,9 @@ app.post("/register", function (req, res) {
   username = username.toUpperCase();
   console.log("name " + name);
   console.log("email " + email);
-  console.log("username" + username);
+  console.log("username " + username);
   console.log("psw " + psw);
 
-  // "select * from cocktails where upper(cocktail_name) = '" + name + "'"
-  // var query1 = "INSERT INTO cocktails(cocktail_name, review, review_date) values(mojito, good, now())";
-  // var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '"+ review + "', now());";
   var query1 =
     "INSERT INTO users(name, username, password, email) values('" +
     name +
@@ -231,18 +228,16 @@ app.post("/register", function (req, res) {
     email +
     "');";
   console.log(query1);
-  // var query1 = 'select * from cocktails'
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
     .then((info) => {
-      user = info[0][0].name;
+      user = info[0].name;
       console.log("info" + info);
-      console.log
       res.render("pages/main", {
         my_title: "Music Space",
         dailyImg: dailyImg,
-        user: username,
+        user: user,
         success: true,
         error: false,
       });
