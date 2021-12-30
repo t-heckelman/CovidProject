@@ -18,7 +18,12 @@
         <li><a href="/writeReview">Write Review</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <% if(user == "Login") { %>
       <li><a href="/login"> <%- user-%></a></li>
+      <% } else {%>
+        <li><a href="/profile"> <%- user-%></a></li>
+      <% } %>
+      <li><a href="/">Logout</a></li>
     </ul>
   </div>
 </nav>

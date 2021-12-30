@@ -46,13 +46,15 @@ axios({
   });
 
 app.get("/", function (req, res) {
-  console.log("Main page loaded");
+  console.log("Main page loaded, user: " + user);
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
     user: user,
     error: false,
   });
+
+  
   // axios({
   //   url:
   //     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
@@ -139,6 +141,17 @@ app.get("/register", function (req, res) {
     error: false,
   });
 });
+
+app.get("/profile", function (req, res){
+  console.log("Profile page loaded");
+  res.render("pages/profile", {
+    my_title: "Music Space: Profile",
+    tools: tools,
+    user: user,
+    error: false,
+  });
+});
+
 app.get("/reviews", function (req, res) {
   console.log("Reviews page loaded");
   console.log("reviews");
@@ -167,46 +180,50 @@ app.get("/reviews", function (req, res) {
     });
 });
 app.post("/register", function (req, res) {
+  console.log("have clicked register and entered function")
   var email = req.body.email;
   var name = req.body.name;
   var username = req.body.username;
   var psw = req.body.psw;
-  console.log(review);
-  console.log(name);
+  username = ueername.toUpperCase();
+  console.log("name " + name);
+  console.log("email " + email);
+  console.log("username" + username);
+  console.log("psw " + psw);
+
   // "select * from cocktails where upper(cocktail_name) = '" + name + "'"
   // var query1 = "INSERT INTO cocktails(cocktail_name, review, review_date) values(mojito, good, now())";
   // var query1 = "INSERT INTO cocktails(cocktail_name, id, review, review_date) values('" + drink_name + "', '"+ review + "', now());";
   var query1 =
-    "INSERT INTO users(name, Username, password, email) values('" +
+    "INSERT INTO users(name, username, password, email) values('" +
     name +
     "', '" +
     username +
     "', '" +
-    password +
+    psw +
      "', '" +
     email +
-    ");";
+    "');";
   console.log(query1);
   // var query1 = 'select * from cocktails'
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
     .then((info) => {
-      console.log(info);
+      console.log("info" + info);
+      console.log 
       res.render("pages/main", {
         my_title: "Music Space",
-        items: "",
         dailyImg: dailyImg,
-        user: user,
+        user: username,
         success: true,
         error: false,
       });
     })
     .catch((err) => {
-      console.log("error", err);
+      console.log("error!", err);
       res.render("pages/register", {
         my_title: "error",
-        items: "",
         dailyImg: dailyImg,
         message: "uh oh",
         user: user,
@@ -385,12 +402,12 @@ app.get("/reviews", function (req, res) {
 //         });
 //       });
 //   }
-// });
+//  });
 
 app.post("/reviews", function (req, res) {
   console.log("Reviews searchfilter loaded");
   var username = req.body.username;
-  //username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
+  username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
 
   var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
   ("");
