@@ -50,20 +50,23 @@ app.get("/", function (req, res) {
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
-    user: "Login",
+    user: user,
     error: false,
   });
 });
 
-  app.get("/home/" + user + "", function (req,res) {
-    console.log("loaded page for user");
-    res.render("pages/main", {
-      my_title: "Music Space",
-      dailyImg: dailyImg,
-      user: user,
-      error: false,
-  });
+app.get("/logout", function(req,res) {
+  console.log("Logged out user: " + user);
+  user = "Login"
+  res.render("pages/main", {
+    my_title: "Music Space",
+    dailyImg: dailyImg,
+    user: user,
+    error: false,  
+  });  
 });
+
+
 
 app.get("/profile", function (req, res){
   console.log("Profile page loaded");
