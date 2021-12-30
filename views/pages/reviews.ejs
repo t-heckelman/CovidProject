@@ -1,54 +1,63 @@
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-/>
-<script
-  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-  crossorigin="anonymous"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-  crossorigin="anonymous"
-></script>
-<script
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-  crossorigin="anonymous"
-></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="resources/js/script.js"></script>
-<div class="head">
-  <%- include('../partials/header'); -%>
-  <div class = "title "
-      <p class="h1">Recent Reviews</p>
-  </div>
-  <form class="">
-    <div class="row" style="width:800px; margin:0 auto;">
-      <div class="col-4 searchbox">
-        <input class="form-control" type="text" name="username" placeholder="Enter a username">
-      </div>
-      <div class="col text-center">
-        <button formmethod="POST" formaction="/reviews" type = "submit" class = "btn btn-light">Search</button>
-      </div>
-    </div>
-  </form>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-  <br/>
-  <br/>
-</div>
-  <div class="container">
-        <% for(var i=0; i < songs.length; i++) { %>
-          <div class="jumbotron text-center" style="background-color: #808080">
-                <p class = "username">  <%= songs[i].username %></p>
-                <p class = "song">  <%= songs[i].song %> : </p>
-                <p class = "review">  <%= songs[i].review %></p>
-          </div>
-          <br/>
-        <% } %>
-      </div>
 
+<div class = "bigDiv">
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  />
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="resources/js/script.js"></script>
+  <div class="head">
+    <%- include('../partials/header'); -%>
+    <div class = "title "
+        <p class="h1">Recent Reviews</p>
+    </div>
+    <form class="">
+      <div class="row" style="width:800px; margin:0 auto;">
+        <div class="col-4 searchbox">
+          <input class="form-control" type="text" name="username" placeholder="Enter a username">
+        </div>
+        <div class="col text-center">
+          <button formmethod="POST" formaction="/reviews" type = "submit" class = "btn btn-light">Search</button>
+        </div>
+      </div>
+    </form>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+  <div class="bigDiv">
+    <br/>
+    <br/>
+
+    <div class="container">
+      <% for(var i=0; i < songs.length; i++) { %>
+          <div class="jumbotron text-center">
+            <div class="user-review">
+                <%= songs[i].username %>
+                <%= songs[i].song %>
+                <%= songs[i].review %>
+            </div>
+          </div>
+      <% } %>
+      <br />
+    </div>
+
+  </div>
+
+  </div>
+</div>
 
 <style>
   .username{
@@ -68,16 +77,8 @@
     padding: 2%
   }
 
-  body{
-    background-image: url(<%- dailyImg.hdurl -%>);
-    height: 100%;
-  }
-  .container{
-    font-family: "trebuchet", Trebuchet MS;
-    margin: auto;
-    width: 70%;
-    margin-top: 2%;
-    border-radius: 50px;
+  .bigdiv{
+    background-image: ;
   }
   .head{
     background-color: #222222;

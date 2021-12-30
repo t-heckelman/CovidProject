@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -50,9 +50,31 @@ app.get("/", function (req, res) {
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
+    user: "Login",
+    error: false,
+  });
+});
+
+  app.get("/home/" + user + "", function (req,res) {
+    console.log("loaded page for user");
+    res.render("pages/main", {
+      my_title: "Music Space",
+      dailyImg: dailyImg,
+      user: user,
+      error: false,
+  });
+});
+
+app.get("/profile", function (req, res){
+  console.log("Profile page loaded");
+  res.render("pages/profile", {
+    my_title: "Music Space: Profile",
+    tools: tools,
     user: user,
     error: false,
   });
+});
+
   //
   // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
   //axios({
@@ -78,7 +100,7 @@ app.get("/", function (req, res) {
   //     }
   //   });
 
-});
+// });
 
 app.get("/login", function (req, res) {
   console.log("Login page loaded");
