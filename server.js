@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -186,7 +186,7 @@ app.post("/reviews", function (req, res) {
   username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
 
   var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
-  
+
 
   db.task("get-everything", (task) => {
     return task.batch([task.any(reviewQuery)]);
