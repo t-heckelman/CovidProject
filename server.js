@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -72,12 +72,31 @@ app.get("/logout", function(req,res) {
 
 app.get("/profile", function (req, res){
   console.log("Profile page loaded");
-  res.render("pages/profile", {
-    my_title: "Music Space: Profile",
-    tools: tools,
-    user: user,
-    error: false,
-  });
+
+  var query1 = "select * from reviews WHERE username = '" + globalUsername + "'" + "ORDER BY review_date DESC;"
+
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((data) => {
+      res.render("pages/profile", {
+        my_title: "Music Space: Reviews",
+        tools: tools,
+        user: user,
+        dailyImg: dailyImg,
+        songs: data[0],
+        globalUsername: globalUsername,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/profile", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        user: user,
+        tools: tools,
+      });
+    });
 });
 
   // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
@@ -194,16 +213,6 @@ app.post("/register", function (req, res) {
         error: true,
       });
     });
-});
-
-app.get("/profile", function (req, res){
-  console.log("Profile page loaded");
-  res.render("pages/profile", {
-    my_title: "Music Space: Profile",
-    tools: tools,
-    user: user,
-    error: false,
-  });
 });
 
 app.get("/reviews", function (req, res) {
