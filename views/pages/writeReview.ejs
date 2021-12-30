@@ -31,6 +31,18 @@
 :-ms-input-placeholder {
    text-align: center;
 }
+.search-button{
+  background-color: #222222;
+  border: none;
+  cursor:pointer;
+  font-family: "trebuchet", Trebuchet MS;
+  border-radius: 50px;
+  width: 15%;
+  height:20%;
+  color: #808080;
+  overflow: hidden;
+}
+
 </style>
 <div class="bigDiv">
   <%- include('../partials/header'); -%>
@@ -57,14 +69,14 @@
     <div class="jumbotron text-center" style="background-color: #808080">
       <h1 class="display-4">Write a review</h1>
       <form class="">
-        <div class="row" style="width:35%; margin:0 auto;">
-          <div class="searchbox">
-            <input class="form-control" type="text" name="username" placeholder="Search a song by name">
-          </div>
-          <div class="col text-center">
-            <button formmethod="POST" formaction="/reviews" type = "submit" class = "btn btn-light">Search</button>
+        <div class="row" style="width:50%; margin:0 auto;">
+          <div class="col-4 searchbox">
+            <input class="form-control" type="text" name="username" placeholder="Enter a username" style="text-align: center;">
           </div>
         </div>
+        <button class = "search-button" formaction="/reviews" formmethod="post" type="submit">
+          Search
+        </button>
       </form>
     </div>
   </div>
