@@ -41,6 +41,7 @@
   height:20%;
   color: #808080;
   overflow: hidden;
+  margin-top: 2%;
 }
 
 </style>
@@ -71,12 +72,21 @@
       <form class="">
         <div class="row" style="width:50%; margin:0 auto;">
           <div class="col-4 searchbox">
-            <input class="form-control" type="text" name="username" placeholder="Enter a username" style="text-align: center;">
+            <input class="form-control" type="text" id="song" name="song" placeholder="Enter a song name" style="text-align: center;" onkeyup="reviewButton()">
+          </div>
+          <div class="col-4 searchbox">
+            <input class="form-control" type="text" id="review" name="review" placeholder="Write a review!" style="text-align: center;" onkeyup="reviewButton()">
           </div>
         </div>
-        <button class = "search-button" formaction="/reviews" formmethod="post" type="submit">
-          Search
-        </button>
+        <% if(user == "Login") { %>
+          <button class = "search-button" formaction="/writeReview" formmethod="post" type="submit" disabled>
+            Write
+          </button>
+        <% }else{ %>
+          <button class = "search-button" id= "button" formaction="/writeReview" formmethod="post" type="submit" disabled>
+            Write
+          </button>
+        <% } %> 
       </form>
     </div>
   </div>

@@ -107,3 +107,19 @@ function enableButton(letter, capital, number, length, match, email) {
     button.disabled = true;
   }
 }
+
+function reviewButton (){
+  var button = document.getElementById("button");
+  var song = document.getElementById("song");
+  var review = document.getElementById("review");
+
+  var condition = (review.value != "" && song.value != "");
+
+  if(condition){
+    button.disabled = false;
+  } else {
+    button.disabled = true;
+  }
+
+
+}

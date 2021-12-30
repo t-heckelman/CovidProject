@@ -271,7 +271,7 @@ app.post("/writeReview", function (req, res) {
   /*Link/v1/filter/key*/
   var song = req.body.song;
   var review = req.body.review;
-  console.log("Write post function called with review \n" + review);
+  console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
     user +
@@ -279,19 +279,30 @@ app.post("/writeReview", function (req, res) {
     song +
     "', '" +
     review +
-    "now()');";
-  console.log(query1);
+    "', 'now()');";
 
-  // db.task("get-everything", (task) => {
-  //   return task.batch([task.any(query1)]);
-  // })
-
-  res.render("pages/reviews", {
-    my_title: "Music Space: Review",
-    dailyImg: dailyImg,
-    tools: tools,
-    user: user,
-    error: false,
+   db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+   })
+  .then((data) =>{
+    console.log("data: " + data);
+    res.render("pages/main", {
+      my_title: "Music Space: Review",
+      dailyImg: dailyImg,
+      tools: tools,
+      user: user,
+      error: false,
+    });
+  })
+    .catch((err) => {
+      console.log("error!", err);
+      res.render("pages/writeReview", {
+        my_title: "error",
+        dailyImg: dailyImg,
+        message: "uh oh",
+        user: user,
+        error: true,
+      });
   });
 });
 
