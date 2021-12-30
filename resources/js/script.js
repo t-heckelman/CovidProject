@@ -107,7 +107,3 @@ function enableButton(letter, capital, number, length, match, email) {
     button.disabled = true;
   }
 }
-
-
-
-
