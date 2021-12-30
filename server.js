@@ -28,6 +28,7 @@ dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 
 var user = "Login";
+var globalUsername = "username"
 axios({
   url:
     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
@@ -58,6 +59,7 @@ app.get("/", function (req, res) {
 app.get("/logout", function(req,res) {
   console.log("Logged out user: " + user);
   user = "Login"
+  globalUsername = "username"
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
@@ -95,6 +97,7 @@ app.post("/login", function (req, res) {
   var username = req.body.username;
   var psw = req.body.psw;
   var query1 = "SELECT name FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
+  globalUsername = username; 
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
@@ -141,6 +144,56 @@ app.get("/register", function (req, res) {
     user: user,
     error: false,
   });
+});
+
+app.post("/register", function (req, res) {
+  console.log("have clicked register and entered function")
+  var email = req.body.email;
+  var name = req.body.name;
+  var username = req.body.username;
+  var psw = req.body.psw;
+  username = username.toUpperCase();
+  console.log("name " + name);
+  console.log("email " + email);
+  console.log("username " + username);
+  console.log("psw " + psw);
+
+  var query1 =
+    "INSERT INTO users(name, username, password, email) values('" +
+    name +
+    "', '" +
+    username +
+    "', '" +
+    psw +
+     "', '" +
+    email +
+    "');";
+  console.log(query1);
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((info) => {
+      user = name;
+      globalUsername = username;
+      console.log("info" + info);
+      res.render("pages/main", {
+        my_title: "Music Space",
+        dailyImg: dailyImg,
+        user: user,
+        success: true,
+        error: false,
+      });
+    })
+    .catch((err) => {
+      console.log("error!", err);
+      res.render("pages/register", {
+        my_title: "error",
+        dailyImg: dailyImg,
+        message: "uh oh",
+        user: user,
+        error: true,
+      });
+    });
 });
 
 app.get("/profile", function (req, res){
@@ -209,54 +262,7 @@ app.post("/reviews", function (req, res) {
     });
 });
 
-app.post("/register", function (req, res) {
-  console.log("have clicked register and entered function")
-  var email = req.body.email;
-  var name = req.body.name;
-  var username = req.body.username;
-  var psw = req.body.psw;
-  username = username.toUpperCase();
-  console.log("name " + name);
-  console.log("email " + email);
-  console.log("username " + username);
-  console.log("psw " + psw);
 
-  var query1 =
-    "INSERT INTO users(name, username, password, email) values('" +
-    name +
-    "', '" +
-    username +
-    "', '" +
-    psw +
-     "', '" +
-    email +
-    "');";
-  console.log(query1);
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
-  })
-    .then((info) => {
-      user = name;
-      console.log("info" + info);
-      res.render("pages/main", {
-        my_title: "Music Space",
-        dailyImg: dailyImg,
-        user: user,
-        success: true,
-        error: false,
-      });
-    })
-    .catch((err) => {
-      console.log("error!", err);
-      res.render("pages/register", {
-        my_title: "error",
-        dailyImg: dailyImg,
-        message: "uh oh",
-        user: user,
-        error: true,
-      });
-    });
-});
 app.get("/writeReview", function (req, res) {
   console.log("write review page loaded");
   res.render("pages/writeReview", {
@@ -274,7 +280,7 @@ app.post("/writeReview", function (req, res) {
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
-    user +
+    globalUsername +
     "', '" +
     song +
     "', '" +
