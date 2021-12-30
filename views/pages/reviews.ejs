@@ -15,8 +15,6 @@
 }
 .bigDiv {
   background-image: url(<%- dailyImg.hdurl -%>);
-  height: 100%;
-  width: 100%;
 }
 .jumbotron {
   width: 50%;
@@ -36,6 +34,7 @@
   height:4%;
   color: #808080;
   overflow: hidden;
+  margin-top: 2%;
 }
 
 
@@ -82,12 +81,14 @@
 
   <div class="container">
     <% for(var i=0; i < songs.length; i++) { %>
-      <div class="jumbotron text-center" style="background-color: #808080">
-            <p class = "username">  <%= songs[i].username %></p>
-            <p class = "song">  <%= songs[i].song %></p>
-            <p class = "review">  <%= songs[i].review %></p>
+      <div class = "jumboHolder">
+        <div class="jumbotron text-center" style="background-color: #808080">
+              <p class = "username">  <%= songs[i].username %></p>
+              <p class = "song">  <%= songs[i].song %></p>
+              <p class = "review">  <%= songs[i].review %></p>
+        </div>
       </div>
-      <br/>
+      
     <% } %>
   </div>
 

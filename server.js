@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -271,7 +271,7 @@ app.post("/writeReview", function (req, res) {
   /*Link/v1/filter/key*/
   var song = req.body.song;
   var review = req.body.review;
-  console.log("write review page loaded");
+  console.log("Write post function called with review \n" + review);
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
     user +
@@ -279,9 +279,14 @@ app.post("/writeReview", function (req, res) {
     song +
     "', '" +
     review +
-    "now());";
+    "now()');";
   console.log(query1);
-  res.render("pages/writeReview", {
+
+  // db.task("get-everything", (task) => {
+  //   return task.batch([task.any(query1)]);
+  // })
+
+  res.render("pages/reviews", {
     my_title: "Music Space: Review",
     dailyImg: dailyImg,
     tools: tools,

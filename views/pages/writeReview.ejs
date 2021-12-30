@@ -58,11 +58,14 @@
       <h1 class="display-4">Write a review</h1>
       <form class="">
         <div class="row" style="width:35%; margin:0 auto;">
+         <div class="searchbox">
+            <input class="form-control" type="text" name="song" placeholder="Song Name">
+          </div>
           <div class="searchbox">
-            <input class="form-control" type="text" name="username" placeholder="Search a song by name">
+            <input class="form-control" type="text" name="review" placeholder="Write a review!">
           </div>
           <div class="col text-center">
-            <button formmethod="POST" formaction="/reviews" type = "submit" class = "btn btn-light">Search</button>
+            <button formmethod="POST" formaction="/writeReview" type = "submit" class = "btn btn-light">Search</button>
           </div>
         </div>
       </form>
