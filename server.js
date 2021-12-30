@@ -238,9 +238,7 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query1)]);
   })
     .then((info) => {
-      console.log(info[0].name)
-      user = info[0].name;
-      console.log(user);
+      user = name;
       console.log("info" + info);
       res.render("pages/main", {
         my_title: "Music Space",
