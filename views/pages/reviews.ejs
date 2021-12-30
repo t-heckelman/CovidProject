@@ -176,45 +176,57 @@
 
 </style>
 <div class="bigDiv">
-<%- include('../partials/header'); -%>
-<br />
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-/>
-<script
-  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-  crossorigin="anonymous"
-></script>
-<script
-  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-  crossorigin="anonymous"
-></script>
-<script
-  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-  crossorigin="anonymous"
-></script>
-<div class="jumboHolder">
-  <div class="jumbotron text-center" style="background-color: #808080">
-    <h1 class="display-4">Welcome</h1>
-    <p class="lead">This shit hopefully will be cool when it is done</p>
-    <br />
-    <form class="">
-      <div class="row" style="width:50%; margin:0 auto;">
-        <div class="col-4 searchbox">
-          <input class="form-control" type="text" name="username" placeholder="Enter a username" style="text-align: center;">
+  <%- include('../partials/header'); -%>
+  <br />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  />
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <div class="jumboHolder">
+    <div class="jumbotron text-center" style="background-color: #808080">
+      <h1 class="display-4">Welcome</h1>
+      <p class="lead">This shit hopefully will be cool when it is done</p>
+      <br />
+      <form class="">
+        <div class="row" style="width:50%; margin:0 auto;">
+          <div class="col-4 searchbox">
+            <input class="form-control" type="text" name="username" placeholder="Enter a username" style="text-align: center;">
+          </div>
         </div>
-      </div>
-    </form>
-    <p class="lead">
-        <a class="btn btn-primary btn-lg" role="button" type = "submit">Don't click me</a>
-    </p>
+        <button formaction="/reviews" formmethod="post" type="submit">
+          <a class="btn btn-primary btn-lg" role="button" type = "submit">Don't click me</a>
+        </button>
+      </form>
+    </div>
   </div>
-</div>
-<%- include('../partials/footer'); -%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="resources/js/script.js"></script>
+
+  <div class="container">
+    <% for(var i=0; i < songs.length; i++) { %>
+      <div class="jumbotron text-center" style="background-color: #808080">
+            <p class = "username">  <%= songs[i].username %></p>
+            <p class = "song">  <%= songs[i].song %></p>
+            <p class = "review">  <%= songs[i].review %></p>
+      </div>
+      <br/>
+    <% } %>
+  </div>
+
+  <%- include('../partials/footer'); -%>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="resources/js/script.js"></script>
 </div>

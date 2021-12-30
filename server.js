@@ -183,9 +183,7 @@ app.get("/reviews", function (req, res) {
 app.post("/reviews", function (req, res) {
   console.log("Reviews searchfilter(POST) loaded");
   var username = req.body.username;
-  console.log(username);
-  console.log(username[1].toUpperCase())
-  username = username[1].toUpperCase(); //REGSTER ALL AS UPPERCASE
+  username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
 
   var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
   
