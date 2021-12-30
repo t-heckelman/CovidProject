@@ -128,6 +128,43 @@ app.post("/login", function (req, res) {
   });
 
 });
+app.get("/register", function (req, res) {
+  console.log("Register page loaded");
+  res.render("pages/register", {
+    my_title: "Music Space: Register",
+    dailyImg: dailyImg,
+    tools: tools,
+    user: user,
+    error: false,
+  });
+});
+app.get("/reviews", function (req, res) {
+  console.log("Reviews page loaded");
+  console.log("reviews");
+  // api needs to be added to this
+  var query1 = "select * from reviews ORDER BY review_date DESC;";
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Music Space: Reviews",
+        tools: tools,
+        user: user,
+        dailyImg: dailyImg,
+        songs: data[0],
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        user: user,
+        tools: tools,
+      });
+    });
+});
 app.post("/register", function (req, res) {
   var email = req.body.email;
   var name = req.body.name;
@@ -159,6 +196,7 @@ app.post("/register", function (req, res) {
         my_title: "Music Space",
         items: "",
         dailyImg: dailyImg,
+        user: user,
         success: true,
         error: false,
       });
@@ -170,16 +208,39 @@ app.post("/register", function (req, res) {
         items: "",
         dailyImg: dailyImg,
         message: "uh oh",
+        user: user,
         error: true,
       });
     });
 });
-app.get("/register", function (req, res) {
-  console.log("Register page loaded");
-  res.render("pages/register", {
-    my_title: "Music Space: Register",
+app.get("/writeReview", function (req, res) {
+  console.log("write review page loaded");
+  res.render("pages/writeReview", {
+    my_title: "Music Space: Review",
     dailyImg: dailyImg,
     tools: tools,
+    user: user,
+    error: false,
+  });
+});
+app.post("/writeReview", function (req, res) {
+  var song = req.body.song;
+  var review = req.body.review;
+  console.log("write review page loaded");
+  var query1 =
+    "INSERT INTO reviews(username, song, review, review_date) values('" +
+    user +
+    "', '" +
+    song +
+    "', '" +
+    review +
+    "now());";
+  console.log(query1);
+  res.render("pages/writeReview", {
+    my_title: "Music Space: Review",
+    dailyImg: dailyImg,
+    tools: tools,
+    user: user,
     error: false,
   });
 });

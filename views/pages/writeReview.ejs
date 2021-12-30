@@ -1,0 +1,64 @@
+<style>
+  .title {
+    text-align: center;
+    font-size: x-large;
+    color: white;
+  }
+  .bigDiv {
+    background-image: url(<%- dailyImg.hdurl -%>);
+    height: 100%;
+  }
+  .jumbotron {
+    width: 50%;
+    height: 30%;
+    text-align: center;
+    font-family: "trebuchet", Trebuchet MS;
+    margin: auto;
+    border-radius: 50px;
+  }
+    .search{
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+    }
+</style>
+<div class="bigDiv">
+  <%- include('../partials/header'); -%>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+  />
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <div class="jumboHolder">
+    <div class="jumbotron text-center" style="background-color: #808080">
+      <h1 class="display-4">Write a review</h1>
+      <form class="">
+        <div class="row" style="width:35%; margin:0 auto;">
+          <div class="col-4 searchbox">
+            <input class="form-control" type="text" name="username" placeholder="Search a song by name">
+          </div>
+          <div class="col text-center">
+            <button formmethod="POST" formaction="/reviews" type = "submit" class = "btn btn-light">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <%- include('../partials/footer'); -%>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="resources/js/script.js"></script>
+</div>
