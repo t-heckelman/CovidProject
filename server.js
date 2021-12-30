@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -155,7 +155,6 @@ app.get("/profile", function (req, res){
 
 app.get("/reviews", function (req, res) {
   console.log("Reviews page loaded");
-  console.log("reviews");
   // api needs to be added to this
   var query1 = "select * from reviews ORDER BY review_date DESC;";
   db.task("get-everything", (task) => {
@@ -180,6 +179,38 @@ app.get("/reviews", function (req, res) {
       });
     });
 });
+
+app.post("/reviews", function (req, res) {
+  console.log("Reviews searchfilter(POST) loaded");
+  var username = req.body.username;
+  console.log(username);
+  console.log(username[1].toUpperCase())
+  username = username[1].toUpperCase(); //REGSTER ALL AS UPPERCASE
+
+  var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
+  
+
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(reviewQuery)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Reviews",
+        songs: data[0],
+        user: user,
+        dailyImg: dailyImg,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Reviews",
+        songs: [1, 2, 3, 4],
+        user: user,
+      });
+    });
+});
+
 app.post("/register", function (req, res) {
   console.log("have clicked register and entered function")
   var email = req.body.email;
@@ -261,33 +292,6 @@ app.post("/writeReview", function (req, res) {
     user: user,
     error: false,
   });
-});
-app.get("/reviews", function (req, res) {
-  console.log("Reviews page loaded");
-  console.log("reviews");
-  // api needs to be added to this
-  var query1 = "select * from reviews ORDER BY review_date DESC;";
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
-  })
-    .then((data) => {
-      res.render("pages/reviews", {
-        my_title: "Music Space: Reviews",
-        tools: tools,
-        user: user,
-        dailyImg: dailyImg,
-        songs: data[0],
-      });
-    })
-    .catch((err) => {
-      console.log("error", err);
-      res.render("pages/reviews", {
-        my_title: "Error",
-        songs: [1, 2, 3, 4],
-        user: user,
-        tools: tools,
-      });
-    });
 });
 
 // console.log("Server is running at " + server_port);
