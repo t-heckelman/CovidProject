@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -212,7 +212,7 @@ app.post("/register", function (req, res) {
   })
     .then((info) => {
       console.log("info" + info);
-      console.log 
+      console.log
       res.render("pages/main", {
         my_title: "Music Space",
         dailyImg: dailyImg,
