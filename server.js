@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -62,8 +62,8 @@ app.get("/logout", function(req,res) {
     my_title: "Music Space",
     dailyImg: dailyImg,
     user: user,
-    error: false,  
-  });  
+    error: false,
+  });
 });
 
 
