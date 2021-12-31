@@ -112,8 +112,10 @@ function reviewButton (){
   var button = document.getElementById("button");
   var song = document.getElementById("song");
   var review = document.getElementById("review");
+  var artist = document.getElementById("artist");
 
-  var condition = (review.value != "" && song.value != "");
+  // var condition = (review.value != "" && song.value != "" && artist.value !="");
+  var condition = (song.value != "" || artist.value !="");
 
   if(condition){
     button.disabled = false;

@@ -83,18 +83,21 @@ height: 37%; */
       <form class="">
         <div class="row" style="width:50%; margin:0 auto;">
           <div class="col-4 searchbox">
-            <input class="form-control" type="text" id="song" name="song" placeholder="Enter a song name" style="text-align: center;" onkeyup="reviewButton()">
+            <input class="form-control" type="text" id="song" name="songTitle" placeholder="Enter a song name" style="text-align: center;" onkeyup="reviewButton()">
           </div>
           <div class="col-4 searchbox">
-            <input class="form-control" type="text" id="review" name="review" placeholder="Write a review!" style="text-align: center;" onkeyup="reviewButton()">
+            <input class="form-control" type="text" id="artist" name="artist" placeholder="Enter a artist name" style="text-align: center;" onkeyup="reviewButton()">
           </div>
+          <!-- <div class="col-4 searchbox">
+            <input class="form-control" type="text" id="review" name="review" placeholder="Search for a song" style="text-align: center;" onkeyup="reviewButton()">
+          </div> -->
         </div>
         <% if(user == "Login") { %>
           <button class = "search-button" formaction="/writeReview" formmethod="post" type="submit" disabled>
             Write
           </button>
         <% }else{ %>
-          <button class = "search-button" id= "button" formaction="/writeReview" formmethod="post" type="submit" disabled>
+          <button class = "search-button" id= "button" formaction="/searchSong" formmethod="post" type="submit" disabled>
             Write
           </button>
         <% } %>
