@@ -105,10 +105,11 @@ height: 37%; */
   <div class="container">
     <% for(var i = 0; i < tracks.track_list.length; i++) { %>
       <div class="jumbotron text-center" style="background-color: #808080; border-radius: 50px;">
-            <p class = "song"  href = "<%= tracks.track_list[i].track.track_name %>>"</p>
-            <a class = "snippet"> <%= snippet.snippet.html_tracking_url%></a>
+            <p class = "song" ><%= tracks.track_list[i].track.track_name %></p>
             <p class = "artist">  <%= tracks.track_list[i].track.artist_name %></p>
             <p class = "album">  <%= tracks.track_list[i].track.album_name %></p>
+            <audio controls> <source = <%= snippet.snippet.html_tracking_url%>> audio
+              </audio>
       </div>
       <br/>
     <% } %>
