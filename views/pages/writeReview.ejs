@@ -8,11 +8,14 @@
     background-image: url(<%- dailyImg.hdurl -%>);
   }
   .jumbotron {
-    width: 50%;
+    width: 60%;
     text-align: center;
     font-family: "trebuchet", Trebuchet MS;
     margin: auto;
     border-radius: 50px;
+  }
+  .container{
+    border-radius:50px;
   }
   ::-webkit-input-placeholder {
    text-align: center;
@@ -41,6 +44,16 @@ height: 37%; */
   color: #808080;
   overflow: hidden;
   margin-top: 2%;
+
+}
+.artist{
+  text-align: center;
+}
+.song{
+  text-align: center;
+}
+.album{
+  text-align: center;
 }
 
 </style>
@@ -88,6 +101,19 @@ height: 37%; */
       </form>
     </div>
   </div>
+  <% if(trackPresent) { %>
+  <div class="container">
+    <% for(var i = 0; i < tracks.track_list.length; i++) { %>
+      <div class="jumbotron text-center" style="background-color: #808080; border-radius: 50px;">
+            <p class = "song"  href = "<%= tracks.track_list[i].track.track_name %>>"</p>
+            <a class = "snippet"> <%= snippet.snippet.html_tracking_url%></a>
+            <p class = "artist">  <%= tracks.track_list[i].track.artist_name %></p>
+            <p class = "album">  <%= tracks.track_list[i].track.album_name %></p>
+      </div>
+      <br/>
+    <% } %>
+  </div>
+  <% } %>
   <%- include('../partials/footer'); -%>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="resources/js/script.js"></script>

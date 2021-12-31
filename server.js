@@ -27,7 +27,14 @@ const isProduction = process.env.NODE_ENV === "production";
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
-var globalUsername = "username"
+var trackPresent = false;
+var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby keem&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
+// var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=stronger&apikey=d3effb2990c26720f4799b07e4f1af2b';
+var tracks;
+var snippet;
+var track_id;
+var globalUsername = "username";
+// nasa api call
 axios({
   url:
     "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
@@ -36,7 +43,7 @@ axios({
 })
   .then((items) => {
     dailyImg = items.data;
-    console.log("hi", data);
+    // console.log("hi", data);
   })
   .catch((error) => {
     if (error.response) {
@@ -44,6 +51,69 @@ axios({
       console.log(error.response.status);
     }
   });
+  var songKey = "d3effb2990c26720f4799b07e4f1af2b";
+
+
+
+  //apit call for baby keem
+  axios({
+    method: 'GET',
+    url: apiCall,
+    dataType: "json",
+    parameter: {
+      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
+    }
+  })
+    .then((track) => {
+      // create array of all track_ids
+      // console.log(track.data);
+      // console.log(track.data.message);
+      // console.log(track.data.message.header);
+      // console.log(track.data.message.body);
+      // console.log(track.data.message.body.track_list[0]);
+      track_id = track.data.message.body.track_list[0].track.track_id;
+      trackPresent = true;
+      tracks = track.data.message.body;
+      // console.log(tracks);
+      console.log(track_id);
+      // second api call for snippet
+      axios({
+        method: 'GET',
+        url: 'http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=' + track_id + '&apikey=d3effb2990c26720f4799b07e4f1af2b' ,
+        dataType: "json",
+        parameter: {
+          apikey: 'd3effb2990c26720f4799b07e4f1af2b',
+        }
+      })
+        .then((snipp) => {
+          snippet = snipp.data.message.body;
+          // console.log(snippet);
+          // console.log(snippet.data.message);
+          console.log(snippet);
+          // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+          // console.log(tracks);
+
+        })
+        .catch((error) => {
+          if(error.response){
+            console.log(error.response.data);
+            console.log(error.response.status);
+          }
+        });
+
+
+      // console.log(track);
+      // console.log("predata");
+      // console.log(track.data.message.body.track_list[0].track);
+      // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+      // console.log("postdata");
+  })
+    .catch((error) => {
+      if(error.response){
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
 
 app.get("/", function (req, res) {
   console.log("Main page loaded, user: " + user);
@@ -228,6 +298,7 @@ app.get("/reviews", function (req, res) {
         user: user,
         dailyImg: dailyImg,
         songs: data[0],
+        snippet: snippet,
       });
     })
     .catch((err) => {
@@ -245,19 +316,18 @@ app.post("/reviews", function (req, res) {
   console.log("Reviews searchfilter(POST) loaded");
   var username = req.body.username;
   username = username.toUpperCase(); //REGSTER ALL AS UPPERCASE
-
   var reviewQuery = "SELECT * FROM reviews WHERE username = '" + username + "'";
-
-
   db.task("get-everything", (task) => {
     return task.batch([task.any(reviewQuery)]);
   })
     .then((data) => {
+      console.log(data);
       res.render("pages/reviews", {
         my_title: "Reviews",
         songs: data[0],
         user: user,
         dailyImg: dailyImg,
+        snippet: snippet,
       });
     })
     .catch((err) => {
@@ -273,17 +343,23 @@ app.post("/reviews", function (req, res) {
 
 app.get("/writeReview", function (req, res) {
   console.log("write review page loaded");
+  console.log(tracks);
   res.render("pages/writeReview", {
     my_title: "Music Space: Review",
     dailyImg: dailyImg,
     tools: tools,
     user: user,
+    tracks: tracks,
+    snippet: snippet,
+    trackPresent: trackPresent,
     error: false,
   });
 });
 app.post("/writeReview", function (req, res) {
+
   /*Link/v1/filter/key*/
   var song = req.body.song;
+  song = song.replace(' ', '_');
   var review = req.body.review;
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
@@ -294,19 +370,44 @@ app.post("/writeReview", function (req, res) {
     "', '" +
     review +
     "', 'now()');";
-
+  var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=' + song + '&q_artist=the_eagles&apikey=d3effb2990c26720f4799b07e4f1af2b';
+  console.log(apiCall);
    db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
    })
   .then((data) =>{
-    console.log("data: " + data);
-    res.render("pages/main", {
-      my_title: "Music Space: Review",
-      dailyImg: dailyImg,
-      tools: tools,
-      user: user,
-      error: false,
-    });
+    console.log("database passed");
+    axios({
+      method: 'GET',
+      url: apiCall,
+      dataType: "json",
+      parameter: {
+        apikey: 'd3effb2990c26720f4799b07e4f1af2b',
+      }
+    })
+      .then((track) => {
+        trackPresent = true;
+        // console.log("predata");
+        // console.log(track.data.message.body.track_list[0].track);
+        // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+        // console.log("postdata");
+        var tracks = track.data.message.body
+        res.render("pages/writeReview", {
+          my_title: "Music Space: Review",
+          dailyImg: dailyImg,
+          tools: tools,
+          tracks: tracks,
+          user: user,
+          trackPresent: trackPresent,
+          error: false,
+        })
+      })
+      .catch((error) => {
+        if(error.response){
+          console.log(error.response.data);
+          console.log(error.response.status);
+        }
+      });
   })
     .catch((err) => {
       console.log("error!", err);
