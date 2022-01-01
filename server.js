@@ -424,19 +424,20 @@ app.post("/writeReview", function (req, res) {
 app.post("/searchSong", function(req, res){
   var songTitle = req.body.songTitle;
   var artistName = req.body.artist;
+  var searchApiCall;
   songTitle.replace(" ", "_");
   artistName.replace(" ", "_");
-  console.log("Search sogng button clicked with song: "+  songTitle + " and artist name: " + artistName);
+  console.log("Search song button clicked with song: "+  songTitle + " and artist name: " + artistName);
 
 
 
-  apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_track=' + songTitle + '&q_artist=' + artistName+ '&page_size=10&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
+  searchApiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_track=' + songTitle + '&q_artist=' + artistName+ '&page_size=10&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
 
   console.log("api call: " + apiCall);
 
   axios({
     method: 'GET',
-    url: apiCall,
+    url: searchApiCall,
     dataType: "json",
     parameter: {
       apikey: 'd3effb2990c26720f4799b07e4f1af2b',
