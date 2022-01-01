@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -255,7 +255,8 @@ app.post("/login", function (req, res) {
         message: "uh oh",
         error: true,
       });
-    })  
+    }
+});
 });
 
 app.get("/register", function (req, res) {
