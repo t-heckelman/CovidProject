@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
@@ -28,7 +28,8 @@ dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
 var trackPresent = false;
-var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
+var apiCall =
+  "http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 //var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=blackbird&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
 var tracks;
 var snippet;
@@ -51,69 +52,68 @@ axios({
       console.log(error.response.status);
     }
   });
-  var songKey = "d3effb2990c26720f4799b07e4f1af2b";
+var songKey = "d3effb2990c26720f4799b07e4f1af2b";
 
-
-
-  //apit call for baby keem
-  axios({
-    method: 'GET',
-    url: apiCall,
-    dataType: "json",
-    parameter: {
-      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-    }
-  })
-    .then((track) => {
-      // create array of all track_ids
-      // console.log(track.data);
-      // console.log(track.data.message);
-      // console.log(track.data.message.header);
-      // console.log(track.data.message.body);
-      // console.log(track.data.message.body.track_list[0]);
-      track_id = track.data.message.body.track_list[0].track.track_id;
-      trackPresent = true;
-      tracks = track.data.message.body;
-      // console.log(tracks);
-      console.log(track_id);
-      // second api call for snippet
-      axios({
-        method: 'GET',
-        url: 'http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=' + track_id + '&apikey=d3effb2990c26720f4799b07e4f1af2b' ,
-        dataType: "json",
-        parameter: {
-          apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-        }
+//apit call for baby keem
+axios({
+  method: "GET",
+  url: apiCall,
+  dataType: "json",
+  parameter: {
+    apikey: "d3effb2990c26720f4799b07e4f1af2b",
+  },
+})
+  .then((track) => {
+    // create array of all track_ids
+    // console.log(track.data);
+    // console.log(track.data.message);
+    // console.log(track.data.message.header);
+    // console.log(track.data.message.body);
+    // console.log(track.data.message.body.track_list[0]);
+    track_id = track.data.message.body.track_list[0].track.track_id;
+    trackPresent = true;
+    tracks = track.data.message.body;
+    // console.log(tracks);
+    console.log(track_id);
+    // second api call for snippet
+    axios({
+      method: "GET",
+      url:
+        "http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=" +
+        track_id +
+        "&apikey=d3effb2990c26720f4799b07e4f1af2b",
+      dataType: "json",
+      parameter: {
+        apikey: "d3effb2990c26720f4799b07e4f1af2b",
+      },
+    })
+      .then((snipp) => {
+        snippet = snipp.data.message.body;
+        // console.log(snippet);
+        // console.log(snippet.data.message);
+        console.log(snippet);
+        // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+        // console.log(tracks);
       })
-        .then((snipp) => {
-          snippet = snipp.data.message.body;
-          // console.log(snippet);
-          // console.log(snippet.data.message);
-          console.log(snippet);
-          // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
-          // console.log(tracks);
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+        }
+      });
 
-        })
-        .catch((error) => {
-          if(error.response){
-            console.log(error.response.data);
-            console.log(error.response.status);
-          }
-        });
-
-
-      // console.log(track);
-      // console.log("predata");
-      // console.log(track.data.message.body.track_list[0].track);
-      // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
-      // console.log("postdata");
+    // console.log(track);
+    // console.log("predata");
+    // console.log(track.data.message.body.track_list[0].track);
+    // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+    // console.log("postdata");
   })
-    .catch((error) => {
-      if(error.response){
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
-    });
+  .catch((error) => {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+    }
+  });
 
 app.get("/", function (req, res) {
   console.log("Main page loaded, user: " + user);
@@ -125,10 +125,10 @@ app.get("/", function (req, res) {
   });
 });
 
-app.get("/logout", function(req,res) {
+app.get("/logout", function (req, res) {
   console.log("Logged out user: " + user);
-  user = "Login"
-  globalUsername = "username"
+  user = "Login";
+  globalUsername = "username";
   res.render("pages/main", {
     my_title: "Music Space",
     dailyImg: dailyImg,
@@ -137,12 +137,14 @@ app.get("/logout", function(req,res) {
   });
 });
 
-
-
-app.get("/profile", function (req, res){
+app.get("/profile", function (req, res) {
   console.log("Profile page loaded");
 
-  var query1 = "select * from reviews WHERE username = '" + globalUsername + "'" + "ORDER BY review_date DESC;"
+  var query1 =
+    "select * from reviews WHERE username = '" +
+    globalUsername +
+    "'" +
+    "ORDER BY review_date DESC;";
 
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
@@ -168,7 +170,7 @@ app.get("/profile", function (req, res){
     });
 });
 
-  // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
+// kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
 
 app.get("/login", function (req, res) {
   console.log("Login page loaded");
@@ -184,44 +186,47 @@ app.post("/login", function (req, res) {
   console.log("loginYes");
   var username = req.body.username;
   var psw = req.body.psw;
-  var query1 = "SELECT name FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
+  var query1 =
+    "SELECT name FROM users WHERE username = '" +
+    username +
+    "' AND password = '" +
+    psw +
+    "';";
   globalUsername = username;
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
-  .then((info) => {
-    if(info[0][0].name != null){
-      user = info[0][0].name;
-      console.log(user);
-      res.render("pages/main", {
-        my_title: "Music Space",
-        user: user,
-        dailyImg: dailyImg,
-        success: true,
-        error: false,
-      });
-    }
-    else{
+    .then((info) => {
+      if (info[0][0].name != null) {
+        user = info[0][0].name;
+        console.log(user);
+        res.render("pages/main", {
+          my_title: "Music Space",
+          user: user,
+          dailyImg: dailyImg,
+          success: true,
+          error: false,
+        });
+      } else {
+        res.render("pages/login", {
+          my_title: "Music Space",
+          user: user,
+          dailyImg: dailyImg,
+          success: true,
+          error: false,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("error", err);
       res.render("pages/login", {
-        my_title: "Music Space",
-        user: user,
+        my_title: "error",
+        user: "login",
         dailyImg: dailyImg,
-        success: true,
-        error: false,
+        message: "uh oh",
+        error: true,
       });
-    }
-  })
-  .catch((err) => {
-    console.log("error", err);
-    res.render("pages/login", {
-      my_title: "error",
-      user: "login",
-      dailyImg: dailyImg,
-      message: "uh oh",
-      error: true,
     });
-  });
-
 });
 app.get("/register", function (req, res) {
   console.log("Register page loaded");
@@ -235,7 +240,7 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", function (req, res) {
-  console.log("have clicked register and entered function")
+  console.log("have clicked register and entered function");
   var email = req.body.email;
   var name = req.body.name;
   var username = req.body.username;
@@ -253,7 +258,7 @@ app.post("/register", function (req, res) {
     username +
     "', '" +
     psw +
-     "', '" +
+    "', '" +
     email +
     "');";
   console.log(query1);
@@ -340,10 +345,10 @@ app.post("/reviews", function (req, res) {
     });
 });
 
-
 app.get("/writeReview", function (req, res) {
   console.log("write review page loaded");
-  console.log(tracks);
+  //console.log(tracks);
+
   res.render("pages/writeReview", {
     my_title: "Music Space: Review",
     dailyImg: dailyImg,
@@ -356,11 +361,15 @@ app.get("/writeReview", function (req, res) {
   });
 });
 app.post("/writeReview", function (req, res) {
-
   /*Link/v1/filter/key*/
-  var song = req.body.song;
-  song = song.replace(' ', '_');
-  var review = req.body.review;
+  console.log(req);
+  
+  console.log(req.body);
+  console.log(res);
+  var song = req.body.renderSong;
+  console.log(song);
+  //song = song.replace(" ", "_");
+  var review = req.body.userReview;
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
@@ -370,78 +379,110 @@ app.post("/writeReview", function (req, res) {
     "', '" +
     review +
     "', 'now()');";
-  var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=' + song + '&q_artist=the_eagles&apikey=d3effb2990c26720f4799b07e4f1af2b';
-  console.log(apiCall);
-   db.task("get-everything", (task) => {
+  
+  db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
-   })
-  .then((data) =>{
-    console.log("database passed");
-    axios({
-      method: 'GET',
-      url: apiCall,
-      dataType: "json",
-      parameter: {
-        apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-      }
-    })
-      .then((track) => {
-        trackPresent = true;
-        // console.log("predata");
-        // console.log(track.data.message.body.track_list[0].track);
-        // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
-        // console.log("postdata");
-        var tracks = track.data.message.body
-        res.render("pages/writeReview", {
-          my_title: "Music Space: Review",
-          dailyImg: dailyImg,
-          tools: tools,
-          tracks: tracks,
-          user: user,
-          trackPresent: trackPresent,
-          error: false,
-        })
-      })
-      .catch((error) => {
-        if(error.response){
-          console.log(error.response.data);
-          console.log(error.response.status);
-        }
-      });
   })
-    .catch((err) => {
-      console.log("error!", err);
-      res.render("pages/writeReview", {
-        my_title: "error",
-        dailyImg: dailyImg,
-        message: "uh oh",
-        user: user,
-        error: true,
-      });
-  });
-});
 
-app.post("/searchSong", function(req, res){
+  var query2 = "select * from reviews ORDER BY review_date DESC;";
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query2)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Music Space: Reviews",
+        tools: tools,
+        user: user,
+        dailyImg: dailyImg,
+        songs: data[0],
+        snippet: snippet,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        user: user,
+        tools: tools,
+      });
+    });
+});
+//     .then((data) => {
+//       console.log("database passed");
+//       axios({
+//         method: "GET",
+//         url: apiCall,
+//         dataType: "json",
+//         parameter: {
+//           apikey: "d3effb2990c26720f4799b07e4f1af2b",
+//         },
+//       })
+//         .then((track) => {
+//           trackPresent = true;
+//           // console.log("predata");
+//           // console.log(track.data.message.body.track_list[0].track);
+//           // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
+//           // console.log("postdata");
+//           var tracks = track.data.message.body;
+//           res.render("pages/reviews", {
+//             my_title: "Music Space: Review",
+//             dailyImg: dailyImg,
+//             tools: tools,
+//             tracks: tracks,
+//             user: user,
+//             trackPresent: trackPresent,
+//             error: false,
+//           });
+//         })
+//         .catch((error) => {
+//           if (error.response) {
+//             console.log(error.response.data);
+//             console.log(error.response.status);
+//           }
+//         });
+//     })
+//     .catch((err) => {
+//       console.log("error!", err);
+//       res.render("pages/writeReview", {
+//         my_title: "error",
+//         dailyImg: dailyImg,
+//         message: "uh oh",
+//         user: user,
+//         error: true,
+//       });
+//     });
+// });
+
+app.post("/searchSong", function (req, res) {
   var songTitle = req.body.songTitle;
   var artistName = req.body.artist;
   var searchApiCall;
   songTitle.replace(" ", "_");
   artistName.replace(" ", "_");
-  console.log("Search song button clicked with song: "+  songTitle + " and artist name: " + artistName);
+  console.log(
+    "Search song button clicked with song: " +
+      songTitle +
+      " and artist name: " +
+      artistName
+  );
 
-
-
-  searchApiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_track=' + songTitle + '&q_artist=' + artistName+ '&page_size=10&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
+  searchApiCall =
+    "http://api.musixmatch.com/ws/1.1/track.search?q_track=" +
+    songTitle +
+    "&q_artist=" +
+    artistName +
+    "&page_size=10&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 
   console.log("api call: " + apiCall);
 
   axios({
-    method: 'GET',
+    method: "GET",
     url: searchApiCall,
     dataType: "json",
     parameter: {
-      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-    }
+      apikey: "d3effb2990c26720f4799b07e4f1af2b",
+    },
   })
     .then((track) => {
       // console.log(track.data);
@@ -451,31 +492,29 @@ app.post("/searchSong", function(req, res){
       // console.log(track.data.message.body.track_list[0]);
       track_id = track.data.message.body.track_list[0].track.track_id;
       trackPresent = true;
-      tracks = track.data.message.body;
-      console.log(tracks);
-      console.log(track_id);
+      //tracks = track.data.message.body;
+      searchTracks = track.data.message.body;
+      // console.log(tracks);
+      // console.log(track_id);
 
-      res.render("pages/writeReview",{
+      res.render("pages/writeReview", {
         my_title: "Music Space: Review",
-          dailyImg: dailyImg,
-          tools: tools,
-          tracks: tracks,
-          user: user,
-          trackPresent: trackPresent,
-          error: false,
-          snippet: snippet,
-      })
-    })
-      .catch((error) => {
-        if(error.response){
-          console.log(error.response.data);
-          console.log(error.response.status);
-        }
+        dailyImg: dailyImg,
+        tools: tools,
+        tracks: searchTracks,
+        user: user,
+        trackPresent: trackPresent,
+        error: false,
+        snippet: snippet,
       });
-
-
-
-  })
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
+});
 
 // console.log("Server is running at " + server_port);
 const PORT = process.env.PORT || 8080;
