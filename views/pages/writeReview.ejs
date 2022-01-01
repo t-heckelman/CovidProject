@@ -4,7 +4,7 @@
     font-size: x-large;
     color: white;
   }
-  body{
+  body {
     background-image: url(<%- dailyImg.hdurl -%>);
   }
   .jumbotron {
@@ -14,111 +14,189 @@
     margin: auto;
     border-radius: 50px;
   }
-  .container{
-    border-radius:50px;
+  .container {
+    border-radius: 50px;
   }
   ::-webkit-input-placeholder {
-   text-align: center;
-}
+    text-align: center;
+  }
 
-:-moz-placeholder { /* Firefox 18- width: 50%;
+  :-moz-placeholder {
+    /* Firefox 18- width: 50%;
 height: 37%; */
-   text-align: center;
-}
+    text-align: center;
+  }
 
-::-moz-placeholder {  /* Firefox 19+ */
-   text-align: center;
-}
+  ::-moz-placeholder {
+    /* Firefox 19+ */
+    text-align: center;
+  }
 
-:-ms-input-placeholder {
-   text-align: center;
-}
-.search-button{
-  background-color: #222222;
-  border: none;
-  cursor:pointer;
-  font-family: "trebuchet", Trebuchet MS;
-  border-radius: 50px;
-  width: 15%;
-  height:4%;
-  color: #808080;
-  overflow: hidden;
-  margin-top: 2%;
+  :-ms-input-placeholder {
+    text-align: center;
+  }
+  .search-button {
+    background-color: #222222;
+    border: none;
+    cursor: pointer;
+    font-family: "trebuchet", Trebuchet MS;
+    border-radius: 50px;
+    width: 15%;
+    height: 4%;
+    color: #808080;
+    overflow: hidden;
+    margin-top: 2%;
+  }
 
-}
-.artist{
-  text-align: center;
-}
-.song{
-  text-align: center;
-}
-.album{
-  text-align: center;
-}
-
+  .review-button {
+    background-color: #222222;
+    border: none;
+    cursor: pointer;
+    font-family: "trebuchet", Trebuchet MS;
+    border-radius: 50px;
+    width: 40%;
+    height: 4%;
+    color: #808080;
+    overflow: hidden;
+    margin-top: 2%;
+  }
+  .artist {
+    text-align: center;
+  }
+  .song {
+    text-align: center;
+  }
+  .album {
+    text-align: center;
+  }
 </style>
-  <%- include('../partials/header'); -%>
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-  />
-  <script
-    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"
-  ></script>
-  <br/>
-  <div class="jumboHolder">
-    <div class="jumbotron text-center" style="background-color: #808080">
-      <h1 class="display-4">Write a review</h1>
-      <form class="">
-        <div class="row" style="width:50%; margin:0 auto;">
-          <div class="col-4 searchbox">
-            <input class="form-control" type="text" id="song" name="songTitle" placeholder="Enter a song name" style="text-align: center; border-radius: 50px;" onkeyup="reviewButton()">
-          </div>
-          <div class="col-4 searchbox">
-            <input class="form-control" type="text" id="artist" name="artist" placeholder="Enter a artist name" style="text-align: center; border-radius: 50px;" onkeyup="reviewButton()">
-          </div>
-          <!-- <div class="col-4 searchbox">
+<%- include('../partials/header'); -%>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+/>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<br />
+<div class="jumboHolder">
+  <div class="jumbotron text-center" style="background-color: #808080">
+    <% if(user == "Login") { %>
+    <h1 class="display-4">You must be logged in to write a review</h1>
+    <% } else{ %>
+
+    <h1 class="display-4">Write a review</h1>
+    <form class="">
+      <div class="row" style="width: 50%; margin: 0 auto">
+        <div class="col-4 searchbox">
+          <input
+            class="form-control"
+            type="text"
+            id="song"
+            name="songTitle"
+            placeholder="Enter a song name"
+            style="text-align: center; border-radius: 50px"
+            onkeyup="reviewButton()"
+          />
+        </div>
+        <div class="col-4 searchbox">
+          <input
+            class="form-control"
+            type="text"
+            id="artist"
+            name="artist"
+            placeholder="Enter a artist name"
+            style="text-align: center; border-radius: 50px"
+            onkeyup="reviewButton()"
+          />
+        </div>
+        <!-- <div class="col-4 searchbox">
             <input class="form-control" type="text" id="review" name="review" placeholder="Search for a song" style="text-align: center;" onkeyup="reviewButton()">
           </div> -->
-        </div>
-        <% if(user == "Login") { %>
-          <button class = "search-button" formaction="/writeReview" formmethod="post" type="submit" disabled>
-            Write
-          </button>
-        <% }else{ %>
-          <button class = "search-button" id= "button" formaction="/searchSong" formmethod="post" type="submit" disabled>
-            Write
-          </button>
-        <% } %>
-      </form>
-    </div>
-  </div>
-  <% if(trackPresent) { %>
-  <div class="container">
-    <% for(var i = 0; i < tracks.track_list.length; i++) { %>
-      <div class="jumbotron text-center" style="background-color: #808080; border-radius: 50px;">
-            <p class = "song" ><%= tracks.track_list[i].track.track_name %></p>
-            <p class = "artist">  <%= tracks.track_list[i].track.artist_name %></p>
-            <p class = "album">  <%= tracks.track_list[i].track.album_name %></p>
-            <audio controls> <source = <%= snippet.snippet.html_tracking_url%>> audio
-              </audio>
       </div>
-      <br/>
-    <% } %>
+      <% if(user == "Login") { %>
+      <button
+        class="search-button"
+        formaction="/writeReview"
+        formmethod="post"
+        type="submit"
+        disabled
+      >
+        Write
+      </button>
+      <% }else{ %>
+      <button
+        class="search-button"
+        id="button"
+        formaction="/searchSong"
+        formmethod="post"
+        type="submit"
+        disabled
+      >
+        Write
+      </button>
+      <% } %>
+    </form>
   </div>
+</div>
+<% if(trackPresent) { %>
+<div class="container">
+  <% for(var i = 0; i < tracks.track_list.length; i++) { %>
+  <div
+    class="jumbotron text-center"
+    style="background-color: #808080; border-radius: 50px"
+  >
+    <p class="song" name = "song" value = "<%= tracks.track_list[i].track.track_name %>"> <%= tracks.track_list[i].track.track_name %></p>
+    <form>
+      <input name = "renderSong" value = "<%= tracks.track_list[i].track.track_name %>" type = "hidden"> </input>
+    </form>
+    <p class="artist" name = <%= tracks.track_list[i].track.artist_name %>><%= tracks.track_list[i].track.artist_name %></p>
+    <p class="album" name = <%= tracks.track_list[i].track.album_name %>> <%= tracks.track_list[i].track.album_name %></p>
+    <form>
+      <div class="col-4 searchbox">
+        <input
+          class="form-control"
+          type="text"
+          id="review-text"
+          name="userReview"
+          placeholder="Enter a song name"
+          style="text-align: center; border-radius: 50px"
+          onkeyup="enableWriteButton()"
+        />
+      </div>
+      <button
+        class="review-button"
+        id="review-button"
+        formaction="/writeReview"
+        formmethod="post"
+        type="submit"
+        
+        onclick="clicked()"
+      >
+        Write a review
+      </button>
+    </form>
+  </div>
+  <br />
   <% } %>
-  <%- include('../partials/footer'); -%>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="resources/js/script.js"></script>
+</div>
+<% } %> <%- include('../partials/footer'); -%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="resources/js/script.js"></script>
+
+<%} %>
+
+<!-- snippet code <audio controls> <source = <%= snippet.snippet.html_tracking_url%>> audio
+  </audio> -->

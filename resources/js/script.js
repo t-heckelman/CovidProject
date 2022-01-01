@@ -122,6 +122,15 @@ function reviewButton (){
   } else {
     button.disabled = true;
   }
+}
 
+function enableWriteButton(){
+  var reviewButton = document.getElementById("review-button");
+  var reviewText = document.getElementById("review-text")
 
+  if(reviewText.value == ""){
+    reviewButton.disabled = true;
+  } else{
+    reviewButton.disabled = false;
+  }
 }
