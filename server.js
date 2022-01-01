@@ -255,8 +255,9 @@ app.post("/login", function (req, res) {
         message: "uh oh",
         error: true,
       });
-    });
+    })  
 });
+
 app.get("/register", function (req, res) {
   console.log("Register page loaded");
   res.render("pages/register", {
@@ -391,10 +392,10 @@ app.get("/writeReview", function (req, res) {
 });
 app.post("/writeReview", function (req, res) {
   /*Link/v1/filter/key*/
-  console.log(req);
+  //console.log(req);
 
   console.log(req.body);
-  console.log(res);
+  //console.log(res);
   var song = req.body.renderSong;
   console.log(song);
   //song = song.replace(" ", "_");
