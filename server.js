@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -473,7 +473,7 @@ app.post("/searchSong", function(req, res){
       });
 
 
-  
+
   })
 
 // console.log("Server is running at " + server_port);
