@@ -69,18 +69,32 @@
         <h1 class="display-4">Welcome</h1>
         <p class="lead">Hello <%- globalUsername -%> </p>
         <p class="lead">View your reviews below </p>
-        <br />
-        <form class="">
-          <!-- <div class="row" style="width:50%; margin:0 auto;">
-            <div class="col-4 searchbox">
-              <input class="form-control" type="text" name="username" placeholder="This does nothing" style="text-align: center;">
+        <br/>
+        <% if(favorite_artist == null) { %>
+          <p class = "favorite-artist"> Enter a favorite artist </p>
+          <form class="">
+            <div class="row" style="width:50%; margin:0 auto; border-radius: 50px;">
+              <div class="col-4 searchbox">
+                <input class="form-control" type="text" name="favArtist" placeholder="Enter your favorite artist" style="text-align: center; border-radius: 50px;">
+              </div>
             </div>
-          </div> -->
-          <!-- <button class = "search-button"  type="submit">
-            Dont click
-
-          </button> -->
-        </form>
+            <button class = "search-button" formaction="/profile" formmethod="post" type="submit">
+              Enter
+            </button>
+          </form>
+        <% }else{ %>
+          <p class = "favorite-artist"> Your favorite artist is:  <%- favorite_artist-%> </p>
+          <form class="">
+            <div class="row" style="width:50%; margin:0 auto; border-radius: 50px;">
+              <div class="col-4 searchbox">
+                <input class="form-control" type="text" name="favArtist" placeholder="Change your favorite artist" style="text-align: center; border-radius: 50px;">
+              </div>
+            </div>
+            <button class = "search-button" formaction="/profile" formmethod="post" type="submit">
+              Enter
+            </button>
+          </form>
+        <% } %>
       </div>
     </div>
 

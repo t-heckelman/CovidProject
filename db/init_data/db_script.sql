@@ -4,3 +4,8 @@ CREATE TABLE IF NOT EXISTS users (name VARCHAR(20), username VARCHAR(200), passw
 INSERT INTO reviews(username, song, review, review_date) values('MALCOLM', 'Alamania', 'Gas pack', '2021-12-28');
 INSERT INTO users(name, username, password) values('Teddy Heckelman', 'TEDDY', 'Teddy123');
 INSERT INTO users(name, username, password) values('Malcolm Holman', 'MALCOLM', 'Malc123');
+ALTER TABLE users
+ADD email VARCHAR(255);
+ALTER TABLE users
+ADD favorite_artist VARCHAR(255);
+UPDATE users SET favorite_artist='kendrick lamar' WHERE username='TEDDY';

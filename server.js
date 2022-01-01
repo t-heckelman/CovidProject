@@ -28,12 +28,13 @@ dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
 var trackPresent = false;
-var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b'
 //var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=blackbird&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
 var tracks;
 var snippet;
 var track_id;
+var favoriteArtist = 'baby keem';
 var globalUsername = "username";
+var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist= ' + favoriteArtist + '&page_size=3&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
 // nasa api call
 axios({
   url:
@@ -53,9 +54,7 @@ axios({
   });
   var songKey = "d3effb2990c26720f4799b07e4f1af2b";
 
-
-
-  //apit call for baby keem
+  //api call for baby keem
   axios({
     method: 'GET',
     url: apiCall,
@@ -154,6 +153,7 @@ app.get("/profile", function (req, res){
         user: user,
         dailyImg: dailyImg,
         songs: data[0],
+        favorite_artist: favoriteArtist,
         globalUsername: globalUsername,
       });
     })
@@ -166,6 +166,58 @@ app.get("/profile", function (req, res){
         tools: tools,
       });
     });
+});
+app.post("/profile", function (req, res){
+  console.log("Profile post");
+  var favoriteArtist = req.body.favArtist;
+  console.log(favoriteArtist);
+  var query1 =
+    "UPDATE users SET favorite_artist= '" +
+    favoriteArtist +
+    "' WHERE username = '" +
+    globalUsername +
+    "';";
+    console.log(query1);
+    var query2 = "select * from reviews WHERE username = '" + globalUsername + "'" + "ORDER BY review_date DESC;"
+    console.log(query2);
+  db.task("get-everything" ,(task) => {
+    return task.batch([task.any(query1)]);
+  })
+  .then((data) => {
+    db.task("get-everything" ,(task) => {
+      return task.batch([task.any(query2)]);
+    })
+    .then((songs) => {
+      console.log(songs);
+      res.render("pages/profile", {
+        my_title: "Music Space: Profile",
+        tools: tools,
+        user: user,
+        dailyImg: dailyImg,
+        songs: songs[0],
+        favorite_artist: favoriteArtist,
+        globalUsername: globalUsername,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/profile", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        user: user,
+        tools: tools,
+      });
+    });
+  })
+  .catch((err) => {
+    console.log("error", err);
+    res.render("pages/profile", {
+      my_title: "Error",
+      songs: [1,2,3,4],
+      user: user,
+      tools: tools,
+    });
+  });
 });
 
   // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
@@ -184,7 +236,7 @@ app.post("/login", function (req, res) {
   console.log("loginYes");
   var username = req.body.username;
   var psw = req.body.psw;
-  var query1 = "SELECT name FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
+  var query1 = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
   globalUsername = username;
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
@@ -192,7 +244,9 @@ app.post("/login", function (req, res) {
   .then((info) => {
     if(info[0][0].name != null){
       user = info[0][0].name;
+      favoriteArtist = info[0][0].favorite_artist;
       console.log(user);
+      console.log(favoriteArtist);
       res.render("pages/main", {
         my_title: "Music Space",
         user: user,
