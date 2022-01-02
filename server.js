@@ -127,7 +127,7 @@ app.get("/logout", function (req, res) {
 });
 
 app.get("/profile", function (req, res) {
-  console.log("Profile page loaded");
+  console.log("Profile page loaded for user: " + globalUsername + "who's favorite artist is : " + favoriteArtist);
 
   var query1 =
     "select * from reviews WHERE username = '" +
@@ -161,7 +161,7 @@ app.get("/profile", function (req, res) {
 });
 app.post("/profile", function (req, res){
   console.log("Profile post");
-  var favoriteArtist = req.body.favArtist;
+  favoriteArtist = req.body.favArtist;
   console.log(favoriteArtist);
   var query1 =
     "UPDATE users SET favorite_artist= '" +
@@ -169,9 +169,7 @@ app.post("/profile", function (req, res){
     "' WHERE username = '" +
     globalUsername +
     "';";
-    console.log(query1);
     var query2 = "select * from reviews WHERE username = '" + globalUsername + "'" + "ORDER BY review_date DESC;"
-    console.log(query2);
   db.task("get-everything" ,(task) => {
     return task.batch([task.any(query1)]);
   })
@@ -180,7 +178,6 @@ app.post("/profile", function (req, res){
       return task.batch([task.any(query2)]);
     })
     .then((songs) => {
-      console.log(songs);
       res.render("pages/profile", {
         my_title: "Music Space: Profile",
         tools: tools,
@@ -267,6 +264,7 @@ app.get("/register", function (req, res) {
     tools: tools,
     user: user,
     error: false,
+    usernameTaken: false,
   });
 });
 
@@ -276,6 +274,7 @@ app.post("/register", function (req, res) {
   var name = req.body.name;
   var username = req.body.username;
   var psw = req.body.psw;
+  var checkUsername = false;
   username = username.toUpperCase();
   console.log("name " + name);
   console.log("email " + email);
@@ -292,21 +291,55 @@ app.post("/register", function (req, res) {
     "', '" +
     email +
     "');";
+  var query2 =  "SELECT * FROM users WHERE username = '" + username + "';";
+  console.log(query2);
   console.log(query1);
   db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
+    return task.batch([task.any(query2)]);
   })
-    .then((info) => {
-      user = name;
-      globalUsername = username;
-      console.log("info" + info);
-      res.render("pages/main", {
-        my_title: "Music Space",
-        dailyImg: dailyImg,
-        user: user,
-        success: true,
-        error: false,
-      });
+    .then((check) => {
+      if(check[0][0].username == null){
+        db.task("get-everything", (task) => {
+          return task.batch([task.any(query1)]);
+        })
+        .then((insert) => {
+          console.log(user);
+          user = name;
+          globalUsername = username;
+          console.log("info" + info);
+          res.render("pages/main", {
+            my_title: "Music Space",
+            dailyImg: dailyImg,
+            user: user,
+            success: true,
+            error: false,
+            usernameTaken: checkUsername,
+        });
+      })
+        .catch((err) => {
+          console.log("error", err);
+          res.render("pages/register", {
+            my_title: "Errror",
+            dailyImg: dailyImg,
+            user: user,
+            success: false,
+            usernameTaken: checkUsername,
+            error: true,
+          });
+        });
+      }
+      else{
+        checkUsername = true;
+        console.log(checkUsername);
+        res.render("pages/register", {
+          my_title: "error",
+          dailyImg: dailyImg,
+          user: user,
+          success: false,
+          usernameTaken: checkUsername,
+          error: true,
+        });
+      }
     })
     .catch((err) => {
       console.log("error!", err);
@@ -378,7 +411,33 @@ app.post("/reviews", function (req, res) {
 
 app.get("/writeReview", function (req, res) {
   console.log("write review page loaded");
+
+  apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist= ' + favoriteArtist + '&page_size=5&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
+
+
   //console.log(tracks);
+  axios({
+    method: 'GET',
+    url: apiCall,
+    dataType: "json",
+    parameter: {
+      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
+    }
+  })
+    .then((track) => {
+      trackPresent = true;
+      tracks = track.data.message.body;
+      // console.log(tracks);
+      console.log(track_id);
+    })
+    .catch((err) =>{
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    })
+
+
 
   res.render("pages/writeReview", {
     my_title: "Music Space: Review",
