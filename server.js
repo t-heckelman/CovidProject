@@ -32,9 +32,12 @@ var trackPresent = false;
 var tracks;
 var snippet;
 var track_id;
-var favoriteArtist = 'baby keem';
+var favoriteArtist = "baby keem";
 var globalUsername = "username";
-var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist= ' + favoriteArtist + '&page_size=3&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
+var apiCall =
+  "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
+  favoriteArtist +
+  "&page_size=10&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 // nasa api call
 axios({
   url:
@@ -54,42 +57,44 @@ axios({
   });
 var songKey = "d3effb2990c26720f4799b07e4f1af2b";
 
-  //api call for baby keem
-  axios({
-    method: 'GET',
-    url: apiCall,
-    dataType: "json",
-    parameter: {
-      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-    }
-  })
-    .then((track) => {
-      // create array of all track_ids
-      // console.log(track.data);
-      // console.log(track.data.message);
-      // console.log(track.data.message.header);
-      // console.log(track.data.message.body);
-      // console.log(track.data.message.body.track_list[0]);
-      track_id = track.data.message.body.track_list[0].track.track_id;
-      trackPresent = true;
-      tracks = track.data.message.body;
-      // console.log(tracks);
-      console.log(track_id);
-      // second api call for snippet
-      axios({
-        method: 'GET',
-        url: 'http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=' + track_id + '&apikey=d3effb2990c26720f4799b07e4f1af2b' ,
-        dataType: "json",
-        parameter: {
-          apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-        }
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-        }
-      });
+//api call for baby keem
+axios({
+  method: "GET",
+  url: apiCall,
+  dataType: "json",
+  parameter: {
+    apikey: "d3effb2990c26720f4799b07e4f1af2b",
+  },
+})
+  .then((track) => {
+    // create array of all track_ids
+    // console.log(track.data);
+    // console.log(track.data.message);
+    // console.log(track.data.message.header);
+    // console.log(track.data.message.body);
+    // console.log(track.data.message.body.track_list[0]);
+    track_id = track.data.message.body.track_list[0].track.track_id;
+    trackPresent = true;
+    tracks = track.data.message.body;
+    // console.log(tracks);
+    console.log(track_id);
+    // second api call for snippet
+    axios({
+      method: "GET",
+      url:
+        "http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=" +
+        track_id +
+        "&apikey=d3effb2990c26720f4799b07e4f1af2b",
+      dataType: "json",
+      parameter: {
+        apikey: "d3effb2990c26720f4799b07e4f1af2b",
+      },
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
 
     // console.log(track);
     // console.log("predata");
@@ -127,7 +132,12 @@ app.get("/logout", function (req, res) {
 });
 
 app.get("/profile", function (req, res) {
-  console.log("Profile page loaded for user: " + globalUsername + "who's favorite artist is : " + favoriteArtist);
+  console.log(
+    "Profile page loaded for user: " +
+      globalUsername +
+      "who's favorite artist is : " +
+      favoriteArtist
+  );
 
   var query1 =
     "select * from reviews WHERE username = '" +
@@ -159,7 +169,7 @@ app.get("/profile", function (req, res) {
       });
     });
 });
-app.post("/profile", function (req, res){
+app.post("/profile", function (req, res) {
   console.log("Profile post");
   favoriteArtist = req.body.favArtist;
   console.log(favoriteArtist);
@@ -169,24 +179,38 @@ app.post("/profile", function (req, res){
     "' WHERE username = '" +
     globalUsername +
     "';";
-    var query2 = "select * from reviews WHERE username = '" + globalUsername + "'" + "ORDER BY review_date DESC;"
-  db.task("get-everything" ,(task) => {
+  var query2 =
+    "select * from reviews WHERE username = '" +
+    globalUsername +
+    "'" +
+    "ORDER BY review_date DESC;";
+  db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   })
-  .then((data) => {
-    db.task("get-everything" ,(task) => {
-      return task.batch([task.any(query2)]);
-    })
-    .then((songs) => {
-      res.render("pages/profile", {
-        my_title: "Music Space: Profile",
-        tools: tools,
-        user: user,
-        dailyImg: dailyImg,
-        songs: songs[0],
-        favorite_artist: favoriteArtist,
-        globalUsername: globalUsername,
-      });
+    .then((data) => {
+      db.task("get-everything", (task) => {
+        return task.batch([task.any(query2)]);
+      })
+        .then((songs) => {
+          res.render("pages/profile", {
+            my_title: "Music Space: Profile",
+            tools: tools,
+            user: user,
+            dailyImg: dailyImg,
+            songs: songs[0],
+            favorite_artist: favoriteArtist,
+            globalUsername: globalUsername,
+          });
+        })
+        .catch((err) => {
+          console.log("error", err);
+          res.render("pages/profile", {
+            my_title: "Error",
+            songs: [1, 2, 3, 4],
+            user: user,
+            tools: tools,
+          });
+        });
     })
     .catch((err) => {
       console.log("error", err);
@@ -197,16 +221,6 @@ app.post("/profile", function (req, res){
         tools: tools,
       });
     });
-  })
-  .catch((err) => {
-    console.log("error", err);
-    res.render("pages/profile", {
-      my_title: "Error",
-      songs: [1,2,3,4],
-      user: user,
-      tools: tools,
-    });
-  });
 });
 
 // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
@@ -225,13 +239,17 @@ app.post("/login", function (req, res) {
   console.log("loginYes");
   var username = req.body.username;
   var psw = req.body.psw;
-  var query1 = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + psw + "';";
+  var query1 =
+    "SELECT * FROM users WHERE username = '" +
+    username +
+    "' AND password = '" +
+    psw +
+    "';";
   globalUsername = username;
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
-  })
-  .then((info) => {
-    if(info[0][0].name != null){
+  }).then((info) => {
+    if (info[0][0].name != null) {
       user = info[0][0].name;
       favoriteArtist = info[0][0].favorite_artist;
       console.log(user);
@@ -243,8 +261,7 @@ app.post("/login", function (req, res) {
         success: true,
         error: false,
       });
-    }
-    else{
+    } else {
       res.render("pages/login", {
         my_title: "error",
         user: "login",
@@ -253,7 +270,7 @@ app.post("/login", function (req, res) {
         error: true,
       });
     }
-});
+  });
 });
 
 app.get("/register", function (req, res) {
@@ -307,7 +324,7 @@ app.post("/register", function (req, res) {
     })
     .catch((err) => {
       console.log("error!", err);
-      res.render("pages/register", {
+      res.render("pages/main", {
         my_title: "error",
         dailyImg: dailyImg,
         message: "uh oh",
@@ -376,17 +393,19 @@ app.post("/reviews", function (req, res) {
 app.get("/writeReview", function (req, res) {
   console.log("write review page loaded");
 
-  apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_artist= ' + favoriteArtist + '&page_size=5&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
-
+  apiCall =
+    "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
+    favoriteArtist +
+    "&page_size=10&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 
   //console.log(tracks);
   axios({
-    method: 'GET',
+    method: "GET",
     url: apiCall,
     dataType: "json",
     parameter: {
-      apikey: 'd3effb2990c26720f4799b07e4f1af2b',
-    }
+      apikey: "d3effb2990c26720f4799b07e4f1af2b",
+    },
   })
     .then((track) => {
       trackPresent = true;
@@ -394,14 +413,12 @@ app.get("/writeReview", function (req, res) {
       // console.log(tracks);
       console.log(track_id);
     })
-    .catch((err) =>{
+    .catch((err) => {
       if (error.response) {
         console.log(error.response.data);
         console.log(error.response.status);
       }
-    })
-
-
+    });
 
   res.render("pages/writeReview", {
     my_title: "Music Space: Review",
@@ -418,12 +435,116 @@ app.post("/writeReview", function (req, res) {
   /*Link/v1/filter/key*/
   //console.log(req);
 
-  console.log(req.body);
   //console.log(res);
-  var song = req.body.renderSong;
-  console.log(song);
+  // var song = req.body.renderSong;
+  //var song = tracks.track_list[0].track.track_name;
   //song = song.replace(" ", "_");
-  var review = req.body.userReview;
+  var review;
+  var review0 = req.body.e0;
+  console.log("review:" + review1);
+  var review1 = req.body.e1;
+  console.log("review:" + review1);
+  var review2 = req.body.e2;
+  console.log("review:" + review2);
+  var review3 = req.body.e3;
+  console.log("review:" + review3);
+  var review4 = req.body.e4;
+  console.log("review:" + review4);
+  var review5 = req.body.e5;
+  console.log("review:" + review5);
+  var review6 = req.body.e6;
+  console.log("review:" + review6);
+  var review7 = req.body.e7;
+  console.log("review:" + review7);
+  var review8 = req.body.e8;
+  console.log("review:" + review8);
+  var review9 = req.body.e9;
+  console.log("review:" + review9);
+
+  if (review0 != review1) {
+    review = review0;
+    song =
+      tracks.track_list[0].track.track_name +
+      " by " +
+      tracks.track_list[0].track.artist_name;
+  }
+
+  if (review1 != review2) {
+    review = review1;
+    // song = tracks.track_list[1].track.track_name;
+    song =
+      tracks.track_list[1].track.track_name +
+      " by " +
+      tracks.track_list[1].track.artist_name;
+  }
+  if (review2 != review3) {
+    review = review2;
+    // song = tracks.track_list[2].track.track_name;
+    song =
+      tracks.track_list[2].track.track_name +
+      " by " +
+      tracks.track_list[2].track.artist_name;
+  }
+  if (review3 != review4) {
+    review = review3;
+    // song = tracks.track_list[3].track.track_name;
+    song =
+      tracks.track_list[3].track.track_name +
+      " by " +
+      tracks.track_list[3].track.artist_name;
+  }
+  if (review4 != review5) {
+    review = review4;
+    // song = tracks.track_list[4].track.track_name;
+    song =
+      tracks.track_list[4].track.track_name +
+      " by " +
+      tracks.track_list[4].track.artist_name;
+  }
+  if (review5 != review6) {
+    review = review5;
+    // song = tracks.track_list[5].track.track_name;
+    song =
+      tracks.track_list[5].track.track_name +
+      " by " +
+      tracks.track_list[5].track.artist_name;
+  }
+  if (review6 != review7) {
+    review = review6;
+    // song = tracks.track_list[6].track.track_name;
+    song =
+      tracks.track_list[6].track.track_name +
+      " by " +
+      tracks.track_list[6].track.artist_name;
+  }
+  if (review7 != review8) {
+    review = review7;
+    //song = tracks.track_list[7].track.track_name;
+    song =
+      tracks.track_list[7].track.track_name +
+      " by " +
+      tracks.track_list[7].track.artist_name;
+  }
+  if (review8 != review9) {
+    review = review8;
+    //song = tracks.track_list[8].track.track_name;
+    song =
+      tracks.track_list[8].track.track_name +
+      " by " +
+      tracks.track_list[8].track.artist_name;
+  }
+  if (review9 != review0) {
+    review = review9;
+    // song = tracks.track_list[9].track.track_name;
+    song =
+      tracks.track_list[9].track.track_name +
+      " by " +
+      tracks.track_list[9].track.artist_name;
+  }
+  console.log(review);
+
+  var song;
+
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
@@ -436,7 +557,7 @@ app.post("/writeReview", function (req, res) {
 
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
-  })
+  });
 
   var query2 = "select * from reviews ORDER BY review_date DESC;";
   db.task("get-everything", (task) => {
@@ -462,6 +583,7 @@ app.post("/writeReview", function (req, res) {
       });
     });
 });
+
 //     .then((data) => {
 //       console.log("database passed");
 //       axios({

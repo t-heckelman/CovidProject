@@ -158,7 +158,7 @@ height: 37%; */
     class="jumbotron text-center"
     style="background-color: #808080; border-radius: 50px"
   >
-    <p class="song" name = "song" value = "<%= tracks.track_list[i].track.track_name %>"> <%= tracks.track_list[i].track.track_name %></p>
+    <p class="song" name = "<% i %>>" value = "<%= tracks.track_list[i].track.track_name %>"> <%= tracks.track_list[i].track.track_name %></p>
     <form>
       <input name = "renderSong" value = "<%= tracks.track_list[i].track.track_name %>" type = "hidden"> </input>
     </form>
@@ -170,7 +170,7 @@ height: 37%; */
           class="form-control"
           type="text"
           id="review-text"
-          name="userReview"
+          name="e<%= i %>"
           placeholder="Write a review"
           style="text-align: center; border-radius: 50px"
           onkeyup="enableWriteButton()"
