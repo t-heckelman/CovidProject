@@ -468,6 +468,7 @@ app.get("/writeReview", function (req, res) {
   });
 });
 app.post("/writeReview", function (req, res) {
+  console.log("in body of write review!");
   /*Link/v1/filter/key*/
   //console.log(req);
 
@@ -569,17 +570,17 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[8].track.artist_name;
   }
-  if (review9 != review0) {
-    review = review9;
-    // song = tracks.track_list[9].track.track_name;
-    song =
-      tracks.track_list[9].track.track_name +
-      " by " +
-      tracks.track_list[9].track.artist_name;
-  }
+  // if (review9 != review0) {
+  //   review = review9;
+  //   // song = tracks.track_list[9].track.track_name;
+  //   song =
+  //     tracks.track_list[9].track.track_name +
+  //     " by " +
+  //     tracks.track_list[9].track.artist_name;
+  // }
   console.log(review);
 
-  console.log(tracks);
+  // console.log(tracks);
 
   var song;
 
@@ -708,7 +709,7 @@ app.post("/searchSong", function (req, res) {
       trackPresent = true;
       tracks = track.data.message.body;
       //searchTracks = track.data.message.body;
-      console.log(tracks.track_list);
+      // console.log(tracks.track_list);
       // console.log(track_id);
 
       res.render("pages/writeReview", {
