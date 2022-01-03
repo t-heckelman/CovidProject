@@ -579,6 +579,8 @@ app.post("/writeReview", function (req, res) {
   }
   console.log(review);
 
+  console.log(tracks);
+
   var song;
 
   console.log("Write post function called with review: \n" + review + "\n");
@@ -686,7 +688,7 @@ app.post("/searchSong", function (req, res) {
     artistName +
     "&page_size=10&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 
-  console.log("api call: " + apiCall);
+  console.log("api call: " + searchApiCall);
 
   axios({
     method: "GET",
@@ -704,16 +706,17 @@ app.post("/searchSong", function (req, res) {
       // console.log(track.data.message.body.track_list[0]);
       track_id = track.data.message.body.track_list[0].track.track_id;
       trackPresent = true;
-      //tracks = track.data.message.body;
-      searchTracks = track.data.message.body;
-      // console.log(tracks);
+      tracks = track.data.message.body;
+      //searchTracks = track.data.message.body;
+      console.log(tracks.track_list);
       // console.log(track_id);
 
       res.render("pages/writeReview", {
         my_title: "Music Space: Review",
         dailyImg: dailyImg,
         tools: tools,
-        tracks: searchTracks,
+        // tracks: searchTracks,
+        tracks: tracks,
         user: user,
         trackPresent: trackPresent,
         error: false,
