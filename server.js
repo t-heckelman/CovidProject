@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -35,7 +35,7 @@ var track_id;
 var favoriteArtist = "baby keem";
 var globalUsername = "username";
 var apiCall =
-  "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
+  "http://api.musixmatch.com/ws/1.1/track.search?q_artist=" +
   favoriteArtist +
   "&page_size=10&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b";
 // nasa api call
@@ -60,13 +60,14 @@ var songKey = "d3effb2990c26720f4799b07e4f1af2b";
 //api call for baby keem
 axios({
   method: "GET",
-  url: apiCall,
+  url: "http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=10&page=1&s_track_release_date=desc&apikey=d3effb2990c26720f4799b07e4f1af2b",
   dataType: "json",
   parameter: {
     apikey: "d3effb2990c26720f4799b07e4f1af2b",
   },
 })
   .then((track) => {
+    console.log(track.data.message);
     // create array of all track_ids
     // console.log(track.data);
     // console.log(track.data.message);
