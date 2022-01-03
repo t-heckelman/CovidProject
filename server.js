@@ -19,7 +19,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -281,6 +281,7 @@ app.get("/register", function (req, res) {
     tools: tools,
     user: user,
     error: false,
+    usernameTaken: false,
   });
 });
 
@@ -290,6 +291,7 @@ app.post("/register", function (req, res) {
   var name = req.body.name;
   var username = req.body.username;
   var psw = req.body.psw;
+  var checkUsername = false;
   username = username.toUpperCase();
   console.log("name " + name);
   console.log("email " + email);
@@ -306,21 +308,55 @@ app.post("/register", function (req, res) {
     "', '" +
     email +
     "');";
+  var query2 =  "SELECT * FROM users WHERE username = '" + username + "';";
+  console.log(query2);
   console.log(query1);
   db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
+    return task.batch([task.any(query2)]);
   })
-    .then((info) => {
-      user = name;
-      globalUsername = username;
-      console.log("info" + info);
-      res.render("pages/main", {
-        my_title: "Music Space",
-        dailyImg: dailyImg,
-        user: user,
-        success: true,
-        error: false,
-      });
+    .then((check) => {
+      if(check[0][0].username == null){
+        db.task("get-everything", (task) => {
+          return task.batch([task.any(query1)]);
+        })
+        .then((insert) => {
+          console.log(user);
+          user = name;
+          globalUsername = username;
+          console.log("info" + info);
+          res.render("pages/main", {
+            my_title: "Music Space",
+            dailyImg: dailyImg,
+            user: user,
+            success: true,
+            error: false,
+            usernameTaken: checkUsername,
+        });
+      })
+        .catch((err) => {
+          console.log("error", err);
+          res.render("pages/register", {
+            my_title: "Errror",
+            dailyImg: dailyImg,
+            user: user,
+            success: false,
+            usernameTaken: checkUsername,
+            error: true,
+          });
+        });
+      }
+      else{
+        checkUsername = true;
+        console.log(checkUsername);
+        res.render("pages/register", {
+          my_title: "error",
+          dailyImg: dailyImg,
+          user: user,
+          success: false,
+          usernameTaken: checkUsername,
+          error: true,
+        });
+      }
     })
     .catch((err) => {
       console.log("error!", err);
