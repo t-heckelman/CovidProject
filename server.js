@@ -31,7 +31,6 @@ dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
 var trackPresent = false;
-//var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=blackbird&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
 var tracks;
 var snippet;
 var track_id;
