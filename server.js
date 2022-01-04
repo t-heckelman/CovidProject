@@ -3,7 +3,7 @@ let app = express();
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const server_port = 5050;
+//const server_port = 5050;
 const axios = require("axios");
 const qs = require("axios");
 let pgp = require("pg-promise")();
@@ -87,7 +87,6 @@ axios({
 
     console.log("tracklist length: " + tracks.track_list.length);
 
-    
     //console.log("tracks: " + tracks.track_list[0].track.track_name);
     console.log(track_id);
     // second api call for snippet
@@ -128,6 +127,8 @@ app.get("/", function (req, res) {
     dailyImg: dailyImg,
     user: user,
     error: false,
+    tools: tools,
+
   });
 });
 
@@ -181,6 +182,100 @@ app.get("/profile", function (req, res) {
       });
     });
 });
+
+app.get("/login", function (req, res) {
+  console.log("Login page loaded");
+  res.render("pages/login", {
+    my_title: "Music Space: Login",
+    dailyImg: dailyImg,
+    user: user,
+    error: false,
+    tools: tools,
+  });
+});
+
+app.get("/register", function (req, res) {
+  console.log("Register page loaded");
+  res.render("pages/register", {
+    my_title: "Music Space: Register",
+    dailyImg: dailyImg,
+    tools: tools,
+    user: user,
+    error: false,
+    usernameTaken: false,
+    tools: tools,
+  });
+});
+
+app.get("/reviews", function (req, res) {
+  console.log("Reviews page loaded");
+  // api needs to be added to this
+  var query1 = "select * from reviews ORDER BY review_date DESC;";
+  db.task("get-everything", (task) => {
+    return task.batch([task.any(query1)]);
+  })
+    .then((data) => {
+      res.render("pages/reviews", {
+        my_title: "Music Space: Reviews",
+        tools: tools,
+        user: user,
+        dailyImg: dailyImg,
+        songs: data[0],
+        snippet: snippet,
+      });
+    })
+    .catch((err) => {
+      console.log("error", err);
+      res.render("pages/reviews", {
+        my_title: "Error",
+        songs: [1, 2, 3, 4],
+        user: user,
+        tools: tools,
+      });
+    });
+});
+
+app.get("/writeReview", function (req, res) {
+  console.log("write review page loaded");
+
+  apiCall =
+    "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
+    favoriteArtist +
+    "&page_size=10&page=1&s_track_release_date=desc&apikey=960f710bf56b66427c27a6349eb3ce0c";
+
+  console.log(tracks);
+  axios({
+    method: "GET",
+    url: apiCall,
+    dataType: "json",
+    parameter: {
+      apikey: "960f710bf56b66427c27a6349eb3ce0c",
+    },
+  })
+    .then((track) => {
+      trackPresent = true;
+      tracks = track.data.message.body;
+      // console.log(tracks);
+      console.log(track_id);
+      res.render("pages/writeReview", {
+        my_title: "Music Space: Review",
+        dailyImg: dailyImg,
+        tools: tools,
+        user: user,
+        tracks: tracks,
+        snippet: snippet,
+        trackPresent: trackPresent,
+        error: false,
+      });
+    })
+    .catch((err) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
+});
+
 app.post("/profile", function (req, res) {
   console.log("Profile post");
   favoriteArtist = req.body.favArtist;
@@ -237,15 +332,7 @@ app.post("/profile", function (req, res) {
 
 // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
 
-app.get("/login", function (req, res) {
-  console.log("Login page loaded");
-  res.render("pages/login", {
-    my_title: "Music Space: Login",
-    dailyImg: dailyImg,
-    user: user,
-    error: false,
-  });
-});
+
 
 app.post("/login", function (req, res) {
   console.log("loginYes");
@@ -285,17 +372,174 @@ app.post("/login", function (req, res) {
   });
 });
 
-app.get("/register", function (req, res) {
-  console.log("Register page loaded");
-  res.render("pages/register", {
-    my_title: "Music Space: Register",
-    dailyImg: dailyImg,
-    tools: tools,
-    user: user,
-    error: false,
-    usernameTaken: false,
-  });
-});
+// app.post("/register", function (req, res) {
+//   console.log("have clicked register and entered function");
+//   var email = req.body.email;
+//   var name = req.body.name;
+//   var username = req.body.username;
+//   var psw = req.body.psw;
+//   var checkUsername = false;
+//   username = username.toUpperCase();
+//   console.log("name " + name);
+//   console.log("email " + email);
+//   console.log("username " + username);
+//   console.log("psw " + psw);
+
+//   var query1 =
+//     "INSERT INTO users(name, username, password, email) values('" +
+//     name +
+//     "', '" +
+//     username +
+//     "', '" +
+//     psw +
+//     "', '" +
+//     email +
+//     "');";
+//   var query2 =  "SELECT * FROM users WHERE username = '" + username + "';";
+//   console.log(query2);
+//   console.log(query1);
+//   db.task("get-everything", (task) => {
+//     return task.batch([task.any(query2)]);
+//   })
+//     .then((check) => {
+//       if(check[0][0].username == null){
+//         db.task("get-everything", (task) => {
+//           return task.batch([task.any(query1)]);
+//         })
+//         .then((insert) => {
+//           console.log(user);
+//           user = name;
+//           globalUsername = username;
+//           console.log("info" + info);
+//           res.render("pages/main", {
+//             my_title: "Music Space",
+//             dailyImg: dailyImg,
+//             user: user,
+//             success: true,
+//             error: false,
+//             usernameTaken: checkUsername,
+//         });
+//       })
+//         .catch((err) => {
+//           console.log("error", err);
+//           res.render("pages/register", {
+//             my_title: "Errror",
+//             dailyImg: dailyImg,
+//             user: user,
+//             success: false,
+//             usernameTaken: checkUsername,
+//             error: true,
+//           });
+//         });
+//       }
+//       else{
+//         checkUsername = true;
+//         console.log(checkUsername);
+//         res.render("pages/register", {
+//           my_title: "error",
+//           dailyImg: dailyImg,
+//           user: user,
+//           success: false,
+//           usernameTaken: checkUsername,
+//           error: true,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("error!", err);
+//       res.render("pages/main", {
+//         my_title: "error",
+//         dailyImg: dailyImg,
+//         message: "uh oh",
+//         user: user,
+//         error: true,
+//       });
+//     });
+// });
+
+// app.post("/register", function (req, res) {
+//   console.log("have clicked register and entered function");
+//   var email = req.body.email;
+//   var name = req.body.name;
+//   var username = req.body.username;
+//   var psw = req.body.psw;
+//   var checkUsername = false;
+//   username = username.toUpperCase();
+//   console.log("name " + name);
+//   console.log("email " + email);
+//   console.log("username " + username);
+//   console.log("psw " + psw);
+
+//   var query1 =
+//     "INSERT INTO users(name, username, password, email) values('" +
+//     name +
+//     "', '" +
+//     username +
+//     "', '" +
+//     psw +
+//     "', '" +
+//     email +
+//     "');";
+//   var query2 = "SELECT * FROM users WHERE username = '" + username + "';";
+//   console.log(query2);
+//   console.log(query1);
+//   db.task("get-everything", (task) => {
+//     return task.batch([task.any(query2)]);
+//   })
+//     .then((check) => {
+//       if (check[0][0].username == null) {
+//         db.task("get-everything", (task) => {
+//           return task.batch([task.any(query1)]);
+//         })
+//           .then((insert) => {
+//             console.log(user);
+//             user = name;
+//             globalUsername = username;
+//             console.log("info" + info);
+//             res.render("pages/main", {
+//               my_title: "Music Space",
+//               dailyImg: dailyImg,
+//               user: user,
+//               success: true,
+//               error: false,
+//               usernameTaken: checkUsername,
+//             });
+//           })
+//           .catch((err) => {
+//             console.log("error", err);
+//             res.render("pages/register", {
+//               my_title: "Errror",
+//               dailyImg: dailyImg,
+//               user: user,
+//               success: false,
+//               usernameTaken: checkUsername,
+//               error: true,
+//             });
+//           });
+//       } else {
+//         checkUsername = true;
+//         console.log(checkUsername);
+//         res.render("pages/register", {
+//           my_title: "error",
+//           dailyImg: dailyImg,
+//           user: user,
+//           success: false,
+//           usernameTaken: checkUsername,
+//           error: true,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("error!", err);
+//       res.render("pages/main", {
+//         my_title: "error",
+//         dailyImg: dailyImg,
+//         message: "uh oh",
+//         user: user,
+//         error: true,
+//       });
+//     });
+// });
 
 app.post("/register", function (req, res) {
   console.log("have clicked register and entered function");
@@ -327,7 +571,7 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query2)]);
   })
     .then((check) => {
-      if(check[0][0].username == null){
+      if(check[0] == null){
         db.task("get-everything", (task) => {
           return task.batch([task.any(query1)]);
         })
@@ -380,35 +624,8 @@ app.post("/register", function (req, res) {
         error: true,
       });
     });
-});
+})
 
-app.get("/reviews", function (req, res) {
-  console.log("Reviews page loaded");
-  // api needs to be added to this
-  var query1 = "select * from reviews ORDER BY review_date DESC;";
-  db.task("get-everything", (task) => {
-    return task.batch([task.any(query1)]);
-  })
-    .then((data) => {
-      res.render("pages/reviews", {
-        my_title: "Music Space: Reviews",
-        tools: tools,
-        user: user,
-        dailyImg: dailyImg,
-        songs: data[0],
-        snippet: snippet,
-      });
-    })
-    .catch((err) => {
-      console.log("error", err);
-      res.render("pages/reviews", {
-        my_title: "Error",
-        songs: [1, 2, 3, 4],
-        user: user,
-        tools: tools,
-      });
-    });
-});
 
 app.post("/reviews", function (req, res) {
   console.log("Reviews searchfilter(POST) loaded");
@@ -438,48 +655,8 @@ app.post("/reviews", function (req, res) {
     });
 });
 
-app.get("/writeReview", function (req, res) {
-  console.log("write review page loaded");
 
-  apiCall =
-    "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
-    favoriteArtist +
-    "&page_size=10&page=1&s_track_release_date=desc&apikey=960f710bf56b66427c27a6349eb3ce0c";
 
-  console.log(tracks);
-  axios({
-    method: "GET",
-    url: apiCall,
-    dataType: "json",
-    parameter: {
-      apikey: "960f710bf56b66427c27a6349eb3ce0c",
-    },
-  })
-    .then((track) => {
-      trackPresent = true;
-      tracks = track.data.message.body;
-      // console.log(tracks);
-      console.log(track_id);
-      res.render("pages/writeReview", {
-        my_title: "Music Space: Review",
-        dailyImg: dailyImg,
-        tools: tools,
-        user: user,
-        tracks: tracks,
-        snippet: snippet,
-        trackPresent: trackPresent,
-        error: false,
-      });
-    })
-    .catch((err) => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      }
-    });
-  });
-
-  
 app.post("/writeReview", function (req, res) {
   console.log("in body of write review!");
   /*Link/v1/filter/key*/
@@ -488,8 +665,17 @@ app.post("/writeReview", function (req, res) {
   //console.log(res);
   // var song = req.body.renderSong;
   //var song = tracks.track_list[0].track.track_name;
-  //song = song.replace(" ", "_");
+  //song = song.replace(" ", "_");\
   var review;
+
+  // for (var i = 0; i < tracks.track_list.length; i++) {
+  //   console.log("body at i" + req.body.e + i);
+  //   if (req.body.e + "" + i !== "undefined") {
+  //     review = req.body.e + "" + i;
+  //     console.log("for loop review: " + review);
+  //   }
+  // }
+
   var review0 = req.body.e0;
   console.log("review:" + review1);
   var review1 = req.body.e1;
@@ -511,6 +697,10 @@ app.post("/writeReview", function (req, res) {
   var review9 = req.body.e9;
   console.log("review:" + review9);
 
+  if(review0 != "undefined"){
+    console.log("console logged undefined!");
+  }
+
   if (review0 != review1) {
     review = review0;
     song =
@@ -518,7 +708,6 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[0].track.artist_name;
   }
-
   if (review1 != review2) {
     review = review1;
     // song = tracks.track_list[1].track.track_name;
@@ -591,7 +780,7 @@ app.post("/writeReview", function (req, res) {
   //     " by " +
   //     tracks.track_list[9].track.artist_name;
   // }
-  console.log(review);
+  //console.log(review);
 
   // console.log(tracks);
 
@@ -616,14 +805,16 @@ app.post("/writeReview", function (req, res) {
     return task.batch([task.any(query2)]);
   })
     .then((data) => {
-      res.render("pages/reviews", {
-        my_title: "Music Space: Reviews",
-        tools: tools,
-        user: user,
-        dailyImg: dailyImg,
-        songs: data[0],
-        snippet: snippet,
-      });
+      // res.render("pages/reviews", {
+      //   my_title: "Music Space: Reviews",
+      //   tools: tools,
+      //   user: user,
+      //   dailyImg: dailyImg,
+      //   songs: data[0],
+      //   snippet: snippet,
+      // });
+      res.redirect("/reviews");
+
     })
     .catch((err) => {
       console.log("error", err);
