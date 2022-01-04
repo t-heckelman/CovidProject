@@ -19,16 +19,18 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
 const isProduction = process.env.NODE_ENV === "production";
+const musicKey = process.env.musixAPI;
+const nasaKey = process.env.nasaAPI;
+console.log(musicKey);
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
 var trackPresent = false;
-//var apiCall = 'http://api.musixmatch.com/ws/1.1/track.search?q_song=blackbird&page_size=3&page=1&s_track_rating=desc&apikey=d3effb2990c26720f4799b07e4f1af2b';
 var tracks;
 var snippet;
 var track_id;
@@ -38,16 +40,17 @@ favoriteArtist = favoriteArtist.replace(" ", "_");
 var apiCall =
   "http://api.musixmatch.com/ws/1.1/track.search?q_artist=" +
   favoriteArtist +
-  "&page_size=10&page=1&s_track_release_date=desc&apikey=960f710bf56b66427c27a6349eb3ce0c";
+  "&page_size=10&page=1&s_track_release_date=desc&apikey=" +
+  musicKey;
 // nasa api call
 axios({
   url:
-    "https://api.nasa.gov/planetary/apod?api_key=p0oTvbRVafsxIYbUUg4vRhgBdFMqwKBIeayQVkvX",
+    "https://api.nasa.gov/planetary/apod?api_key=" + nasaKey,
   method: "GET",
   dataType: "json",
 })
   .then((items) => {
-    dailyImg = items.data;
+    dailyImg = (items.data);
     // console.log("hi", data);
   })
   .catch((error) => {
@@ -56,21 +59,15 @@ axios({
       console.log(error.response.status);
     }
   });
-var songKey = "d3effb2990c26720f4799b07e4f1af2b";
-
-var malcKey = "960f710bf56b66427c27a6349eb3ce0c";
-
 //api call for baby keem
 console.log("fav api call " + apiCall);
 axios({
   method: "GET",
-  url: apiCall,
+  url: "http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=10&page=1&s_track_release_date=desc&apikey=" + musicKey,
   dataType: "json",
-  parameter: {
-    apikey: "960f710bf56b66427c27a6349eb3ce0c",
-  },
 })
   .then((track) => {
+    console.log(track.data.message);
     // create array of all track_ids
     // console.log(track.data);
     // console.log(track.data.message);
@@ -94,12 +91,8 @@ axios({
       method: "GET",
       url:
         "http://api.musixmatch.com/ws/1.1/track.snippet.get?track_id=" +
-        track_id +
-        "&apikey=960f710bf56b66427c27a6349eb3ce0c",
+        track_id + "&apikey=" + musicKey,
       dataType: "json",
-      parameter: {
-        apikey: "960f710bf56b66427c27a6349eb3ce0c",
-      },
     }).catch((error) => {
       if (error.response) {
         console.log(error.response.data);
@@ -656,6 +649,41 @@ app.post("/reviews", function (req, res) {
 });
 
 
+  apiCall =
+    "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
+    favoriteArtist +
+    "&page_size=10&page=1&s_track_release_date=desc&apikey=" + musicKey;
+
+  console.log(tracks);
+  axios({
+    method: "GET",
+    url: apiCall,
+    dataType: "json",
+  })
+    .then((track) => {
+      trackPresent = true;
+      tracks = track.data.message.body;
+      // console.log(tracks);
+      console.log(track_id);
+      res.render("pages/writeReview", {
+        my_title: "Music Space: Review",
+        dailyImg: dailyImg,
+        tools: tools,
+        user: user,
+        tracks: tracks,
+        snippet: snippet,
+        trackPresent: trackPresent,
+        error: false,
+      });
+    })
+    .catch((err) => {
+      if (error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+      }
+    });
+  });
+
 
 app.post("/writeReview", function (req, res) {
   console.log("in body of write review!");
@@ -833,9 +861,7 @@ app.post("/writeReview", function (req, res) {
 //         method: "GET",
 //         url: apiCall,
 //         dataType: "json",
-//         parameter: {
-//           apikey: "d3effb2990c26720f4799b07e4f1af2b",
-//         },
+//
 //       })
 //         .then((track) => {
 //           trackPresent = true;
@@ -891,7 +917,8 @@ app.post("/searchSong", function (req, res) {
     songTitle +
     "&q_artist=" +
     artistName +
-    "&page_size=10&page=1&s_track_rating=desc&apikey=960f710bf56b66427c27a6349eb3ce0c";
+    "&page_size=10&page=1&s_track_rating=desc&apikey=" +
+    musicKey;
 
   console.log("api call: " + searchApiCall);
 
@@ -899,9 +926,6 @@ app.post("/searchSong", function (req, res) {
     method: "GET",
     url: searchApiCall,
     dataType: "json",
-    parameter: {
-      apikey: "960f710bf56b66427c27a6349eb3ce0c",
-    },
   })
     .then((track) => {
       // console.log(track.data);
