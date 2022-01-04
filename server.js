@@ -19,13 +19,17 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "teddyheckelman",
+  user: "malcolmholman",
   password: "password",
 };
 
 const isProduction = process.env.NODE_ENV === "production";
-const musicKey = process.env.musixAPI;
-const nasaKey = process.env.nasaAPI;
+// const musicKey = process.env.musixAPI;
+// const nasaKey = process.env.nasaAPI;
+
+// const musicKey = ${env:musixAPI};
+// const nasaKey = ${env:nasaAPI};
+
 console.log(musicKey);
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
@@ -648,6 +652,8 @@ app.post("/reviews", function (req, res) {
     });
 });
 
+app.get("/writeReview", function (req, res) {
+  console.log("write review page loaded");
 
   apiCall =
     "http://api.musixmatch.com/ws/1.1/track.search?q_artist= " +
@@ -683,6 +689,7 @@ app.post("/reviews", function (req, res) {
       }
     });
   });
+
 
 
 app.post("/writeReview", function (req, res) {
