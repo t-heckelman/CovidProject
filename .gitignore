@@ -1,3 +1,9 @@
 # ignore node_modules.
 node_modules/
+<<<<<<< HEAD
 .env
+=======
+.DS_Store
+db/.DS_Store
+views/.DS_Store
+>>>>>>> ff8824ba6ffe9b16df89ebf3bdf6032acfc001e2
