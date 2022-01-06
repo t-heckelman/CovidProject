@@ -128,6 +128,8 @@ function enableWriteButton(){
   var reviewButton = document.getElementById("review-button");
   var reviewText = document.getElementById("review-text")
 
+  console.log("reviewtext:" + reviewText.value);
+
   if(reviewText.value == ""){
     reviewButton.disabled = true;
   } else{

@@ -6,6 +6,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //const server_port = 5050;
 const axios = require("axios");
 const qs = require("axios");
+
+require('dotenv').config()
+
+var Filter = require('bad-words'),
+    filter = new Filter();
+ 
+//console.log(filter.clean("Don't be an ash0le"));
+
 let pgp = require("pg-promise")();
 
 app.set("view engine", "ejs");
@@ -14,6 +22,7 @@ app.use(express.static(__dirname + "/"));
 const tools = require("./resources/js/script");
 
 // This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
+//put this stuff in env file
 var dailyImg;
 let dbConfig = {
   host: "127.0.0.1",
@@ -23,14 +32,23 @@ let dbConfig = {
   password: "password",
 };
 
+// console.log("processenv:" + process.env);
+// console.log("key: " + process.env.MUSIX_KEY);
+musicKey = process.env.MUSIX_API;
+nasaKey = process.env.NASA_API;
+
 const isProduction = process.env.NODE_ENV === "production";
+
+// console.log("process: " + process.env.zsh);
+// console.log("shell: " + process.env.shell);
+
 // const musicKey = process.env.musixAPI;
 // const nasaKey = process.env.nasaAPI;
 
 // const musicKey = ${env:musixAPI};
 // const nasaKey = ${env:nasaAPI};
 
-console.log(musicKey);
+//console.log("music key: " + musicKey);
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
@@ -712,7 +730,7 @@ app.post("/writeReview", function (req, res) {
   // }
 
   var review0 = req.body.e0;
-  console.log("review:" + review1);
+  console.log("review:" + review0);
   var review1 = req.body.e1;
   console.log("review:" + review1);
   var review2 = req.body.e2;
@@ -732,18 +750,16 @@ app.post("/writeReview", function (req, res) {
   var review9 = req.body.e9;
   console.log("review:" + review9);
 
-  if(review0 != "undefined"){
-    console.log("console logged undefined!");
-  }
+  var song;
 
-  if (review0 != review1) {
+  if (review0 != null) {
     review = review0;
     song =
       tracks.track_list[0].track.track_name +
       " by " +
       tracks.track_list[0].track.artist_name;
   }
-  if (review1 != review2) {
+  if (review1 != null) {
     review = review1;
     // song = tracks.track_list[1].track.track_name;
     song =
@@ -751,7 +767,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[1].track.artist_name;
   }
-  if (review2 != review3) {
+  if (review2 != null) {
     review = review2;
     // song = tracks.track_list[2].track.track_name;
     song =
@@ -759,7 +775,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[2].track.artist_name;
   }
-  if (review3 != review4) {
+  if (review3 != null) {
     review = review3;
     // song = tracks.track_list[3].track.track_name;
     song =
@@ -767,7 +783,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[3].track.artist_name;
   }
-  if (review4 != review5) {
+  if (review4 != null) {
     review = review4;
     // song = tracks.track_list[4].track.track_name;
     song =
@@ -775,7 +791,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[4].track.artist_name;
   }
-  if (review5 != review6) {
+  if (review5 != null) {
     review = review5;
     // song = tracks.track_list[5].track.track_name;
     song =
@@ -783,7 +799,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[5].track.artist_name;
   }
-  if (review6 != review7) {
+  if (review6 != null) {
     review = review6;
     // song = tracks.track_list[6].track.track_name;
     song =
@@ -791,7 +807,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[6].track.artist_name;
   }
-  if (review7 != review8) {
+  if (review7 != null) {
     review = review7;
     //song = tracks.track_list[7].track.track_name;
     song =
@@ -799,7 +815,7 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[7].track.artist_name;
   }
-  if (review8 != review9) {
+  if (review8 != null) {
     review = review8;
     //song = tracks.track_list[8].track.track_name;
     song =
@@ -807,19 +823,28 @@ app.post("/writeReview", function (req, res) {
       " by " +
       tracks.track_list[8].track.artist_name;
   }
-  // if (review9 != review0) {
-  //   review = review9;
-  //   // song = tracks.track_list[9].track.track_name;
-  //   song =
-  //     tracks.track_list[9].track.track_name +
-  //     " by " +
-  //     tracks.track_list[9].track.artist_name;
-  // }
+  if (review9 != null) {
+    review = review9;
+    // song = tracks.track_list[9].track.track_name;
+    song =
+      tracks.track_list[9].track.track_name +
+      " by " +
+      tracks.track_list[9].track.artist_name;
+  }
+
+  console.log("review: " + review);
+
   //console.log(review);
 
   // console.log(tracks);
 
-  var song;
+  
+  // var Filter = require('bad-words'),
+  //   filter = new Filter(); 
+  //console.log(filter.clean("Don't be an ash0le"));
+  // console.log("review to be cleaned" + review);
+  console.log("filtered review" + filter.clean(review));
+  review = filter.clean(review);
 
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
