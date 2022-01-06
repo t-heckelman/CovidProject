@@ -19,18 +19,19 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
 const isProduction = process.env.NODE_ENV === "production";
-const musicKey = process.env.musixAPI;
-const nasaKey = process.env.nasaAPI;
+
+console.log(process.env.MUSIX_API);
 
 // const musicKey = ${env:musixAPI};
 // const nasaKey = ${env:nasaAPI};
-
-console.log(musicKey);
+musicKey = process.env.MUSIX_API;
+nasaKey = process.env.NASA_API;
+// console.log(musicKey);
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
