@@ -34,21 +34,15 @@ let dbConfig = {
 
 // console.log("processenv:" + process.env);
 // console.log("key: " + process.env.MUSIX_KEY);
-musicKey = process.env.MUSIX_API;
-nasaKey = process.env.NASA_API;
+const musicKey = process.env.MUSIX_API;
+const nasaKey = process.env.NASA_API;
 
 const isProduction = process.env.NODE_ENV === "production";
 
 // console.log("process: " + process.env.zsh);
 // console.log("shell: " + process.env.shell);
 
-// const musicKey = process.env.musixAPI;
-// const nasaKey = process.env.nasaAPI;
 
-// const musicKey = ${env:musixAPI};
-// const nasaKey = ${env:nasaAPI};
-
-//console.log("music key: " + musicKey);
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
 var user = "Login";
@@ -82,14 +76,13 @@ axios({
     }
   });
 //api call for baby keem
-console.log("fav api call " + apiCall);
+// console.log("fav api call " + apiCall);
 axios({
   method: "GET",
   url: "http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=10&page=1&s_track_release_date=desc&apikey=" + musicKey,
   dataType: "json",
 })
   .then((track) => {
-    console.log(track.data.message);
     // create array of all track_ids
     // console.log(track.data);
     // console.log(track.data.message);
@@ -104,7 +97,7 @@ axios({
     trackPresent = true;
     tracks = track.data.message.body;
 
-    console.log("tracklist length: " + tracks.track_list.length);
+    // console.log("tracklist length: " + tracks.track_list.length);
 
     //console.log("tracks: " + tracks.track_list[0].track.track_name);
     console.log(track_id);
@@ -586,7 +579,7 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query2)]);
   })
     .then((check) => {
-      if(check[0] == null){
+      if(check[0] == null && username == filter.clean(username)){
         db.task("get-everything", (task) => {
           return task.batch([task.any(query1)]);
         })
