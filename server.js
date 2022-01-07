@@ -11,7 +11,7 @@ require('dotenv').config()
 
 var Filter = require('bad-words'),
     filter = new Filter();
- 
+
 //console.log(filter.clean("Don't be an ash0le"));
 
 let pgp = require("pg-promise")();
@@ -28,7 +28,7 @@ let dbConfig = {
   host: "127.0.0.1",
   port: 5432,
   database: "postgres",
-  user: "malcolmholman",
+  user: "teddyheckelman",
   password: "password",
 };
 
@@ -831,9 +831,9 @@ app.post("/writeReview", function (req, res) {
 
   // console.log(tracks);
 
-  
+
   // var Filter = require('bad-words'),
-  //   filter = new Filter(); 
+  //   filter = new Filter();
   //console.log(filter.clean("Don't be an ash0le"));
   // console.log("review to be cleaned" + review);
   console.log("filtered review" + filter.clean(review));
