@@ -66,7 +66,7 @@ function passwVal() {
 }
 
 function clicked() {
-  console.log("that bitch was clicked");
+  console.log("Ouch");
 }
 
 function emailVal() {
