@@ -49,6 +49,17 @@ function passwVal() {
       length.classList.remove("valid");
       length.classList.add("invalid");
     }
+    var passEqualsConfPass = myInput.value == confirmMyInput.value; // TODO: Change this to the condition that needs to be checked so that the text entered in password equals the text in confirm password
+    console.log(passEqualsConfPass);
+    if (passEqualsConfPass) {
+      match.classList.remove("invalid");
+      match.classList.add("valid");
+      console.log("nice");
+    } else {
+      match.classList.remove("valid");
+      match.classList.add("invalid");
+      console.log("not nice");
+    }
     enableButton(letter, capital, number, length, match, validEmail);
   };
   confirmMyInput.onkeyup = function () {
@@ -86,6 +97,10 @@ function emailVal() {
   if (valid) {
     validEmail.classList.remove("invalid");
     validEmail.classList.add("valid");
+  }
+  else{
+    validEmail.classList.remove("valid");
+    validEmail.classList.add("invalid");
   }
 
   enableButton(letter, capital, number, length, match, validEmail);

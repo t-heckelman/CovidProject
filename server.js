@@ -52,7 +52,6 @@ var snippet;
 var track_id;
 var favoriteArtist = "baby keem";
 var globalUsername = "username";
-favoriteArtist = favoriteArtist.replace(" ", "_");
 var apiCall =
   "http://api.musixmatch.com/ws/1.1/track.search?q_artist=" +
   favoriteArtist +
@@ -356,7 +355,8 @@ app.post("/login", function (req, res) {
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   }).then((info) => {
-    if (info[0][0].name != null) {
+    console.log(info[0][0]);
+    if (info[0][0] != null) {
       user = info[0][0].name;
       favoriteArtist = info[0][0].favorite_artist;
       console.log(user);
@@ -557,6 +557,7 @@ app.post("/register", function (req, res) {
   var psw = req.body.psw;
   var checkUsername = false;
   username = username.toUpperCase();
+  globalUsername = username;
   console.log("name " + name);
   console.log("email " + email);
   console.log("username " + username);
@@ -579,7 +580,10 @@ app.post("/register", function (req, res) {
     return task.batch([task.any(query2)]);
   })
     .then((check) => {
-      if(check[0] == null && username == filter.clean(username)){
+      console.log(filter.clean(username));
+      console.log(check[0]);
+      console.log(username);
+      if((check[0] == null) && (username == filter.clean(username))){
         db.task("get-everything", (task) => {
           return task.batch([task.any(query1)]);
         })
@@ -609,17 +613,14 @@ app.post("/register", function (req, res) {
           });
         });
       }
-      else{
-        checkUsername = true;
+      else if(username == filter.clean(username)){
+        user = name;
+        globalUsername = username;
         console.log(checkUsername);
-        res.render("pages/register", {
-          my_title: "error",
-          dailyImg: dailyImg,
-          user: user,
-          success: false,
-          usernameTaken: checkUsername,
-          error: true,
-        });
+        res.redirect("/");
+      }
+      else{
+        res.redirect("/register")
       }
     })
     .catch((err) => {
