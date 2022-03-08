@@ -11,17 +11,12 @@ require('dotenv').config()
 
 var Filter = require('bad-words'),
     filter = new Filter();
-
-//console.log(filter.clean("Don't be an ash0le"));
-
 let pgp = require("pg-promise")();
-
 app.set("view engine", "ejs");
-// app.set('views', './demo');
 app.use(express.static(__dirname + "/"));
 const tools = require("./resources/js/script");
 
-// This line is necessary for us to use relative paths and access our resources directory -- ignore this for now
+// This line is necessary for us to use relative paths and access our resources directory
 //put this stuff in env file
 var dailyImg;
 let dbConfig = {
@@ -32,19 +27,48 @@ let dbConfig = {
   password: "password",
 };
 
-// console.log("processenv:" + process.env);
-// console.log("key: " + process.env.MUSIX_KEY);
+// env variables
 const musicKey = process.env.MUSIX_API;
 const nasaKey = process.env.NASA_API;
-
+var secret = process.env.key;
 const isProduction = process.env.NODE_ENV === "production";
 
-// console.log("process: " + process.env.zsh);
-// console.log("shell: " + process.env.shell);
+//instantiating sha256 encryptor
+var str = "test";
+const crypt = require("crypto");
+const algorithm = 'aes-256-cbc';
+var fakeKey = crypt.randomBytes(32);
+const name = crypt.randomBytes(16); //initialization vector - Usernamne
+console.log(name);
+var test2 = "test";
+console.log(test2);
 
+function encrypt(text, iv) {
+   let cipher = crypt.createCipheriv('aes-256-cbc', Buffer.from(secret), iv);
+   let encrypted = cipher.update(text);
+   encrypted = Buffer.concat([encrypted, cipher.final()]);
+   return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
 
+function decrypt(text) {
+   let iv = Buffer.from(text.iv, 'hex');
+   let encryptedText = Buffer.from(text.encryptedData, 'hex');
+   let decipher = crypt.createDecipheriv('aes-256-cbc', Buffer.from(secret), iv);
+   let decrypted = decipher.update(encryptedText);
+   decrypted = Buffer.concat([decrypted, decipher.final()]);
+   return decrypted.toString();
+}
+// testing
+test2 = encrypt(test2, name);
+console.log(test2);
+test2 = decrypt(test2);
+console.log(test2);
+
+//config db
 dbConfig = isProduction ? process.env.DATABASE_URL : dbConfig;
 let db = pgp(dbConfig);
+
+//userVariables
 var user = "Login";
 var trackPresent = false;
 var tracks;
@@ -66,7 +90,6 @@ axios({
 })
   .then((items) => {
     dailyImg = (items.data);
-    // console.log("hi", data);
   })
   .catch((error) => {
     if (error.response) {
@@ -74,33 +97,17 @@ axios({
       console.log(error.response.status);
     }
   });
-//api call for baby keem
-// console.log("fav api call " + apiCall);
+
 axios({
   method: "GET",
   url: "http://api.musixmatch.com/ws/1.1/track.search?q_artist=baby_keem&page_size=10&page=1&s_track_release_date=desc&apikey=" + musicKey,
   dataType: "json",
 })
   .then((track) => {
-    // create array of all track_ids
-    // console.log(track.data);
-    // console.log(track.data.message);
-    // console.log(track.data.message.header);
-    // console.log(track.data.message.body);
-    // console.log(track.data.message.body.track_list[0]);
-    // console.log("then track");
-    // console.log(track);
-    // console.log(track.data.message.body);
-
     track_id = track.data.message.body.track_list[0].track.track_id;
     trackPresent = true;
     tracks = track.data.message.body;
-
-    // console.log("tracklist length: " + tracks.track_list.length);
-
-    //console.log("tracks: " + tracks.track_list[0].track.track_name);
     console.log(track_id);
-    // second api call for snippet
     axios({
       method: "GET",
       url:
@@ -113,12 +120,6 @@ axios({
         console.log(error.response.status);
       }
     });
-
-    // console.log(track);
-    // console.log("predata");
-    // console.log(track.data.message.body.track_list[0].track);
-    // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
-    // console.log("postdata");
   })
   .catch((error) => {
     if (error.response) {
@@ -336,11 +337,7 @@ app.post("/profile", function (req, res) {
       });
     });
 });
-
 // kanye west api key https://www.programmableweb.com/api/kanyerest-rest-api-v100
-
-
-
 app.post("/login", function (req, res) {
   console.log("loginYes");
   var username = req.body.username;
@@ -379,176 +376,6 @@ app.post("/login", function (req, res) {
     }
   });
 });
-
-// app.post("/register", function (req, res) {
-//   console.log("have clicked register and entered function");
-//   var email = req.body.email;
-//   var name = req.body.name;
-//   var username = req.body.username;
-//   var psw = req.body.psw;
-//   var checkUsername = false;
-//   username = username.toUpperCase();
-//   console.log("name " + name);
-//   console.log("email " + email);
-//   console.log("username " + username);
-//   console.log("psw " + psw);
-
-//   var query1 =
-//     "INSERT INTO users(name, username, password, email) values('" +
-//     name +
-//     "', '" +
-//     username +
-//     "', '" +
-//     psw +
-//     "', '" +
-//     email +
-//     "');";
-//   var query2 =  "SELECT * FROM users WHERE username = '" + username + "';";
-//   console.log(query2);
-//   console.log(query1);
-//   db.task("get-everything", (task) => {
-//     return task.batch([task.any(query2)]);
-//   })
-//     .then((check) => {
-//       if(check[0][0].username == null){
-//         db.task("get-everything", (task) => {
-//           return task.batch([task.any(query1)]);
-//         })
-//         .then((insert) => {
-//           console.log(user);
-//           user = name;
-//           globalUsername = username;
-//           console.log("info" + info);
-//           res.render("pages/main", {
-//             my_title: "Music Space",
-//             dailyImg: dailyImg,
-//             user: user,
-//             success: true,
-//             error: false,
-//             usernameTaken: checkUsername,
-//         });
-//       })
-//         .catch((err) => {
-//           console.log("error", err);
-//           res.render("pages/register", {
-//             my_title: "Errror",
-//             dailyImg: dailyImg,
-//             user: user,
-//             success: false,
-//             usernameTaken: checkUsername,
-//             error: true,
-//           });
-//         });
-//       }
-//       else{
-//         checkUsername = true;
-//         console.log(checkUsername);
-//         res.render("pages/register", {
-//           my_title: "error",
-//           dailyImg: dailyImg,
-//           user: user,
-//           success: false,
-//           usernameTaken: checkUsername,
-//           error: true,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("error!", err);
-//       res.render("pages/main", {
-//         my_title: "error",
-//         dailyImg: dailyImg,
-//         message: "uh oh",
-//         user: user,
-//         error: true,
-//       });
-//     });
-// });
-
-// app.post("/register", function (req, res) {
-//   console.log("have clicked register and entered function");
-//   var email = req.body.email;
-//   var name = req.body.name;
-//   var username = req.body.username;
-//   var psw = req.body.psw;
-//   var checkUsername = false;
-//   username = username.toUpperCase();
-//   console.log("name " + name);
-//   console.log("email " + email);
-//   console.log("username " + username);
-//   console.log("psw " + psw);
-
-//   var query1 =
-//     "INSERT INTO users(name, username, password, email) values('" +
-//     name +
-//     "', '" +
-//     username +
-//     "', '" +
-//     psw +
-//     "', '" +
-//     email +
-//     "');";
-//   var query2 = "SELECT * FROM users WHERE username = '" + username + "';";
-//   console.log(query2);
-//   console.log(query1);
-//   db.task("get-everything", (task) => {
-//     return task.batch([task.any(query2)]);
-//   })
-//     .then((check) => {
-//       if (check[0][0].username == null) {
-//         db.task("get-everything", (task) => {
-//           return task.batch([task.any(query1)]);
-//         })
-//           .then((insert) => {
-//             console.log(user);
-//             user = name;
-//             globalUsername = username;
-//             console.log("info" + info);
-//             res.render("pages/main", {
-//               my_title: "Music Space",
-//               dailyImg: dailyImg,
-//               user: user,
-//               success: true,
-//               error: false,
-//               usernameTaken: checkUsername,
-//             });
-//           })
-//           .catch((err) => {
-//             console.log("error", err);
-//             res.render("pages/register", {
-//               my_title: "Errror",
-//               dailyImg: dailyImg,
-//               user: user,
-//               success: false,
-//               usernameTaken: checkUsername,
-//               error: true,
-//             });
-//           });
-//       } else {
-//         checkUsername = true;
-//         console.log(checkUsername);
-//         res.render("pages/register", {
-//           my_title: "error",
-//           dailyImg: dailyImg,
-//           user: user,
-//           success: false,
-//           usernameTaken: checkUsername,
-//           error: true,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("error!", err);
-//       res.render("pages/main", {
-//         my_title: "error",
-//         dailyImg: dailyImg,
-//         message: "uh oh",
-//         user: user,
-//         error: true,
-//       });
-//     });
-// });
-
 app.post("/register", function (req, res) {
   console.log("have clicked register and entered function");
   var email = req.body.email;
@@ -562,7 +389,6 @@ app.post("/register", function (req, res) {
   console.log("email " + email);
   console.log("username " + username);
   console.log("psw " + psw);
-
   var query1 =
     "INSERT INTO users(name, username, password, email) values('" +
     name +
@@ -681,7 +507,6 @@ app.get("/writeReview", function (req, res) {
     .then((track) => {
       trackPresent = true;
       tracks = track.data.message.body;
-      // console.log(tracks);
       console.log(track_id);
       res.render("pages/writeReview", {
         my_title: "Music Space: Review",
@@ -701,28 +526,10 @@ app.get("/writeReview", function (req, res) {
       }
     });
   });
-
-
-
 app.post("/writeReview", function (req, res) {
   console.log("in body of write review!");
-  /*Link/v1/filter/key*/
-  //console.log(req);
-
-  //console.log(res);
-  // var song = req.body.renderSong;
-  //var song = tracks.track_list[0].track.track_name;
-  //song = song.replace(" ", "_");\
+  //there has got to be a better way of doing this
   var review;
-
-  // for (var i = 0; i < tracks.track_list.length; i++) {
-  //   console.log("body at i" + req.body.e + i);
-  //   if (req.body.e + "" + i !== "undefined") {
-  //     review = req.body.e + "" + i;
-  //     console.log("for loop review: " + review);
-  //   }
-  // }
-
   var review0 = req.body.e0;
   console.log("review:" + review0);
   var review1 = req.body.e1;
@@ -743,9 +550,7 @@ app.post("/writeReview", function (req, res) {
   console.log("review:" + review8);
   var review9 = req.body.e9;
   console.log("review:" + review9);
-
   var song;
-
   if (review0 != null) {
     review = review0;
     song =
@@ -755,7 +560,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review1 != null) {
     review = review1;
-    // song = tracks.track_list[1].track.track_name;
     song =
       tracks.track_list[1].track.track_name +
       " by " +
@@ -763,7 +567,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review2 != null) {
     review = review2;
-    // song = tracks.track_list[2].track.track_name;
     song =
       tracks.track_list[2].track.track_name +
       " by " +
@@ -771,7 +574,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review3 != null) {
     review = review3;
-    // song = tracks.track_list[3].track.track_name;
     song =
       tracks.track_list[3].track.track_name +
       " by " +
@@ -779,7 +581,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review4 != null) {
     review = review4;
-    // song = tracks.track_list[4].track.track_name;
     song =
       tracks.track_list[4].track.track_name +
       " by " +
@@ -787,7 +588,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review5 != null) {
     review = review5;
-    // song = tracks.track_list[5].track.track_name;
     song =
       tracks.track_list[5].track.track_name +
       " by " +
@@ -795,7 +595,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review6 != null) {
     review = review6;
-    // song = tracks.track_list[6].track.track_name;
     song =
       tracks.track_list[6].track.track_name +
       " by " +
@@ -803,7 +602,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review7 != null) {
     review = review7;
-    //song = tracks.track_list[7].track.track_name;
     song =
       tracks.track_list[7].track.track_name +
       " by " +
@@ -811,7 +609,6 @@ app.post("/writeReview", function (req, res) {
   }
   if (review8 != null) {
     review = review8;
-    //song = tracks.track_list[8].track.track_name;
     song =
       tracks.track_list[8].track.track_name +
       " by " +
@@ -819,27 +616,14 @@ app.post("/writeReview", function (req, res) {
   }
   if (review9 != null) {
     review = review9;
-    // song = tracks.track_list[9].track.track_name;
     song =
       tracks.track_list[9].track.track_name +
       " by " +
       tracks.track_list[9].track.artist_name;
   }
-
   console.log("review: " + review);
-
-  //console.log(review);
-
-  // console.log(tracks);
-
-
-  // var Filter = require('bad-words'),
-  //   filter = new Filter();
-  //console.log(filter.clean("Don't be an ash0le"));
-  // console.log("review to be cleaned" + review);
   console.log("filtered review" + filter.clean(review));
   review = filter.clean(review);
-
   console.log("Write post function called with review: \n" + review + "\n");
   var query1 =
     "INSERT INTO reviews(username, song, review, review_date) values('" +
@@ -849,26 +633,15 @@ app.post("/writeReview", function (req, res) {
     "', '" +
     review +
     "', 'now()');";
-
   db.task("get-everything", (task) => {
     return task.batch([task.any(query1)]);
   });
-
   var query2 = "select * from reviews ORDER BY review_date DESC;";
   db.task("get-everything", (task) => {
     return task.batch([task.any(query2)]);
   })
     .then((data) => {
-      // res.render("pages/reviews", {
-      //   my_title: "Music Space: Reviews",
-      //   tools: tools,
-      //   user: user,
-      //   dailyImg: dailyImg,
-      //   songs: data[0],
-      //   snippet: snippet,
-      // });
       res.redirect("/reviews");
-
     })
     .catch((err) => {
       console.log("error", err);
@@ -880,51 +653,6 @@ app.post("/writeReview", function (req, res) {
       });
     });
 });
-
-//     .then((data) => {
-//       console.log("database passed");
-//       axios({
-//         method: "GET",
-//         url: apiCall,
-//         dataType: "json",
-//
-//       })
-//         .then((track) => {
-//           trackPresent = true;
-//           // console.log("predata");
-//           // console.log(track.data.message.body.track_list[0].track);
-//           // console.log(track.data.message.body.track_list[track.data.message.body.track_list.length-1]);
-//           // console.log("postdata");
-//           var tracks = track.data.message.body;
-//           res.render("pages/reviews", {
-//             my_title: "Music Space: Review",
-//             dailyImg: dailyImg,
-//             tools: tools,
-//             tracks: tracks,
-//             user: user,
-//             trackPresent: trackPresent,
-//             error: false,
-//           });
-//         })
-//         .catch((error) => {
-//           if (error.response) {
-//             console.log(error.response.data);
-//             console.log(error.response.status);
-//           }
-//         });
-//     })
-//     .catch((err) => {
-//       console.log("error!", err);
-//       res.render("pages/writeReview", {
-//         my_title: "error",
-//         dailyImg: dailyImg,
-//         message: "uh oh",
-//         user: user,
-//         error: true,
-//       });
-//     });
-// });
-
 app.post("/searchSong", function (req, res) {
   var songTitle = req.body.songTitle;
   var artistName = req.body.artist;
@@ -937,7 +665,6 @@ app.post("/searchSong", function (req, res) {
       " and artist name: " +
       artistName
   );
-
   searchApiCall =
     "http://api.musixmatch.com/ws/1.1/track.search?q_track=" +
     songTitle +
@@ -945,32 +672,20 @@ app.post("/searchSong", function (req, res) {
     artistName +
     "&page_size=10&page=1&s_track_rating=desc&apikey=" +
     musicKey;
-
   console.log("api call: " + searchApiCall);
-
   axios({
     method: "GET",
     url: searchApiCall,
     dataType: "json",
   })
     .then((track) => {
-      // console.log(track.data);
-      // console.log(track.data.message);
-      // console.log(track.data.message.header);
-      // console.log(track.data.message.body);
-      // console.log(track.data.message.body.track_list[0]);
       track_id = track.data.message.body.track_list[0].track.track_id;
       trackPresent = true;
       tracks = track.data.message.body;
-      //searchTracks = track.data.message.body;
-      // console.log(tracks.track_list);
-      // console.log(track_id);
-
       res.render("pages/writeReview", {
         my_title: "Music Space: Review",
         dailyImg: dailyImg,
         tools: tools,
-        //tracks: searchTracks,
         tracks: tracks,
         user: user,
         trackPresent: trackPresent,
@@ -985,11 +700,7 @@ app.post("/searchSong", function (req, res) {
       }
     });
 });
-
-// console.log("Server is running at " + server_port);
 const PORT = process.env.PORT || 8080;
-
 const server = app.listen(PORT, () => {
   console.log(`Express running → PORT ${server.address().port}`);
 });
-// app.listen(server_port);

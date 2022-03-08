@@ -1,4 +1,4 @@
-console.log("connected to client-side server");
+console.log("> Connected to client-side server");
 function passwVal() {
   var myInput = document.getElementById("psw");
   var confirmMyInput = document.getElementById("cpsw");
