@@ -18,12 +18,12 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CU-CSCI-3308-Fall-2021/individualprojects_setf-t-heckelman.git"
+    "url": "git+https://github.com/t-heckelman/CovidProject.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CU-CSCI-3308-Fall-2021/individualprojects_setf-t-heckelman/issues"
+    "url": "https://github.com/t-heckelman/CovidProject/issues"
   },
-  "homepage": "https://github.com/CU-CSCI-3308-Fall-2021/individualprojects_setf-t-heckelman#readme"
+  "homepage": "https://github.com/t-heckelman/CovidProject#readme"
 }
